@@ -1,0 +1,142 @@
+{
+  "meta": {
+    "title": "Meiringen.org",
+    "description": "E Gmeinschaftsplatform zum Entdecke vo kulturelle, soziale, sportlichi und Integrationsaktivitäte in Meiringe und Haslital."
+  },
+  "nav": {
+    "home": "Start",
+    "events": "Veranstaltige",
+    "organizations": "Organisatione",
+    "about": "Über üs",
+    "login": "Aamälde",
+    "logout": "Abmälde",
+    "account": "Konto",
+    "newsletter": "Newsletter",
+    "admin": "Admin"
+  },
+  "home": {
+    "heroTitle": "Entdeck Meiringe & Haslital",
+    "heroSubtitle": "E Gmeinschaftsplatform zum Entdecke vo kulturelle, soziale, sportlichi und Integrationsaktivitäte in Meiringe und Haslital.",
+    "heroCta": "Veranstaltige entdecke",
+    "upcomingEvents": "Kommendi Veranstaltige",
+    "exploreOrganizations": "Organisatione entdecke",
+    "integrationCourses": "Integration & Sprachchurse",
+    "festivalsMarkets": "Fäscht & Märt",
+    "newsletterTitle": "Monatliche Newsletter",
+    "newsletterSubtitle": "Bekumm passendi Veranstaltige direkt i dis Poschtfach.",
+    "newsletterCta": "Istellige verwalte",
+    "aboutTitle": "Über s Projekt",
+    "aboutText": "Meiringen.org verbindet Lüüt mit lokale Organisatione und Aktivitäte. Gratis, mehrsprachig und vo de Gmeinschaft für d Gmeinschaft.",
+    "viewAll": "Alli azeige"
+  },
+  "events": {
+    "title": "Veranstaltige",
+    "subtitle": "Find Aktivitäte in Meiringe und Haslital.",
+    "search": "Suche…",
+    "category": "Kategorie",
+    "language": "Sprach",
+    "organization": "Organisation",
+    "dateFrom": "Ab Datum",
+    "dateTo": "Bis Datum",
+    "all": "Alli",
+    "noResults": "Kei Veranstaltige gfunde.",
+    "free": "Gratis",
+    "recurring": "Wiederchunnt"
+  },
+  "organizations": {
+    "title": "Organisatione",
+    "subtitle": "Verein, Gruppe und Institutione i de Region.",
+    "search": "Nach Name sueche…",
+    "category": "Kategorie",
+    "noResults": "Kei Organisatione gfunde.",
+    "viewDetails": "Details azeige",
+    "contact": "Kontakt"
+  },
+  "about": {
+    "title": "Über Meiringen.org",
+    "intro": "Meiringen.org isch e gratis Gmeinschaftsplatform für Meiringe und Haslital.",
+    "mission": "Üses Ziel isch, kulturelle, soziale, sportlichi und Integrationsaktivitäte eifach auffindbar z mache — für Iheimische, Neucho und Besuecher.",
+    "features": "Was du da findsch",
+    "featureEvents": "Aktuelli Veranstaltige und Agenda",
+    "featureOrgs": "Verzeichnis vo lokale Organisatione",
+    "featureNewsletter": "Personalisierte monatliche Newsletter",
+    "featureMultilingual": "Mehrsprachigi Oberflächi"
+  },
+  "auth": {
+    "title": "Aamälde",
+    "subtitle": "Mäld dich a, zum Newsletter-Istellige verwalte.",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "fullName": "Vollständige Name",
+    "signIn": "Aamälde",
+    "signUp": "Registriere",
+    "google": "Mit Google aamälde",
+    "or": "oder",
+    "noAccount": "No kei Konto?",
+    "hasAccount": "Scho es Konto?",
+    "error": "Aamäldig fehlgschlage. Bitte nomol probiere."
+  },
+  "newsletter": {
+    "title": "Newsletter-Istellige",
+    "subtitle": "Wähl, weli Veranstaltige du monatlich wotsch.",
+    "categories": "Kategorie",
+    "organizations": "Organisatione",
+    "languages": "Sprache",
+    "save": "Speichere",
+    "saved": "Istellige gspeicheret.",
+    "loginRequired": "Bitte mäld dich a, zum Newsletter-Istellige verwalte."
+  },
+  "admin": {
+    "title": "Admin",
+    "dashboard": "Dashboard",
+    "organizations": "Organisatione",
+    "events": "Veranstaltige",
+    "sources": "Import-Quelle",
+    "new": "Neu",
+    "edit": "Bearbeite",
+    "delete": "Lösche",
+    "save": "Speichere",
+    "cancel": "Abbräche",
+    "draft": "Entwurf",
+    "published": "Veröffentlicht",
+    "publish": "Veröffentliche",
+    "accessDenied": "Zuegriff verweigert.",
+    "stats": {
+      "organizations": "Organisatione",
+      "events": "Veranstaltige",
+      "drafts": "Entwürf",
+      "sources": "Quelle"
+    }
+  },
+  "categories": {
+    "culture": "Kultur",
+    "sport": "Sport",
+    "social": "Sozials",
+    "integration": "Integration",
+    "education": "Bildig",
+    "music": "Musig",
+    "nature": "Natur",
+    "festival": "Fäscht",
+    "market": "Märt",
+    "other": "Süschts"
+  },
+  "languages": {
+    "de": "Hochdütsch",
+    "gsw": "Haslidütsch",
+    "en": "Änglisch",
+    "fr": "Französisch",
+    "it": "Italienisch",
+    "rm": "Rumantsch",
+    "pt": "Portugiesisch"
+  },
+  "footer": {
+    "tagline": "Gmeinschaft für Meiringe & Haslital",
+    "madeWith": "Mit ❤️ für d Region"
+  },
+  "common": {
+    "back": "Zrugg",
+    "loading": "Ladet…",
+    "error": "Öppis isch schief gloffe.",
+    "readMore": "Meh läse"
+  }
+}

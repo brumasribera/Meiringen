@@ -1,0 +1,142 @@
+{
+  "meta": {
+    "title": "Meiringen.org",
+    "description": "Uma plataforma comunitária para descobrir atividades culturais, sociais, desportivas e de integração em Meiringen e no Haslital."
+  },
+  "nav": {
+    "home": "Início",
+    "events": "Eventos",
+    "organizations": "Organizações",
+    "about": "Sobre",
+    "login": "Entrar",
+    "logout": "Sair",
+    "account": "Conta",
+    "newsletter": "Newsletter",
+    "admin": "Admin"
+  },
+  "home": {
+    "heroTitle": "Descubra Meiringen & Haslital",
+    "heroSubtitle": "Uma plataforma comunitária para descobrir atividades culturais, sociais, desportivas e de integração em Meiringen e no Haslital.",
+    "heroCta": "Ver eventos",
+    "upcomingEvents": "Próximos eventos",
+    "exploreOrganizations": "Explorar organizações",
+    "integrationCourses": "Integração & cursos de língua",
+    "festivalsMarkets": "Festivais & mercados",
+    "newsletterTitle": "Newsletter mensal",
+    "newsletterSubtitle": "Receba eventos relevantes no seu e-mail.",
+    "newsletterCta": "Gerir preferências",
+    "aboutTitle": "Sobre o projeto",
+    "aboutText": "Meiringen.org liga pessoas a organizações e atividades locais. Gratuito, multilingue e feito para a comunidade.",
+    "viewAll": "Ver todos"
+  },
+  "events": {
+    "title": "Eventos",
+    "subtitle": "Encontre atividades em Meiringen e no Haslital.",
+    "search": "Pesquisar…",
+    "category": "Categoria",
+    "language": "Língua",
+    "organization": "Organização",
+    "dateFrom": "A partir de",
+    "dateTo": "Até",
+    "all": "Todos",
+    "noResults": "Nenhum evento encontrado.",
+    "free": "Grátis",
+    "recurring": "Recorrente"
+  },
+  "organizations": {
+    "title": "Organizações",
+    "subtitle": "Clubes, grupos e instituições da região.",
+    "search": "Pesquisar por nome…",
+    "category": "Categoria",
+    "noResults": "Nenhuma organização encontrada.",
+    "viewDetails": "Ver detalhes",
+    "contact": "Contacto"
+  },
+  "about": {
+    "title": "Sobre Meiringen.org",
+    "intro": "Meiringen.org é uma plataforma comunitária gratuita para Meiringen e o Haslital.",
+    "mission": "O nosso objetivo é tornar fácil encontrar atividades culturais, sociais, desportivas e de integração — para residentes, recém-chegados e visitantes.",
+    "features": "O que encontrará aqui",
+    "featureEvents": "Eventos atuais e agenda",
+    "featureOrgs": "Diretório de organizações locais",
+    "featureNewsletter": "Newsletter mensal personalizada",
+    "featureMultilingual": "Interface multilingue"
+  },
+  "auth": {
+    "title": "Entrar",
+    "subtitle": "Entre para gerir as suas preferências de newsletter.",
+    "email": "E-mail",
+    "password": "Palavra-passe",
+    "fullName": "Nome completo",
+    "signIn": "Entrar",
+    "signUp": "Registar",
+    "google": "Entrar com Google",
+    "or": "ou",
+    "noAccount": "Ainda não tem conta?",
+    "hasAccount": "Já tem conta?",
+    "error": "Falha no login. Tente novamente."
+  },
+  "newsletter": {
+    "title": "Preferências de newsletter",
+    "subtitle": "Escolha quais eventos quer receber mensalmente.",
+    "categories": "Categorias",
+    "organizations": "Organizações",
+    "languages": "Línguas",
+    "save": "Guardar",
+    "saved": "Preferências guardadas.",
+    "loginRequired": "Entre para gerir as suas preferências de newsletter."
+  },
+  "admin": {
+    "title": "Admin",
+    "dashboard": "Painel",
+    "organizations": "Organizações",
+    "events": "Eventos",
+    "sources": "Fontes de importação",
+    "new": "Novo",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "draft": "Rascunho",
+    "published": "Publicado",
+    "publish": "Publicar",
+    "accessDenied": "Acesso negado.",
+    "stats": {
+      "organizations": "Organizações",
+      "events": "Eventos",
+      "drafts": "Rascunhos",
+      "sources": "Fontes"
+    }
+  },
+  "categories": {
+    "culture": "Cultura",
+    "sport": "Desporto",
+    "social": "Social",
+    "integration": "Integração",
+    "education": "Educação",
+    "music": "Música",
+    "nature": "Natureza",
+    "festival": "Festival",
+    "market": "Mercado",
+    "other": "Outro"
+  },
+  "languages": {
+    "de": "Alemão",
+    "gsw": "Haslidütsch",
+    "en": "Inglês",
+    "fr": "Francês",
+    "it": "Italiano",
+    "rm": "Romanche",
+    "pt": "Português"
+  },
+  "footer": {
+    "tagline": "Comunidade para Meiringen & Haslital",
+    "madeWith": "Feito com ❤️ para a região"
+  },
+  "common": {
+    "back": "Voltar",
+    "loading": "A carregar…",
+    "error": "Algo correu mal.",
+    "readMore": "Ler mais"
+  }
+}

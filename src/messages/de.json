@@ -1,0 +1,142 @@
+{
+  "meta": {
+    "title": "Meiringen.org",
+    "description": "Gemeinschaftsplattform für kulturelle, soziale, sportliche und Integrationsaktivitäten in Meiringen und Haslital."
+  },
+  "nav": {
+    "home": "Startseite",
+    "events": "Veranstaltungen",
+    "organizations": "Organisationen",
+    "about": "Über uns",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "account": "Konto",
+    "newsletter": "Newsletter",
+    "admin": "Admin"
+  },
+  "home": {
+    "heroTitle": "Entdecke Meiringen & Haslital",
+    "heroSubtitle": "Eine Gemeinschaftsplattform für kulturelle, soziale, sportliche und Integrationsaktivitäten in Meiringen und Haslital.",
+    "heroCta": "Veranstaltungen entdecken",
+    "upcomingEvents": "Kommende Veranstaltungen",
+    "exploreOrganizations": "Organisationen entdecken",
+    "integrationCourses": "Integration & Sprachkurse",
+    "festivalsMarkets": "Feste & Märkte",
+    "newsletterTitle": "Monatlicher Newsletter",
+    "newsletterSubtitle": "Erhalte passende Veranstaltungen direkt in dein Postfach.",
+    "newsletterCta": "Einstellungen verwalten",
+    "aboutTitle": "Über das Projekt",
+    "aboutText": "Meiringen.org verbindet Menschen mit lokalen Organisationen und Aktivitäten. Kostenlos, mehrsprachig und von der Community für die Community.",
+    "viewAll": "Alle anzeigen"
+  },
+  "events": {
+    "title": "Veranstaltungen",
+    "subtitle": "Finde Aktivitäten in Meiringen und Haslital.",
+    "search": "Suchen…",
+    "category": "Kategorie",
+    "language": "Sprache",
+    "organization": "Organisation",
+    "dateFrom": "Ab Datum",
+    "dateTo": "Bis Datum",
+    "all": "Alle",
+    "noResults": "Keine Veranstaltungen gefunden.",
+    "free": "Gratis",
+    "recurring": "Wiederkehrend"
+  },
+  "organizations": {
+    "title": "Organisationen",
+    "subtitle": "Vereine, Gruppen und Institutionen in der Region.",
+    "search": "Nach Name suchen…",
+    "category": "Kategorie",
+    "noResults": "Keine Organisationen gefunden.",
+    "viewDetails": "Details anzeigen",
+    "contact": "Kontakt"
+  },
+  "about": {
+    "title": "Über Meiringen.org",
+    "intro": "Meiringen.org ist eine kostenlose Gemeinschaftsplattform für Meiringen und Haslital.",
+    "mission": "Unser Ziel ist es, kulturelle, soziale, sportliche und Integrationsaktivitäten leicht auffindbar zu machen — für Einheimische, Neuankömmlinge und Besucher.",
+    "features": "Was du hier findest",
+    "featureEvents": "Aktuelle Veranstaltungen und Agenda",
+    "featureOrgs": "Verzeichnis lokaler Organisationen",
+    "featureNewsletter": "Personalisierter monatlicher Newsletter",
+    "featureMultilingual": "Mehrsprachige Oberfläche"
+  },
+  "auth": {
+    "title": "Anmelden",
+    "subtitle": "Melde dich an, um Newsletter-Einstellungen zu verwalten.",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "fullName": "Vollständiger Name",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "google": "Mit Google anmelden",
+    "or": "oder",
+    "noAccount": "Noch kein Konto?",
+    "hasAccount": "Bereits ein Konto?",
+    "error": "Anmeldung fehlgeschlagen. Bitte versuche es erneut."
+  },
+  "newsletter": {
+    "title": "Newsletter-Einstellungen",
+    "subtitle": "Wähle, welche Veranstaltungen du monatlich erhalten möchtest.",
+    "categories": "Kategorien",
+    "organizations": "Organisationen",
+    "languages": "Sprachen",
+    "save": "Speichern",
+    "saved": "Einstellungen gespeichert.",
+    "loginRequired": "Bitte melde dich an, um deine Newsletter-Einstellungen zu verwalten."
+  },
+  "admin": {
+    "title": "Admin",
+    "dashboard": "Dashboard",
+    "organizations": "Organisationen",
+    "events": "Veranstaltungen",
+    "sources": "Import-Quellen",
+    "new": "Neu",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "draft": "Entwurf",
+    "published": "Veröffentlicht",
+    "publish": "Veröffentlichen",
+    "accessDenied": "Zugriff verweigert.",
+    "stats": {
+      "organizations": "Organisationen",
+      "events": "Veranstaltungen",
+      "drafts": "Entwürfe",
+      "sources": "Quellen"
+    }
+  },
+  "categories": {
+    "culture": "Kultur",
+    "sport": "Sport",
+    "social": "Soziales",
+    "integration": "Integration",
+    "education": "Bildung",
+    "music": "Musik",
+    "nature": "Natur",
+    "festival": "Fest",
+    "market": "Markt",
+    "other": "Sonstiges"
+  },
+  "languages": {
+    "de": "Deutsch",
+    "gsw": "Haslidütsch",
+    "en": "Englisch",
+    "fr": "Französisch",
+    "it": "Italienisch",
+    "rm": "Rumantsch",
+    "pt": "Portugiesisch"
+  },
+  "footer": {
+    "tagline": "Gemeinschaft für Meiringen & Haslital",
+    "madeWith": "Mit ❤️ für die Region"
+  },
+  "common": {
+    "back": "Zurück",
+    "loading": "Laden…",
+    "error": "Etwas ist schiefgelaufen.",
+    "readMore": "Mehr lesen"
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "meta": {
+    "title": "Meiringen.org",
+    "description": "A community platform to discover cultural, social, sport and integration activities in Meiringen and Haslital."
+  },
+  "nav": {
+    "home": "Home",
+    "events": "Events",
+    "organizations": "Organizations",
+    "about": "About",
+    "login": "Sign in",
+    "logout": "Sign out",
+    "account": "Account",
+    "newsletter": "Newsletter",
+    "admin": "Admin"
+  },
+  "home": {
+    "heroTitle": "Discover Meiringen & Haslital",
+    "heroSubtitle": "A community platform to discover cultural, social, sport and integration activities in Meiringen and Haslital.",
+    "heroCta": "Browse events",
+    "upcomingEvents": "Upcoming events",
+    "exploreOrganizations": "Explore organizations",
+    "integrationCourses": "Integration & language courses",
+    "festivalsMarkets": "Festivals & markets",
+    "newsletterTitle": "Monthly newsletter",
+    "newsletterSubtitle": "Get matching events delivered to your inbox.",
+    "newsletterCta": "Manage preferences",
+    "aboutTitle": "About the project",
+    "aboutText": "Meiringen.org connects people with local organizations and activities. Free, multilingual, and built for the community.",
+    "viewAll": "View all"
+  },
+  "events": {
+    "title": "Events",
+    "subtitle": "Find activities in Meiringen and Haslital.",
+    "search": "Search…",
+    "category": "Category",
+    "language": "Language",
+    "organization": "Organization",
+    "dateFrom": "From date",
+    "dateTo": "To date",
+    "all": "All",
+    "noResults": "No events found.",
+    "free": "Free",
+    "recurring": "Recurring"
+  },
+  "organizations": {
+    "title": "Organizations",
+    "subtitle": "Clubs, groups and institutions in the region.",
+    "search": "Search by name…",
+    "category": "Category",
+    "noResults": "No organizations found.",
+    "viewDetails": "View details",
+    "contact": "Contact"
+  },
+  "about": {
+    "title": "About Meiringen.org",
+    "intro": "Meiringen.org is a free community platform for Meiringen and Haslital.",
+    "mission": "Our goal is to make cultural, social, sport and integration activities easy to find — for locals, newcomers and visitors.",
+    "features": "What you'll find here",
+    "featureEvents": "Current events and agenda",
+    "featureOrgs": "Directory of local organizations",
+    "featureNewsletter": "Personalized monthly newsletter",
+    "featureMultilingual": "Multilingual interface"
+  },
+  "auth": {
+    "title": "Sign in",
+    "subtitle": "Sign in to manage your newsletter preferences.",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full name",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "google": "Sign in with Google",
+    "or": "or",
+    "noAccount": "No account yet?",
+    "hasAccount": "Already have an account?",
+    "error": "Sign in failed. Please try again."
+  },
+  "newsletter": {
+    "title": "Newsletter preferences",
+    "subtitle": "Choose which events you want to receive monthly.",
+    "categories": "Categories",
+    "organizations": "Organizations",
+    "languages": "Languages",
+    "save": "Save",
+    "saved": "Preferences saved.",
+    "loginRequired": "Please sign in to manage your newsletter preferences."
+  },
+  "admin": {
+    "title": "Admin",
+    "dashboard": "Dashboard",
+    "organizations": "Organizations",
+    "events": "Events",
+    "sources": "Import sources",
+    "new": "New",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "draft": "Draft",
+    "published": "Published",
+    "publish": "Publish",
+    "accessDenied": "Access denied.",
+    "stats": {
+      "organizations": "Organizations",
+      "events": "Events",
+      "drafts": "Drafts",
+      "sources": "Sources"
+    }
+  },
+  "categories": {
+    "culture": "Culture",
+    "sport": "Sport",
+    "social": "Social",
+    "integration": "Integration",
+    "education": "Education",
+    "music": "Music",
+    "nature": "Nature",
+    "festival": "Festival",
+    "market": "Market",
+    "other": "Other"
+  },
+  "languages": {
+    "de": "German",
+    "gsw": "Haslidütsch",
+    "en": "English",
+    "fr": "French",
+    "it": "Italian",
+    "rm": "Romansh",
+    "pt": "Portuguese"
+  },
+  "footer": {
+    "tagline": "Community for Meiringen & Haslital",
+    "madeWith": "Made with ❤️ for the region"
+  },
+  "common": {
+    "back": "Back",
+    "loading": "Loading…",
+    "error": "Something went wrong.",
+    "readMore": "Read more"
+  }
+}

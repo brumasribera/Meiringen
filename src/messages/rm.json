@@ -1,0 +1,142 @@
+{
+  "meta": {
+    "title": "Meiringen.org",
+    "description": "Ina plattafurma da communitad per scuvrir activitads culturalas, socialas, sportivas e d'integraziun a Meiringen ed en il Haslital."
+  },
+  "nav": {
+    "home": "Chasa",
+    "events": "Occurrenzas",
+    "organizations": "Organisaziuns",
+    "about": "Davart nus",
+    "login": "S'annunziar",
+    "logout": "Sortir",
+    "account": "Conto",
+    "newsletter": "Newsletter",
+    "admin": "Admin"
+  },
+  "home": {
+    "heroTitle": "Scuvrir Meiringen & Haslital",
+    "heroSubtitle": "Ina plattafurma da communitad per scuvrir activitads culturalas, socialas, sportivas e d'integraziun a Meiringen ed en il Haslital.",
+    "heroCta": "Vesair occurrenzas",
+    "upcomingEvents": "Proximas occurrenzas",
+    "exploreOrganizations": "Scuvrir organisaziuns",
+    "integrationCourses": "Integraziun & curs da lingua",
+    "festivalsMarkets": "Festa & martgads",
+    "newsletterTitle": "Newsletter mensila",
+    "newsletterSubtitle": "Retschaiver occurrenzas adattadas en tia posta.",
+    "newsletterCta": "Administrar preferenzas",
+    "aboutTitle": "Davart il project",
+    "aboutText": "Meiringen.org connecta persunas cun organisaziuns e activitads localas. Gratuit, pluriling e fatg per la communitad.",
+    "viewAll": "Vesair tut"
+  },
+  "events": {
+    "title": "Occurrenzas",
+    "subtitle": "Chattar activitads a Meiringen ed en il Haslital.",
+    "search": "Tschertgar…",
+    "category": "Categoria",
+    "language": "Lingua",
+    "organization": "Organisaziun",
+    "dateFrom": "Da la data",
+    "dateTo": "Fin la data",
+    "all": "Tut",
+    "noResults": "Naginas occurrenzas chattadas.",
+    "free": "Gratuit",
+    "recurring": "Recurrent"
+  },
+  "organizations": {
+    "title": "Organisaziuns",
+    "subtitle": "Clubs, gruppas e instituziuns da la regiun.",
+    "search": "Tschertgar tenor num…",
+    "category": "Categoria",
+    "noResults": "Naginas organisaziuns chattadas.",
+    "viewDetails": "Vesair detagls",
+    "contact": "Contact"
+  },
+  "about": {
+    "title": "Davart Meiringen.org",
+    "intro": "Meiringen.org è ina plattafurma da communitad gratuita per Meiringen ed il Haslital.",
+    "mission": "Noss intent è da render activitads culturalas, socialas, sportivas e d'integraziun facilmain chattablas — per indigens, novs arrivads e visitaders.",
+    "features": "Tge chattais qua",
+    "featureEvents": "Occurrenzas actualas e agenda",
+    "featureOrgs": "Register d'organisaziuns localas",
+    "featureNewsletter": "Newsletter mensila personalisada",
+    "featureMultilingual": "Interfatscha pluriling"
+  },
+  "auth": {
+    "title": "S'annunziar",
+    "subtitle": "S'annunziar per administrar preferenzas da newsletter.",
+    "email": "E-mail",
+    "password": "Plaid",
+    "fullName": "Num cumplet",
+    "signIn": "S'annunziar",
+    "signUp": "S'inscriver",
+    "google": "S'annunziar cun Google",
+    "or": "u",
+    "noAccount": "Anc nagin conto?",
+    "hasAccount": "Gia in conto?",
+    "error": "S'annunziar n'è betg reussì. Emprova anc ina giada."
+  },
+  "newsletter": {
+    "title": "Preferenzas da newsletter",
+    "subtitle": "Tscherner tge occurrenzas vuls retschaiver mintga mais.",
+    "categories": "Categorias",
+    "organizations": "Organisaziuns",
+    "languages": "Linguas",
+    "save": "Memorisar",
+    "saved": "Preferenzas memorisadas.",
+    "loginRequired": "S'annunziar per administrar preferenzas da newsletter."
+  },
+  "admin": {
+    "title": "Admin",
+    "dashboard": "Dashboard",
+    "organizations": "Organisaziuns",
+    "events": "Occurrenzas",
+    "sources": "Funtaunas d'import",
+    "new": "Nov",
+    "edit": "Modifitgar",
+    "delete": "Stizzar",
+    "save": "Memorisar",
+    "cancel": "Interrumper",
+    "draft": "Boz",
+    "published": "Publitgà",
+    "publish": "Publitgar",
+    "accessDenied": "Access refusà.",
+    "stats": {
+      "organizations": "Organisaziuns",
+      "events": "Occurrenzas",
+      "drafts": "Bozs",
+      "sources": "Funtaunas"
+    }
+  },
+  "categories": {
+    "culture": "Cultura",
+    "sport": "Sport",
+    "social": "Social",
+    "integration": "Integraziun",
+    "education": "Educaziun",
+    "music": "Musica",
+    "nature": "Natura",
+    "festival": "Festa",
+    "market": "Martgà",
+    "other": "Auter"
+  },
+  "languages": {
+    "de": "Tudestg",
+    "gsw": "Haslidütsch",
+    "en": "Englais",
+    "fr": "Franzos",
+    "it": "Talian",
+    "rm": "Rumantsch",
+    "pt": "Portugais"
+  },
+  "footer": {
+    "tagline": "Communitad per Meiringen & Haslital",
+    "madeWith": "Fatg cun ❤️ per la regiun"
+  },
+  "common": {
+    "back": "Enavos",
+    "loading": "Chargiar…",
+    "error": "Insatge è ì a mias.",
+    "readMore": "Leger dapli"
+  }
+}
