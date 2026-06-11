@@ -22,18 +22,44 @@ function loadEnvFile(filePath) {
     if (!line || line.startsWith("#")) continue;
     const idx = line.indexOf("=");
     if (idx === -1) continue;
-    env[line.slice(0, idx)] = line.slice(idx + 1);
+    let value = line.slice(idx + 1).trim();
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+    env[line.slice(0, idx).trim()] = value;
   }
   return env;
 }
 
 function getDatabaseUrl(env) {
-  return (
-    env.POSTGRES_URL_NON_POOLING ||
-    env.POSTGRES_URL ||
-    env.DATABASE_URL ||
-    null
-  );
+  const candidates = [
+    env.POSTGRES_URL_NON_POOLING,
+    env.POSTGRES_URL,
+    env.DATABASE_URL,
+  ];
+
+  for (const candidate of candidates) {
+    if (!candidate) continue;
+    if (candidate.includes("supa=base-pooler")) continue;
+    return candidate;
+  }
+
+  if (env.POSTGRES_HOST && env.POSTGRES_USER && env.POSTGRES_PASSWORD) {
+    const database = env.POSTGRES_DATABASE || "postgres";
+    return `postgres://${env.POSTGRES_USER}:${encodeURIComponent(env.POSTGRES_PASSWORD)}@${env.POSTGRES_HOST}:5432/${database}?sslmode=require`;
+  }
+
+  return null;
+}
+
+async function tableExists(client, table) {
+  const { rows } = await client.query("select to_regclass($1) as regclass", [
+    `public.${table}`,
+  ]);
+  return Boolean(rows[0]?.regclass);
 }
 
 async function runMigration(client, fileName) {
@@ -45,8 +71,8 @@ async function runMigration(client, fileName) {
 
 async function main() {
   const env = {
-    ...loadEnvFile(path.join(root, ".env.local")),
     ...process.env,
+    ...loadEnvFile(path.join(root, ".env.local")),
   };
 
   const dbUrl = getDatabaseUrl(env);
@@ -55,6 +81,8 @@ async function main() {
       "No database URL found. Run `vercel env pull .env.local --yes` after Supabase is connected."
     );
   }
+
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
   const client = new pg.Client({
     connectionString: dbUrl,
@@ -66,7 +94,12 @@ async function main() {
 
   await client.connect();
   try {
-    for (const file of migrationFiles) {
+    const hasSchema = await tableExists(client, "organizations");
+    const filesToRun = hasSchema
+      ? ["0005_organization_localities.sql", "0006_org_descriptions_logos.sql"]
+      : migrationFiles;
+
+    for (const file of filesToRun) {
       await runMigration(client, file);
     }
 

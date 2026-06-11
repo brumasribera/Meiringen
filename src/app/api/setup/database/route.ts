@@ -7,7 +7,11 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const schemaFiles = ["0001_schema.sql", "0002_rls.sql"];
-const seedFile = "0004_meiringen_organizations.sql";
+const seedFiles = [
+  "0004_meiringen_organizations.sql",
+  "0005_organization_localities.sql",
+  "0006_org_descriptions_logos.sql",
+];
 
 function verifySetupRequest(request: Request) {
   const secret = process.env.CRON_SECRET ?? process.env.SETUP_SECRET;
@@ -106,9 +110,11 @@ export async function POST(request: Request) {
       }
     }
 
-    const seedSql = fs.readFileSync(path.join(migrationsDir, seedFile), "utf8");
-    await client.query(seedSql);
-    applied.push(seedFile);
+    for (const file of seedFiles) {
+      const sql = fs.readFileSync(path.join(migrationsDir, file), "utf8");
+      await client.query(sql);
+      applied.push(file);
+    }
 
     const counts = await getCounts(client);
     return NextResponse.json({ ok: true, applied, ...counts });
