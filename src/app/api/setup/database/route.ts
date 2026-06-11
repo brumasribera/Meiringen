@@ -6,11 +6,8 @@ import pg from "pg";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const migrationFiles = [
-  "0001_schema.sql",
-  "0002_rls.sql",
-  "0004_meiringen_organizations.sql",
-];
+const schemaFiles = ["0001_schema.sql", "0002_rls.sql"];
+const seedFile = "0004_meiringen_organizations.sql";
 
 function verifySetupRequest(request: Request) {
   const secret = process.env.CRON_SECRET ?? process.env.SETUP_SECRET;
@@ -32,6 +29,54 @@ function getDatabaseUrl() {
   );
 }
 
+async function tableExists(client: pg.Client, table: string) {
+  const { rows } = await client.query(
+    "select to_regclass($1) as regclass",
+    [`public.${table}`]
+  );
+  return Boolean(rows[0]?.regclass);
+}
+
+async function getCounts(client: pg.Client) {
+  const { rows } = await client.query(
+    "select (select count(*)::int from public.organizations) as org_count, (select count(*)::int from public.events) as event_count"
+  );
+  return {
+    organizations: rows[0]?.org_count ?? 0,
+    events: rows[0]?.event_count ?? 0,
+  };
+}
+
+function createPgClient(dbUrl: string) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+  return new pg.Client({ connectionString: dbUrl });
+}
+
+export async function GET() {
+  const dbUrl = getDatabaseUrl();
+  if (!dbUrl) {
+    return NextResponse.json({ configured: false, organizations: 0, events: 0 });
+  }
+
+  const client = createPgClient(dbUrl);
+  try {
+    await client.connect();
+    const hasSchema = await tableExists(client, "organizations");
+    if (!hasSchema) {
+      return NextResponse.json({ configured: true, schema: false, organizations: 0, events: 0 });
+    }
+    const counts = await getCounts(client);
+    return NextResponse.json({ configured: true, schema: true, ...counts });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Status check failed" },
+      { status: 500 }
+    );
+  } finally {
+    await client.end().catch(() => undefined);
+  }
+}
+
 export async function POST(request: Request) {
   if (!verifySetupRequest(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -45,33 +90,28 @@ export async function POST(request: Request) {
     );
   }
 
-  const client = new pg.Client({
-    connectionString: dbUrl,
-    ssl: { rejectUnauthorized: false },
-  });
-
   const migrationsDir = path.join(process.cwd(), "supabase", "migrations");
   const applied: string[] = [];
+  const client = createPgClient(dbUrl);
 
   try {
     await client.connect();
+    const hasSchema = await tableExists(client, "organizations");
 
-    for (const file of migrationFiles) {
-      const sql = fs.readFileSync(path.join(migrationsDir, file), "utf8");
-      await client.query(sql);
-      applied.push(file);
+    if (!hasSchema) {
+      for (const file of schemaFiles) {
+        const sql = fs.readFileSync(path.join(migrationsDir, file), "utf8");
+        await client.query(sql);
+        applied.push(file);
+      }
     }
 
-    const { rows } = await client.query(
-      "select count(*)::int as organizations, (select count(*)::int from public.events) as events"
-    );
+    const seedSql = fs.readFileSync(path.join(migrationsDir, seedFile), "utf8");
+    await client.query(seedSql);
+    applied.push(seedFile);
 
-    return NextResponse.json({
-      ok: true,
-      applied,
-      organizations: rows[0]?.organizations ?? 0,
-      events: rows[0]?.events ?? 0,
-    });
+    const counts = await getCounts(client);
+    return NextResponse.json({ ok: true, applied, ...counts });
   } catch (error) {
     return NextResponse.json(
       {

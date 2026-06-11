@@ -43,4 +43,5 @@ next-env.d.ts
 
 .vercel
 .env*.local
+.setup-secret.tmp
 .env*

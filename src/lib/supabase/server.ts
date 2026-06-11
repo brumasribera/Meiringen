@@ -1,6 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import { isSupabaseConfigured } from "./config";
+import { getSupabaseAnonKey, getSupabaseServiceRoleKey, getSupabaseUrl, isSupabaseConfigured } from "./config";
 
 export async function createClient() {
   if (!isSupabaseConfigured()) {
@@ -10,8 +10,8 @@ export async function createClient() {
   const cookieStore = await cookies();
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    getSupabaseUrl()!,
+    getSupabaseAnonKey()!,
     {
       cookies: {
         getAll() {
@@ -32,14 +32,12 @@ export async function createClient() {
 }
 
 export async function createServiceClient() {
-  if (!isSupabaseConfigured() || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  const serviceRoleKey = getSupabaseServiceRoleKey();
+  if (!isSupabaseConfigured() || !serviceRoleKey) {
     throw new Error("Supabase service role is not configured");
   }
 
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
+  return createServerClient(getSupabaseUrl()!, serviceRoleKey, {
       cookies: {
         getAll() {
           return [];
