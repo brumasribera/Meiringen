@@ -6,6 +6,7 @@ import { slugify } from "@/lib/utils";
 
 async function ensureAdmin() {
   const supabase = await createClient();
+  if (!supabase) throw new Error("Supabase is not configured");
   const {
     data: { user },
   } = await supabase.auth.getUser();

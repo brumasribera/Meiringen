@@ -10,6 +10,14 @@ export default async function AdminEventsPage({ params }: Props) {
   setRequestLocale(locale);
 
   const supabase = await createClient();
+  if (!supabase) {
+    return (
+      <div>
+        <p className="text-muted">Supabase is not configured.</p>
+      </div>
+    );
+  }
+
   const { data: events } = await supabase
     .from("events")
     .select("*")

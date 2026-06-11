@@ -11,6 +11,7 @@ export default async function EditOrganizationPage({ params }: Props) {
   setRequestLocale(locale);
 
   const supabase = await createClient();
+  if (!supabase) notFound();
   const { data } = await supabase.from("organizations").select("*").eq("id", id).single();
   if (!data) notFound();
 

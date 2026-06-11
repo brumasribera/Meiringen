@@ -17,6 +17,8 @@ export function Header() {
 
   useEffect(() => {
     const supabase = createClient();
+    if (!supabase) return;
+
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
 
     const {
@@ -40,6 +42,7 @@ export function Header() {
 
   async function handleLogout() {
     const supabase = createClient();
+    if (!supabase) return;
     await supabase.auth.signOut();
     window.location.href = `/${locale}`;
   }

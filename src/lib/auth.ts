@@ -3,6 +3,11 @@ import { redirect } from "@/i18n/routing";
 
 export async function requireAdmin(locale: string) {
   const supabase = await createClient();
+  if (!supabase) {
+    redirect({ href: "/", locale });
+    throw new Error("Supabase is not configured");
+  }
+
   const {
     data: { user },
   } = await supabase.auth.getUser();

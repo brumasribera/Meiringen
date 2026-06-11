@@ -20,6 +20,11 @@ export function LoginForm() {
     setLoading(true);
     setError("");
     const supabase = createClient();
+    if (!supabase) {
+      setError("Authentication is not configured yet.");
+      setLoading(false);
+      return;
+    }
 
     if (mode === "signup") {
       const { error: signUpError } = await supabase.auth.signUp({
@@ -45,6 +50,10 @@ export function LoginForm() {
 
   async function handleGoogle() {
     const supabase = createClient();
+    if (!supabase) {
+      setError("Authentication is not configured yet.");
+      return;
+    }
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {

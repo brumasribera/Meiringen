@@ -36,6 +36,7 @@ export function NewsletterForm({ userId, preferences, organizations }: Props) {
     e.preventDefault();
     setLoading(true);
     const supabase = createClient();
+    if (!supabase) return;
 
     const payload = {
       user_id: userId,

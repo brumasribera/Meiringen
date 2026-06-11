@@ -23,6 +23,8 @@ export async function getOrganizations(
   filters: OrganizationFilters = {}
 ): Promise<Organization[]> {
   const supabase = await createClient();
+  if (!supabase) return [];
+
   let query = supabase.from("organizations").select("*").order("name");
 
   if (filters.category) {
@@ -50,6 +52,8 @@ export async function getOrganizationBySlug(
   slug: string
 ): Promise<Organization | null> {
   const supabase = await createClient();
+  if (!supabase) return null;
+
   const { data, error } = await supabase
     .from("organizations")
     .select("*")
@@ -64,6 +68,8 @@ export async function getEvents(
   filters: EventFilters = {}
 ): Promise<Event[]> {
   const supabase = await createClient();
+  if (!supabase) return [];
+
   let query = supabase
     .from("events")
     .select("*, organization:organizations(*)")
@@ -116,6 +122,8 @@ export async function getEvents(
 
 export async function getEventBySlug(slug: string): Promise<Event | null> {
   const supabase = await createClient();
+  if (!supabase) return null;
+
   const { data, error } = await supabase
     .from("events")
     .select("*, organization:organizations(*)")
@@ -128,6 +136,8 @@ export async function getEventBySlug(slug: string): Promise<Event | null> {
 
 export async function getProfile(userId: string) {
   const supabase = await createClient();
+  if (!supabase) return null;
+
   const { data } = await supabase
     .from("profiles")
     .select("*")
@@ -138,6 +148,8 @@ export async function getProfile(userId: string) {
 
 export async function getNewsletterPreferences(userId: string) {
   const supabase = await createClient();
+  if (!supabase) return null;
+
   const { data } = await supabase
     .from("newsletter_preferences")
     .select("*")
@@ -148,6 +160,10 @@ export async function getNewsletterPreferences(userId: string) {
 
 export async function getAdminStats() {
   const supabase = await createClient();
+  if (!supabase) {
+    return { organizations: 0, events: 0, drafts: 0, sources: 0 };
+  }
+
   const [orgs, events, drafts, sources] = await Promise.all([
     supabase.from("organizations").select("id", { count: "exact", head: true }),
     supabase.from("events").select("id", { count: "exact", head: true }),

@@ -12,6 +12,7 @@ export default async function EditEventPage({ params }: Props) {
   setRequestLocale(locale);
 
   const supabase = await createClient();
+  if (!supabase) notFound();
   const [{ data: event }, organizations] = await Promise.all([
     supabase.from("events").select("*").eq("id", id).single(),
     getOrganizations(),

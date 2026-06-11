@@ -12,6 +12,14 @@ export default async function NewsletterPage({ params }: Props) {
   const t = await getTranslations("newsletter");
 
   const supabase = await createClient();
+  if (!supabase) {
+    return (
+      <div className="mx-auto max-w-md px-4 py-12 text-center">
+        <p className="text-muted">{t("loginRequired")}</p>
+      </div>
+    );
+  }
+
   const {
     data: { user },
   } = await supabase.auth.getUser();

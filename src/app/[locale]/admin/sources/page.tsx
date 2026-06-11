@@ -15,6 +15,10 @@ export default async function AdminSourcesPage({ params }: Props) {
   setRequestLocale(locale);
 
   const supabase = await createClient();
+  if (!supabase) {
+    return <p className="text-muted">Supabase is not configured.</p>;
+  }
+
   const { data: sources } = await supabase
     .from("scraping_sources")
     .select("*")
