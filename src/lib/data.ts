@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Category, ContentLanguage } from "./constants";
+import type { Category, ContentLanguage, Locality } from "./constants";
 import type { Event, Organization } from "./types";
 
 export type EventFilters = {
@@ -16,6 +16,7 @@ export type EventFilters = {
 export type OrganizationFilters = {
   search?: string;
   category?: Category;
+  locality?: Locality;
   limit?: number;
 };
 
@@ -29,6 +30,10 @@ export async function getOrganizations(
 
   if (filters.category) {
     query = query.eq("category", filters.category);
+  }
+
+  if (filters.locality) {
+    query = query.eq("locality", filters.locality);
   }
 
   if (filters.search) {

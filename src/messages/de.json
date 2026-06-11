@@ -48,6 +48,7 @@
     "subtitle": "Vereine, Gruppen und Institutionen in der Region.",
     "search": "Nach Name suchen…",
     "category": "Kategorie",
+    "locality": "Ort",
     "noResults": "Keine Organisationen gefunden.",
     "viewDetails": "Details anzeigen",
     "contact": "Kontakt"
@@ -107,6 +108,21 @@
       "drafts": "Entwürfe",
       "sources": "Quellen"
     }
+  },
+  "localities": {
+    "meiringen": "Meiringen",
+    "balm": "Balm",
+    "hausen": "Hausen",
+    "schattenhalb": "Schattenhalb",
+    "brienz": "Brienz",
+    "brienzwiler": "Brienzwiler",
+    "oberried": "Oberried am Brienzersee",
+    "schwanden": "Schwanden bei Brienz",
+    "hofstetten": "Hofstetten bei Brienz",
+    "innertkirchen": "Innertkirchen",
+    "gadmen": "Gadmen",
+    "guttannen": "Guttannen",
+    "hasliberg": "Hasliberg"
   },
   "categories": {
     "culture": "Kultur",

@@ -1,10 +1,12 @@
 import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getOrganizations } from "@/lib/data";
+import { resolveOrgImageUrl } from "@/lib/org-content";
 import { OrganizationCard } from "@/components/OrganizationCard";
 import { OrganizationFilters } from "@/components/OrganizationFilters";
 import { MapLoader } from "@/components/MapLoader";
-import type { Category } from "@/lib/constants";
+import type { Category, Locality } from "@/lib/constants";
+import { getLocalityCenter } from "@/lib/constants";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -20,6 +22,7 @@ export default async function OrganizationsPage({ params, searchParams }: Props)
   const organizations = await getOrganizations({
     search: filters.search,
     category: filters.category as Category | undefined,
+    locality: filters.locality as Locality | undefined,
   });
 
   const markers = organizations
@@ -30,7 +33,15 @@ export default async function OrganizationsPage({ params, searchParams }: Props)
       latitude: o.latitude!,
       longitude: o.longitude!,
       href: `/${locale}/organizations/${o.slug}`,
+      imageUrl: resolveOrgImageUrl(o.image_url, o.website_url, o.locality),
     }));
+
+  const mapCenter = filters.locality
+    ? (() => {
+        const { lat, lng } = getLocalityCenter(filters.locality as Locality);
+        return [lat, lng] as [number, number];
+      })()
+    : undefined;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
@@ -45,7 +56,7 @@ export default async function OrganizationsPage({ params, searchParams }: Props)
 
       {markers.length > 0 && (
         <div className="mt-8">
-          <MapLoader markers={markers} className="h-96" />
+          <MapLoader markers={markers} center={mapCenter} className="h-96" />
         </div>
       )}
 

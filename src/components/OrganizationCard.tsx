@@ -1,14 +1,17 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { OrgLogo } from "@/components/OrgLogo";
+import { resolveOrgDescription } from "@/lib/org-content";
 import type { Organization } from "@/lib/types";
 
 type Props = { organization: Organization };
 
 export function OrganizationCard({ organization }: Props) {
   const t = useTranslations();
+  const locale = useLocale();
+  const description = resolveOrgDescription(organization, locale);
 
   return (
     <Link
@@ -20,6 +23,7 @@ export function OrganizationCard({ organization }: Props) {
           name={organization.name}
           imageUrl={organization.image_url}
           websiteUrl={organization.website_url}
+          locality={organization.locality}
           size="md"
         />
         <div className="min-w-0 flex-1">
@@ -29,13 +33,16 @@ export function OrganizationCard({ organization }: Props) {
           <h3 className="mt-2 text-lg font-semibold">{organization.name}</h3>
         </div>
       </div>
-      {organization.description && (
-        <p className="mt-2 line-clamp-2 text-sm text-muted">
-          {organization.description}
-        </p>
+      {description && (
+        <p className="mt-2 line-clamp-2 text-sm text-muted">{description}</p>
       )}
       {organization.address && (
         <p className="mt-3 text-sm text-muted">{organization.address}</p>
+      )}
+      {organization.locality && organization.locality !== "meiringen" && (
+        <p className="mt-1 text-xs text-muted">
+          {t(`localities.${organization.locality}`)}
+        </p>
       )}
       <span className="mt-4 inline-block text-sm font-medium text-primary">
         {t("organizations.viewDetails")} →

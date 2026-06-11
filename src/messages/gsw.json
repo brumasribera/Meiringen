@@ -48,6 +48,7 @@
     "subtitle": "Verein, Gruppe und Institutione i de Region.",
     "search": "Nach Name sueche…",
     "category": "Kategorie",
+    "locality": "Ort",
     "noResults": "Kei Organisatione gfunde.",
     "viewDetails": "Details azeige",
     "contact": "Kontakt"
@@ -107,6 +108,21 @@
       "drafts": "Entwürf",
       "sources": "Quelle"
     }
+  },
+  "localities": {
+    "meiringen": "Meiringe",
+    "balm": "Balm",
+    "hausen": "Hausen",
+    "schattenhalb": "Schattenhalb",
+    "brienz": "Brienz",
+    "brienzwiler": "Brienzwiler",
+    "oberried": "Oberried am Brienzersee",
+    "schwanden": "Schwande bi Brienz",
+    "hofstetten": "Hofstette bi Brienz",
+    "innertkirchen": "Innertkirche",
+    "gadmen": "Gadme",
+    "guttannen": "Guttanne",
+    "hasliberg": "Hasliberg"
   },
   "categories": {
     "culture": "Kultur",

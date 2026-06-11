@@ -2,6 +2,7 @@ import type {
   Category,
   ContentLanguage,
   EventStatus,
+  Locality,
   ScraperType,
 } from "./constants";
 
@@ -15,11 +16,13 @@ export type Organization = {
   email: string | null;
   phone: string | null;
   address: string | null;
+  locality: Locality | null;
   latitude: number | null;
   longitude: number | null;
   languages: ContentLanguage[];
   image_url: string | null;
   source_url: string | null;
+  description_en: string | null;
   created_at: string;
   updated_at: string;
 };

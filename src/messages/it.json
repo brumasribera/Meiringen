@@ -48,6 +48,7 @@
     "subtitle": "Club, gruppi e istituzioni della regione.",
     "search": "Cerca per nome…",
     "category": "Categoria",
+    "locality": "Località",
     "noResults": "Nessuna organizzazione trovata.",
     "viewDetails": "Vedi dettagli",
     "contact": "Contatto"
@@ -107,6 +108,21 @@
       "drafts": "Bozze",
       "sources": "Fonti"
     }
+  },
+  "localities": {
+    "meiringen": "Meiringen",
+    "balm": "Balm",
+    "hausen": "Hausen",
+    "schattenhalb": "Schattenhalb",
+    "brienz": "Brienz",
+    "brienzwiler": "Brienzwiler",
+    "oberried": "Oberried am Brienzersee",
+    "schwanden": "Schwanden bei Brienz",
+    "hofstetten": "Hofstetten bei Brienz",
+    "innertkirchen": "Innertkirchen",
+    "gadmen": "Gadmen",
+    "guttannen": "Guttannen",
+    "hasliberg": "Hasliberg"
   },
   "categories": {
     "culture": "Cultura",

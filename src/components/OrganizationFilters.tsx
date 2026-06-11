@@ -2,7 +2,7 @@
 
 import { useRouter, usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
-import { CATEGORIES } from "@/lib/constants";
+import { CATEGORIES, LOCALITIES } from "@/lib/constants";
 import { useSearchParams } from "next/navigation";
 
 export function OrganizationFilters() {
@@ -25,7 +25,7 @@ export function OrganizationFilters() {
     "w-full rounded-xl border border-border bg-card px-3 py-2 text-sm";
 
   return (
-    <div className="grid gap-4 rounded-2xl border border-border bg-card p-5 sm:grid-cols-2">
+    <div className="grid gap-4 rounded-2xl border border-border bg-card p-5 sm:grid-cols-2 lg:grid-cols-3">
       <div>
         <label className="mb-1 block text-xs font-medium text-muted">
           {t("organizations.search")}
@@ -38,6 +38,23 @@ export function OrganizationFilters() {
         />
       </div>
       <div>
+        <label className="mb-1 block text-xs font-medium text-muted">
+          {t("organizations.locality")}
+        </label>
+        <select
+          value={searchParams.get("locality") ?? ""}
+          onChange={(e) => update("locality", e.target.value)}
+          className={inputClass}
+        >
+          <option value="">{t("events.all")}</option>
+          {LOCALITIES.map((locality) => (
+            <option key={locality.id} value={locality.id}>
+              {t(`localities.${locality.id}`)}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="sm:col-span-2 lg:col-span-1">
         <label className="mb-1 block text-xs font-medium text-muted">
           {t("organizations.category")}
         </label>

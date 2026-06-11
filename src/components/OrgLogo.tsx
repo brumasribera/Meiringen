@@ -5,6 +5,7 @@ type Props = {
   name: string;
   imageUrl?: string | null;
   websiteUrl?: string | null;
+  locality?: string | null;
   size?: "sm" | "md" | "lg";
 };
 
@@ -14,8 +15,14 @@ const sizes = {
   lg: { box: "h-20 w-20", px: 80, text: "text-2xl" },
 };
 
-export function OrgLogo({ name, imageUrl, websiteUrl, size = "md" }: Props) {
-  const src = resolveOrgImageUrl(imageUrl ?? null, websiteUrl ?? null);
+export function OrgLogo({
+  name,
+  imageUrl,
+  websiteUrl,
+  locality,
+  size = "md",
+}: Props) {
+  const src = resolveOrgImageUrl(imageUrl ?? null, websiteUrl ?? null, locality);
   const s = sizes[size];
   const initials = name
     .split(" ")

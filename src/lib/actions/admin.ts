@@ -29,6 +29,7 @@ export async function saveOrganization(formData: FormData, id?: string) {
     name,
     slug: (formData.get("slug") as string) || slugify(name),
     description: (formData.get("description") as string) || null,
+    description_en: (formData.get("description_en") as string) || null,
     category: formData.get("category") as string,
     website_url: (formData.get("website_url") as string) || null,
     email: (formData.get("email") as string) || null,
@@ -40,6 +41,7 @@ export async function saveOrganization(formData: FormData, id?: string) {
     longitude: formData.get("longitude")
       ? parseFloat(formData.get("longitude") as string)
       : null,
+    locality: (formData.get("locality") as string) || null,
     languages: ((formData.get("languages") as string) || "")
       .split(",")
       .map((l) => l.trim())

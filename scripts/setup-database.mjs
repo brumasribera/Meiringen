@@ -11,6 +11,8 @@ const migrationFiles = [
   "0001_schema.sql",
   "0002_rls.sql",
   "0004_meiringen_organizations.sql",
+  "0005_organization_localities.sql",
+  "0006_org_descriptions_logos.sql",
 ];
 
 function loadEnvFile(filePath) {

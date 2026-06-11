@@ -4,6 +4,7 @@ import { Link } from "@/i18n/routing";
 import { getOrganizationBySlug, getEvents } from "@/lib/data";
 import { EventCard } from "@/components/EventCard";
 import { MapLoader } from "@/components/MapLoader";
+import { resolveOrgDescription, resolveOrgImageUrl } from "@/lib/org-content";
 import { OrgLogo } from "@/components/OrgLogo";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -18,6 +19,7 @@ export default async function OrganizationDetailPage({ params }: Props) {
 
   const events = await getEvents({ organizationId: organization.id, limit: 10 });
   const hasCoords = organization.latitude && organization.longitude;
+  const description = resolveOrgDescription(organization, locale);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
@@ -30,6 +32,7 @@ export default async function OrganizationDetailPage({ params }: Props) {
           name={organization.name}
           imageUrl={organization.image_url}
           websiteUrl={organization.website_url}
+          locality={organization.locality}
           size="lg"
         />
         <div>
@@ -42,8 +45,8 @@ export default async function OrganizationDetailPage({ params }: Props) {
         </div>
       </div>
 
-      {organization.description && (
-        <p className="mt-6 text-lg text-muted">{organization.description}</p>
+      {description && (
+        <p className="mt-6 text-lg text-muted">{description}</p>
       )}
 
       <div className="mt-8 rounded-2xl border border-border bg-card p-6">
@@ -110,6 +113,11 @@ export default async function OrganizationDetailPage({ params }: Props) {
                 name: organization.name,
                 latitude: organization.latitude!,
                 longitude: organization.longitude!,
+                imageUrl: resolveOrgImageUrl(
+                  organization.image_url,
+                  organization.website_url,
+                  organization.locality
+                ),
               },
             ]}
             center={[organization.latitude!, organization.longitude!]}

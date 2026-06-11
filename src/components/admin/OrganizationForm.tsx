@@ -1,4 +1,4 @@
-import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
+import { CATEGORIES, CONTENT_LANGUAGES, LOCALITIES } from "@/lib/constants";
 import {
   createOrganizationAction,
   updateOrganizationAction,
@@ -31,8 +31,12 @@ export function OrganizationForm({ organization, locale }: Props) {
         </div>
       </div>
       <div>
-        <label className="text-sm font-medium">Description</label>
+        <label className="text-sm font-medium">Description (DE)</label>
         <textarea name="description" rows={4} defaultValue={organization?.description ?? ""} className={inputClass} />
+      </div>
+      <div>
+        <label className="text-sm font-medium">Description (EN)</label>
+        <textarea name="description_en" rows={4} defaultValue={organization?.description_en ?? ""} className={inputClass} />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
@@ -66,6 +70,16 @@ export function OrganizationForm({ organization, locale }: Props) {
       <div>
         <label className="text-sm font-medium">Address</label>
         <input name="address" defaultValue={organization?.address ?? ""} className={inputClass} />
+      </div>
+      <div>
+        <label className="text-sm font-medium">Locality</label>
+        <select name="locality" defaultValue={organization?.locality ?? "meiringen"} className={inputClass}>
+          {LOCALITIES.map((locality) => (
+            <option key={locality.id} value={locality.id}>
+              {locality.id}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>

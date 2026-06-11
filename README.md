@@ -52,6 +52,8 @@ In the Supabase SQL Editor, run these files in order:
 2. `supabase/migrations/0002_rls.sql`
 3. `supabase/migrations/0003_seed.sql` (optional placeholder data)
 4. `supabase/migrations/0004_meiringen_organizations.sql` (**real Vereine** — run this for production)
+5. `supabase/migrations/0005_organization_localities.sql` (location filter + Haslital villages)
+6. `supabase/migrations/0006_org_descriptions_logos.sql` (English descriptions + logo fixes)
 
 ### 4. Configure Google Sign-In
 
@@ -109,7 +111,10 @@ The last line lets Vercel preview deployments work without reconfiguring Google 
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your-maps-javascript-api-key
 ```
+
+Enable **Maps JavaScript API** in Google Cloud Console for the same project (or a dedicated one). Optional: set `NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID` if you use a custom Map ID; otherwise `DEMO_MAP_ID` is used for development.
 
 Restart dev server, then test: [http://localhost:3000/de/login](http://localhost:3000/de/login) → **Mit Google anmelden**
 
@@ -122,6 +127,7 @@ NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 NEXT_PUBLIC_SITE_URL=https://meiringen.org
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your-maps-javascript-api-key
 ```
 
 After adding vars, **redeploy**. Then test: `https://meiringen.org/de/login`
