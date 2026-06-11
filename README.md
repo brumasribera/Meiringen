@@ -39,18 +39,100 @@ In the Supabase SQL Editor, run these files in order:
 
 1. `supabase/migrations/0001_schema.sql`
 2. `supabase/migrations/0002_rls.sql`
-3. `supabase/migrations/0003_seed.sql`
+3. `supabase/migrations/0003_seed.sql` (optional placeholder data)
+4. `supabase/migrations/0004_meiringen_organizations.sql` (**real Vereine** — run this for production)
 
-### 4. Configure Google Auth (optional)
+### 4. Configure Google Sign-In
 
-In Supabase Dashboard → Authentication → Providers → Google:
+Google auth uses **Supabase Auth** as the OAuth broker. You configure Google once, then allow redirects in Supabase for local + production.
 
-1. Enable Google provider
-2. Add OAuth credentials from [Google Cloud Console](https://console.cloud.google.com)
-3. Set redirect URL: `https://your-project.supabase.co/auth/v1/callback`
-4. Add your site URL to Supabase → Authentication → URL Configuration:
-   - Site URL: `http://localhost:3000` (dev) or `https://meiringen.org` (prod)
-   - Redirect URLs: `http://localhost:3000/auth/callback`, `https://meiringen.org/auth/callback`
+#### Step A — Google Cloud Console
+
+1. Open [Google Cloud Console](https://console.cloud.google.com) → select or create a project
+2. **APIs & Services → OAuth consent screen**
+   - User type: **External** (fine for a community site)
+   - Add app name, support email, developer contact
+   - Scopes: keep defaults (`email`, `profile`, `openid`)
+   - Add test users while in "Testing" mode (or publish when ready)
+3. **APIs & Services → Credentials → Create Credentials → OAuth client ID**
+   - Application type: **Web application**
+   - **Authorized JavaScript origins:**
+     ```
+     http://localhost:3000
+     https://meiringen.org
+     ```
+   - **Authorized redirect URIs** (Supabase callback — replace `YOUR_PROJECT_REF`):
+     ```
+     https://YOUR_PROJECT_REF.supabase.co/auth/v1/callback
+     ```
+     Find your project ref in Supabase → Project Settings → General → Reference ID
+4. Copy the **Client ID** and **Client Secret**
+
+#### Step B — Supabase Google provider
+
+1. Supabase Dashboard → **Authentication → Providers → Google**
+2. Enable Google
+3. Paste **Client ID** and **Client Secret**
+4. Save
+
+#### Step C — Supabase URL configuration
+
+Authentication → **URL Configuration**:
+
+| Setting | Local dev | Production (Vercel) |
+|---------|-----------|---------------------|
+| **Site URL** | `http://localhost:3000` | `https://meiringen.org` |
+| **Redirect URLs** | Add all of these: | |
+
+```
+http://localhost:3000/**
+https://meiringen.org/**
+https://*.vercel.app/**
+```
+
+The last line lets Vercel preview deployments work without reconfiguring Google each time.
+
+#### Step D — Local `.env.local`
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
+Restart dev server, then test: [http://localhost:3000/de/login](http://localhost:3000/de/login) → **Mit Google anmelden**
+
+#### Step E — Vercel production env vars
+
+In Vercel → Project → **Settings → Environment Variables** (Production + Preview):
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+NEXT_PUBLIC_SITE_URL=https://meiringen.org
+```
+
+After adding vars, **redeploy**. Then test: `https://meiringen.org/de/login`
+
+#### How the redirect flow works
+
+```
+User clicks Google
+  → Google login
+  → Supabase (/auth/v1/callback)
+  → Your app (/auth/callback?next=/de/account/newsletter)
+  → Newsletter preferences page
+```
+
+#### Troubleshooting
+
+| Error | Fix |
+|-------|-----|
+| `redirect_uri_mismatch` | Google redirect URI must be exactly `https://YOUR_PROJECT_REF.supabase.co/auth/v1/callback` |
+| Redirected to login after Google | Add `http://localhost:3000/**` or `https://meiringen.org/**` to Supabase Redirect URLs |
+| Works locally, not on Vercel | Check env vars on Vercel; redeploy after adding them |
+| `Access blocked: app not verified` | Add your Google account as a test user, or publish OAuth consent screen |
 
 ### 5. Create an admin user
 

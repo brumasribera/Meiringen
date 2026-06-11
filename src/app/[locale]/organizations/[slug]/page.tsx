@@ -4,6 +4,7 @@ import { Link } from "@/i18n/routing";
 import { getOrganizationBySlug, getEvents } from "@/lib/data";
 import { EventCard } from "@/components/EventCard";
 import { MapLoader } from "@/components/MapLoader";
+import { OrgLogo } from "@/components/OrgLogo";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -24,11 +25,22 @@ export default async function OrganizationDetailPage({ params }: Props) {
         ← {t("common.back")}
       </Link>
 
-      <span className="mt-6 inline-block pill bg-primary/10 text-primary">
-        {t(`categories.${organization.category}`)}
-      </span>
-
-      <h1 className="mt-4 text-3xl font-bold md:text-4xl">{organization.name}</h1>
+      <div className="mt-6 flex items-start gap-5">
+        <OrgLogo
+          name={organization.name}
+          imageUrl={organization.image_url}
+          websiteUrl={organization.website_url}
+          size="lg"
+        />
+        <div>
+          <span className="inline-block pill bg-primary/10 text-primary">
+            {t(`categories.${organization.category}`)}
+          </span>
+          <h1 className="mt-3 text-3xl font-bold md:text-4xl">
+            {organization.name}
+          </h1>
+        </div>
+      </div>
 
       {organization.description && (
         <p className="mt-6 text-lg text-muted">{organization.description}</p>
