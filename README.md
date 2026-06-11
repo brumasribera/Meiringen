@@ -8,7 +8,7 @@ A free, multilingual community platform for discovering cultural, social, sport 
 - **Supabase** — Postgres database + Auth (Google + email/password)
 - **Resend** — monthly newsletter emails
 - **Vercel** — hosting + cron jobs
-- **Leaflet** + OpenStreetMap — maps
+- **Google Maps** — organization & event maps (requires API key)
 - **next-intl** — 7 languages (de, gsw, en, fr, it, rm, pt)
 
 ## Quick start (local)
@@ -28,12 +28,16 @@ cp .env.example .env.local
 2. Accept marketplace terms, choose the **free** plan, region **Europe Central (Zurich)**, and link to the `meiringen` project
 3. The script waits for env vars, pulls them locally, runs migrations, and sets `NEXT_PUBLIC_SITE_URL` + `CRON_SECRET`
 
-Or install manually from [Vercel Marketplace → Supabase](https://vercel.com/marketplace/supabase), then run:
+**Local dev with real data**
+
+Supabase is connected to **Development** on Vercel. Pull env vars and start the dev server:
 
 ```bash
-vercel env pull .env.local --yes
-npm run setup:database
+vercel env pull .env.local --environment=development --yes
+npm run dev
 ```
+
+Open [http://localhost:3000/de/organizations](http://localhost:3000/de/organizations)
 
 **Option B — Manual**
 
