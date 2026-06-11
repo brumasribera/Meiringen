@@ -24,9 +24,16 @@ cp .env.example .env.local
 
 **Option A — Vercel Marketplace (recommended for production)**
 
-1. Go to [Vercel Marketplace](https://vercel.com/marketplace) → Supabase → Install
-2. Create a free project and connect it to your Vercel project
-3. Env vars are injected automatically
+1. Run `npm run setup:supabase` (opens the Vercel Supabase install in your browser)
+2. Accept marketplace terms, choose the **free** plan, region **Europe Central (Zurich)**, and link to the `meiringen` project
+3. The script waits for env vars, pulls them locally, runs migrations, and sets `NEXT_PUBLIC_SITE_URL` + `CRON_SECRET`
+
+Or install manually from [Vercel Marketplace → Supabase](https://vercel.com/marketplace/supabase), then run:
+
+```bash
+vercel env pull .env.local --yes
+npm run setup:database
+```
 
 **Option B — Manual**
 
