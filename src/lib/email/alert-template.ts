@@ -199,7 +199,9 @@ function wrapEmail(options: {
             <td style="padding-bottom:18px;">
               <table role="presentation" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width:44px;height:44px;border-radius:12px;background:#F4C430;text-align:center;vertical-align:middle;font-size:22px;line-height:44px;">🦅</td>
+                  <td style="width:44px;height:44px;border-radius:12px;overflow:hidden;vertical-align:middle;">
+                    <img src="${siteUrl}/brand/logo-mark.png" width="44" height="44" alt="Meiringen.org" style="display:block;border-radius:12px;" />
+                  </td>
                   <td style="padding-left:12px;font-size:22px;font-weight:800;color:#111111;letter-spacing:-0.02em;">
                     Meiringen<span style="color:#B8860B;">.org</span>
                   </td>
