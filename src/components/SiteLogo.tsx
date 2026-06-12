@@ -40,7 +40,7 @@ export function SiteLogo({
       {showText && (
         <span className={`font-bold ${textSizes[size]}`} style={{ color: "#111111" }}>
           Meiringen
-          <span style={{ color: "#B8860B" }}>.org</span>
+          <span style={{ color: "#B8860B" }}>.life</span>
         </span>
       )}
     </>
@@ -53,7 +53,7 @@ export function SiteLogo({
   }
 
   return (
-    <Link href={href} className={classes} aria-label="Meiringen.org home">
+    <Link href={href} className={classes} aria-label="Meiringen.life home">
       {content}
     </Link>
   );

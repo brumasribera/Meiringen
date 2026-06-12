@@ -18,7 +18,7 @@ export default async function AlertsPage({ params }: Props) {
       <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-sm">
         <div className="bg-[#F4C430] px-6 py-8 text-[#111111]">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] opacity-80">
-            Meiringen.org
+            Meiringen.life
           </p>
           <h1 className="mt-2 text-3xl font-bold md:text-4xl">{t("title")}</h1>
           <p className="mt-3 max-w-xl text-base opacity-90">{t("subtitle")}</p>

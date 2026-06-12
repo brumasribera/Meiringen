@@ -60,7 +60,7 @@ function resolveOrganizationId(
 async function fetchHtml(url: string): Promise<string | null> {
   try {
     const response = await fetch(url, {
-      headers: { "User-Agent": "Meiringen.org Bot/1.0" },
+      headers: { "User-Agent": "Meiringen.life Bot/1.0" },
       signal: AbortSignal.timeout(8000),
     });
     if (!response.ok) return null;

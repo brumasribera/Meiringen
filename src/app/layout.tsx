@@ -8,7 +8,7 @@ const sans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Meiringen.org",
+  title: "Meiringen.life",
   description:
     "Community platform for cultural, social, sport and integration activities in Meiringen and Haslital.",
 };

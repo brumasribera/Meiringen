@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Meiringen.org",
+    "title": "Meiringen.life",
     "description": "Ina plattafurma da communitad per scuvrir activitads culturalas, socialas, sportivas e d'integraziun a Meiringen ed en il Haslital."
   },
   "nav": {
@@ -26,7 +26,7 @@
     "newsletterSubtitle": "Emna mintga emna u mintga mais — mo temas che t'interessan.",
     "newsletterCta": "Configurar alerts",
     "aboutTitle": "Davart il project",
-    "aboutText": "Meiringen.org connecta persunas cun organisaziuns e activitads localas. Gratuit, pluriling e fatg per la communitad.",
+    "aboutText": "Meiringen.life connecta persunas cun organisaziuns e activitads localas. Gratuit, pluriling e fatg per la communitad.",
     "viewAll": "Vesair tut"
   },
   "events": {
@@ -63,8 +63,8 @@
     "contact": "Contact"
   },
   "about": {
-    "title": "Davart Meiringen.org",
-    "intro": "Meiringen.org è ina plattafurma da communitad gratuita per Meiringen ed il Haslital.",
+    "title": "Davart Meiringen.life",
+    "intro": "Meiringen.life è ina plattafurma da communitad gratuita per Meiringen ed il Haslital.",
     "mission": "Noss intent è da render activitads culturalas, socialas, sportivas e d'integraziun facilmain chattablas — per indigens, novs arrivads e visitaders.",
     "features": "Tge chattais qua",
     "featureEvents": "Occurrenzas actualas e agenda",

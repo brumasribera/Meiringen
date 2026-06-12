@@ -10,6 +10,7 @@ import {
 } from "@/lib/alerts/service";
 import { buildManageUrl } from "@/lib/alerts/newsletter-utils";
 import { buildWelcomeEmailHtml } from "@/lib/email/alert-template";
+import { getFromEmail } from "@/lib/email/config";
 
 function parseCategories(value: unknown): Category[] {
   if (!Array.isArray(value)) return [];
@@ -65,12 +66,12 @@ export async function POST(request: Request) {
       });
 
       const { error } = await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev",
+        from: getFromEmail(),
         to: subscription.email,
         subject:
           locale === "de"
-            ? "Meiringen.org — Event-Alerts aktiviert"
-            : "Meiringen.org — event alerts activated",
+            ? "Meiringen.life — Event-Alerts aktiviert"
+            : "Meiringen.life — event alerts activated",
         html,
       });
 

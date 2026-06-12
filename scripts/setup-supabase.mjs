@@ -31,7 +31,7 @@ function hasSupabaseEnv(output) {
 }
 
 function ensureExtraVercelEnv() {
-  const siteUrl = "https://meiringen.vercel.app";
+  const siteUrl = "https://www.meiringen.life";
   const cronSecret = crypto.randomBytes(32).toString("hex");
 
   for (const target of ["production", "preview", "development"]) {
@@ -87,7 +87,7 @@ async function main() {
 
   console.log("Setup complete.");
   console.log("- Local env: .env.local");
-  console.log("- Production: https://meiringen.vercel.app/de/organizations");
+  console.log("- Production: https://www.meiringen.life/de/organizations");
   console.log("Redeploy on Vercel if organizations are still empty.");
 }
 

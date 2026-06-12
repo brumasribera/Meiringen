@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Meiringen.org",
+    "title": "Meiringen.life",
     "description": "Uma plataforma comunitária para descobrir atividades culturais, sociais, desportivas e de integração em Meiringen e no Haslital."
   },
   "nav": {
@@ -26,7 +26,7 @@
     "newsletterSubtitle": "Semanal ou mensal — apenas os temas que lhe interessam.",
     "newsletterCta": "Configurar alertas",
     "aboutTitle": "Sobre o projeto",
-    "aboutText": "Meiringen.org liga pessoas a organizações e atividades locais. Gratuito, multilingue e feito para a comunidade.",
+    "aboutText": "Meiringen.life liga pessoas a organizações e atividades locais. Gratuito, multilingue e feito para a comunidade.",
     "viewAll": "Ver todos"
   },
   "events": {
@@ -63,8 +63,8 @@
     "contact": "Contacto"
   },
   "about": {
-    "title": "Sobre Meiringen.org",
-    "intro": "Meiringen.org é uma plataforma comunitária gratuita para Meiringen e o Haslital.",
+    "title": "Sobre Meiringen.life",
+    "intro": "Meiringen.life é uma plataforma comunitária gratuita para Meiringen e o Haslital.",
     "mission": "O nosso objetivo é tornar fácil encontrar atividades culturais, sociais, desportivas e de integração — para residentes, recém-chegados e visitantes.",
     "features": "O que encontrará aqui",
     "featureEvents": "Eventos atuais e agenda",

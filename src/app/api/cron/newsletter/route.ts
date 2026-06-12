@@ -7,6 +7,7 @@ import {
   shouldSendAlertToday,
 } from "@/lib/alerts/newsletter-utils";
 import { buildAlertDigestEmailHtml } from "@/lib/email/alert-template";
+import { getFromEmail } from "@/lib/email/config";
 import { markAlertSent } from "@/lib/alerts/service";
 import type { Event, NewsletterPreferences } from "@/lib/types";
 
@@ -81,12 +82,12 @@ export async function GET(request: Request) {
       });
 
       await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? "alerts@meiringen.org",
+        from: getFromEmail(),
         to: subscription.email,
         subject:
           locale === "de"
-            ? `Meiringen.org — ${matched.length} Veranstaltungen für dich`
-            : `Meiringen.org — ${matched.length} events for you`,
+            ? `Meiringen.life — ${matched.length} Veranstaltungen für dich`
+            : `Meiringen.life — ${matched.length} events for you`,
         html,
       });
 

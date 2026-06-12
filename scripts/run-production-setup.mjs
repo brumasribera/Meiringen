@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import { spawnSync } from "node:child_process";
 
-const SITE = "https://meiringen.vercel.app";
+const SITE = "https://www.meiringen.life";
 const secret = crypto.randomBytes(32).toString("hex");
 
 function run(command, args, input) {

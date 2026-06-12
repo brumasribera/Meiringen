@@ -1,4 +1,4 @@
-# Meiringen.org
+# Meiringen.life
 
 A free, multilingual community platform for discovering cultural, social, sport and integration activities in Meiringen and Haslital.
 
@@ -72,7 +72,7 @@ Google auth uses **Supabase Auth** as the OAuth broker. You configure Google onc
    - **Authorized JavaScript origins:**
      ```
      http://localhost:3000
-     https://meiringen.org
+     https://meiringen.life
      ```
    - **Authorized redirect URIs** (Supabase callback — replace `YOUR_PROJECT_REF`):
      ```
@@ -94,12 +94,12 @@ Authentication → **URL Configuration**:
 
 | Setting | Local dev | Production (Vercel) |
 |---------|-----------|---------------------|
-| **Site URL** | `http://localhost:3000` | `https://meiringen.org` |
+| **Site URL** | `http://localhost:3000` | `https://meiringen.life` |
 | **Redirect URLs** | Add all of these: | |
 
 ```
 http://localhost:3000/**
-https://meiringen.org/**
+https://meiringen.life/**
 https://*.vercel.app/**
 ```
 
@@ -129,11 +129,11 @@ In Vercel → Project → **Settings → Environment Variables** (Production + P
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-NEXT_PUBLIC_SITE_URL=https://meiringen.org
+NEXT_PUBLIC_SITE_URL=https://meiringen.life
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your-maps-javascript-api-key
 ```
 
-After adding vars, **redeploy**. Then test: `https://meiringen.org/de/login`
+After adding vars, **redeploy**. Then test: `https://meiringen.life/de/login`
 
 #### How the redirect flow works
 
@@ -150,7 +150,7 @@ User clicks Google
 | Error | Fix |
 |-------|-----|
 | `redirect_uri_mismatch` | Google redirect URI must be exactly `https://YOUR_PROJECT_REF.supabase.co/auth/v1/callback` |
-| Redirected to login after Google | Add `http://localhost:3000/**` or `https://meiringen.org/**` to Supabase Redirect URLs |
+| Redirected to login after Google | Add `http://localhost:3000/**` or `https://meiringen.life/**` to Supabase Redirect URLs |
 | Works locally, not on Vercel | Check env vars on Vercel; redeploy after adding them |
 | `Access blocked: app not verified` | Add your Google account as a test user, or publish OAuth consent screen |
 
@@ -172,7 +172,7 @@ Install Resend from the Vercel Marketplace and connect your project.
 **Option B — Manual**
 
 1. Create account at [resend.com](https://resend.com)
-2. Add and verify domain `meiringen.org`
+2. Add and verify domain `meiringen.life`
 3. Set `RESEND_API_KEY` and `RESEND_FROM_EMAIL` in env vars
 
 ### 7. Run locally
@@ -189,8 +189,8 @@ Open [http://localhost:3000/de](http://localhost:3000/de)
 2. Install Supabase + Resend via Vercel Marketplace
 3. Set environment variables:
    - `CRON_SECRET` — random secure string
-   - `NEXT_PUBLIC_SITE_URL` — `https://meiringen.org`
-4. Add custom domain `meiringen.org`
+   - `NEXT_PUBLIC_SITE_URL` — `https://meiringen.life`
+4. Add custom domain `meiringen.life`
 5. Cron jobs are configured in `vercel.json`:
    - Newsletter: 1st of each month at 08:00 UTC
    - Scrape: daily at 06:00 UTC

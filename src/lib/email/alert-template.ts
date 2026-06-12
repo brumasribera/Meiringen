@@ -32,7 +32,7 @@ const COPY: Record<string, EmailCopy> = {
     cta: "Alle Veranstaltungen ansehen",
     manage: "Einstellungen ändern",
     unsubscribe: "Abmelden",
-    footer: "Meiringen.org — kostenlos, mehrsprachig, für die Region.",
+    footer: "Meiringen.life — kostenlos, mehrsprachig, für die Region.",
     frequencyLabel: "Digest",
   },
   en: {
@@ -43,7 +43,7 @@ const COPY: Record<string, EmailCopy> = {
     cta: "Browse all events",
     manage: "Change settings",
     unsubscribe: "Unsubscribe",
-    footer: "Meiringen.org — free, multilingual, built for the region.",
+    footer: "Meiringen.life — free, multilingual, built for the region.",
     frequencyLabel: "Digest",
   },
 };
@@ -187,7 +187,7 @@ function wrapEmail(options: {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light" />
-  <title>Meiringen.org</title>
+  <title>Meiringen.life</title>
 </head>
 <body style="margin:0;padding:0;background:#f3efe7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
   <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(options.preheader)}</div>
@@ -200,7 +200,7 @@ function wrapEmail(options: {
               <table role="presentation" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="width:44px;height:44px;border-radius:12px;overflow:hidden;vertical-align:middle;">
-                    <img src="${siteUrl}/brand/logo-mark.png" width="44" height="44" alt="Meiringen.org" style="display:block;border-radius:12px;" />
+                    <img src="${siteUrl}/brand/logo-mark.png" width="44" height="44" alt="Meiringen.life" style="display:block;border-radius:12px;" />
                   </td>
                   <td style="padding-left:12px;font-size:22px;font-weight:800;color:#111111;letter-spacing:-0.02em;">
                     Meiringen<span style="color:#B8860B;">.org</span>

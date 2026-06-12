@@ -1,4 +1,4 @@
-const BASE = process.env.TEST_BASE ?? "http://localhost:3000";
+const BASE = process.env.TEST_BASE ?? "https://www.meiringen.life";
 
 const results = [];
 
