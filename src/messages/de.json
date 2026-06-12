@@ -41,7 +41,16 @@
     "all": "Alle",
     "noResults": "Keine Veranstaltungen gefunden.",
     "free": "Gratis",
-    "recurring": "Wiederkehrend"
+    "recurring": "Wiederkehrend",
+    "alertTitle": "Passende Veranstaltungen per E-Mail",
+    "alertSubtitle": "Basierend auf Kategorie, Sprache und Organisation aus den Filtern unten.",
+    "alertSubscribe": "Abonnieren",
+    "alertCustomize": "Alert-Filter anpassen",
+    "alertHideCustomize": "Filter-Editor ausblenden",
+    "alertAllCategories": "Alle Kategorien",
+    "alertDateNote": "Suche und Datumsfilter gelten nur für den Kalender — nicht für E-Mail-Alerts.",
+    "alertResetFilters": "Auf Kalender-Filter zurücksetzen",
+    "alertFullForm": "Weitere Optionen"
   },
   "organizations": {
     "title": "Organisationen",
@@ -89,7 +98,7 @@
   },
   "alerts": {
     "title": "Event-Alerts",
-    "subtitle": "Wöchentlich oder monatlich, mit deinen Lieblings-Themen — gib deine E-Mail ein und erhalte passende Veranstaltungen aus Meiringen und Haslital.",
+    "subtitle": "E-Mail eingeben, wöchentlich oder monatlich wählen — fertig.",
     "manageTitle": "Alert-Einstellungen",
     "manageSubtitle": "Frequenz, Kategorien und Sprachen jederzeit anpassen.",
     "accountSubtitle": "Deine Alert-Einstellungen sind mit deinem Konto verknüpft.",
@@ -103,7 +112,10 @@
     "organizations": "Organisationen",
     "languages": "Sprachen",
     "save": "Einstellungen speichern",
-    "saved": "Gespeichert — prüfe dein Postfach zur Bestätigung.",
+    "saved": "Gespeichert",
+    "savedWithEmail": "Abonniert — prüfe dein Postfach zur Bestätigung.",
+    "savedNoEmail": "Abonniert. Speichere diesen Link für deine Alert-Einstellungen:",
+    "manageLink": "Alert-Einstellungen verwalten",
     "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
     "unsubscribe": "Abmelden",
     "unsubscribeConfirm": "Event-Alerts an diese Adresse wirklich stoppen?",

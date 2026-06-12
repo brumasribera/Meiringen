@@ -41,7 +41,16 @@
     "all": "All",
     "noResults": "No events found.",
     "free": "Free",
-    "recurring": "Recurring"
+    "recurring": "Recurring",
+    "alertTitle": "Get matching events by email",
+    "alertSubtitle": "Uses your category, language, and organization filters below.",
+    "alertSubscribe": "Subscribe",
+    "alertCustomize": "Adjust alert filters",
+    "alertHideCustomize": "Hide filter editor",
+    "alertAllCategories": "All categories",
+    "alertDateNote": "Search and date filters apply to the calendar only — not to email alerts.",
+    "alertResetFilters": "Reset to calendar filters",
+    "alertFullForm": "More options"
   },
   "organizations": {
     "title": "Organizations",
@@ -89,7 +98,7 @@
   },
   "alerts": {
     "title": "Event alerts",
-    "subtitle": "Pick weekly or monthly updates, choose your interests, and enter your email — we’ll send matching events from Meiringen and Haslital.",
+    "subtitle": "Enter your email, pick weekly or monthly — done.",
     "manageTitle": "Alert settings",
     "manageSubtitle": "Update frequency, categories, and languages anytime.",
     "accountSubtitle": "Your alert settings are linked to your account.",
@@ -103,7 +112,10 @@
     "organizations": "Organizations",
     "languages": "Languages",
     "save": "Save preferences",
-    "saved": "Saved — check your inbox for a confirmation.",
+    "saved": "Saved",
+    "savedWithEmail": "You're subscribed — check your inbox for confirmation.",
+    "savedNoEmail": "You're subscribed. Save this link to manage your alerts:",
+    "manageLink": "Manage alert settings",
     "error": "Something went wrong. Please try again.",
     "unsubscribe": "Unsubscribe",
     "unsubscribeConfirm": "Stop receiving event alerts at this email?",

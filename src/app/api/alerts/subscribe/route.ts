@@ -8,6 +8,7 @@ import {
   isValidEmail,
   upsertAlertSubscription,
 } from "@/lib/alerts/service";
+import { buildManageUrl } from "@/lib/alerts/newsletter-utils";
 import { buildWelcomeEmailHtml } from "@/lib/email/alert-template";
 
 function parseCategories(value: unknown): Category[] {
@@ -52,6 +53,9 @@ export async function POST(request: Request) {
         : undefined,
     });
 
+    let emailSent = false;
+    let emailError: string | null = null;
+
     if (process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY);
       const html = buildWelcomeEmailHtml({
@@ -60,8 +64,8 @@ export async function POST(request: Request) {
         frequency: subscription.frequency,
       });
 
-      await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? "alerts@meiringen.org",
+      const { error } = await resend.emails.send({
+        from: process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev",
         to: subscription.email,
         subject:
           locale === "de"
@@ -69,11 +73,26 @@ export async function POST(request: Request) {
             : "Meiringen.org — event alerts activated",
         html,
       });
+
+      if (error) {
+        emailError = error.message;
+        console.error("alerts/subscribe resend:", error);
+      } else {
+        emailSent = true;
+      }
+    } else {
+      emailError = "RESEND_API_KEY missing";
     }
 
     return NextResponse.json({
       ok: true,
+      emailSent,
+      emailError,
       manageUrl: `/${subscription.locale}/alerts/manage?token=${subscription.manage_token}`,
+      manageUrlFull: buildManageUrl(
+        subscription.manage_token,
+        subscription.locale
+      ),
     });
   } catch (error) {
     console.error("alerts/subscribe:", error);

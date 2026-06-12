@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import { Link } from "@/i18n/routing";
 import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
 import type { AlertFrequency } from "@/lib/constants";
 import type { Organization } from "@/lib/types";
@@ -52,6 +53,8 @@ export function AlertPreferencesForm({
     initial?.languages ?? [locale]
   );
   const [saved, setSaved] = useState(false);
+  const [manageUrl, setManageUrl] = useState<string | null>(null);
+  const [emailSent, setEmailSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -106,6 +109,8 @@ export function AlertPreferencesForm({
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error ?? "Save failed");
+        setManageUrl(data.manageUrl ?? null);
+        setEmailSent(Boolean(data.emailSent));
       }
 
       setSaved(true);
@@ -217,6 +222,22 @@ export function AlertPreferencesForm({
           ))}
         </div>
       </fieldset>
+
+      {saved && (
+        <div className="rounded-xl border border-[#F4C430] bg-[#F4C430]/15 p-4 text-sm">
+          <p className="font-medium text-[#111111]">
+            {emailSent ? t("savedWithEmail") : t("savedNoEmail")}
+          </p>
+          {manageUrl && !emailSent && (
+            <Link
+              href={manageUrl}
+              className="mt-1 inline-block font-medium text-[#111111] underline-offset-4 hover:underline"
+            >
+              {t("manageLink")}
+            </Link>
+          )}
+        </div>
+      )}
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
