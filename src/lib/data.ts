@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { agendaHorizonDate } from "@/lib/agenda/constants";
 import type { Category, ContentLanguage, Locality } from "./constants";
 import type { Event, Organization } from "./types";
 
@@ -78,6 +79,7 @@ export async function getEvents(
   let query = supabase
     .from("events")
     .select("*, organization:organizations(*)")
+    .eq("is_recurring_template", false)
     .order("start_date");
 
   if (filters.status) {
@@ -110,6 +112,8 @@ export async function getEvents(
 
   if (filters.dateTo) {
     query = query.lte("start_date", filters.dateTo);
+  } else if (!filters.status || filters.status === "published") {
+    query = query.lte("start_date", agendaHorizonDate().toISOString());
   }
 
   if (filters.limit) {

@@ -6,6 +6,7 @@ import { locales } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
+import { SiteLogo } from "@/components/SiteLogo";
 
 export function Header() {
   const t = useTranslations("nav");
@@ -57,9 +58,7 @@ export function Header() {
   return (
     <header className="glass-header sticky top-0 z-50">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-        <Link href="/" className="text-xl font-bold text-primary">
-          Meiringen<span className="text-accent">.org</span>
-        </Link>
+        <SiteLogo />
 
         <nav className="hidden items-center gap-6 md:flex">
           {links.map((link) => (

@@ -43,6 +43,9 @@ export type Event = {
   price: string | null;
   language: ContentLanguage | null;
   is_recurring: boolean;
+  is_recurring_template: boolean;
+  recurrence_parent_id: string | null;
+  recurrence_interval_days: number;
   recurrence_description: string | null;
   source_url: string | null;
   status: EventStatus;

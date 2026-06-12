@@ -1,5 +1,6 @@
 import { slugify } from "@/lib/utils";
 import type { Category } from "@/lib/constants";
+import { isWithinAgendaHorizon } from "@/lib/agenda/constants";
 
 export type ScrapedEvent = {
   title: string;
@@ -39,7 +40,9 @@ export async function parseGenericEvents(
       for (const item of items) {
         if (!isEventType(item)) continue;
         const parsed = mapJsonLdEvent(item, pageUrl);
-        if (parsed) events.push(parsed);
+        if (parsed && isWithinAgendaHorizon(parsed.start_date)) {
+          events.push(parsed);
+        }
       }
     } catch {
       // Skip malformed JSON-LD blocks
@@ -82,7 +85,7 @@ function mapJsonLdEvent(
     title,
     slug: slugify(title),
     description: item.description ? String(item.description) : null,
-    category: "culture",
+    category: inferCategory(title, item.description ? String(item.description) : ""),
     start_date: new Date(start).toISOString(),
     end_date: item.endDate ? new Date(String(item.endDate)).toISOString() : null,
     location_name: location?.name ? String(location.name) : null,
@@ -90,4 +93,18 @@ function mapJsonLdEvent(
     source_url: String(item.url ?? pageUrl),
     status: "draft",
   };
+}
+
+function inferCategory(title: string, description: string): Category {
+  const text = `${title} ${description}`.toLowerCase();
+  if (/(markt|market|wochenmarkt)/.test(text)) return "market";
+  if (/(turnier|sport|fussball|tennis|schwing|lauf|volleyball|curling)/.test(text)) {
+    return "sport";
+  }
+  if (/(konzert|musik|jodel|probe|chor)/.test(text)) return "music";
+  if (/(wanderung|natur|berg|sac )/.test(text)) return "nature";
+  if (/(fest|festival|festlich)/.test(text)) return "festival";
+  if (/(kurs|schule|integration|sprach)/.test(text)) return "integration";
+  if (/(kino|theater|kultur)/.test(text)) return "culture";
+  return "other";
 }

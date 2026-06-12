@@ -112,9 +112,12 @@ NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your-maps-javascript-api-key
+GOOGLE_MAPS_MONTHLY_LIMIT=500
 ```
 
 Enable **Maps JavaScript API** in Google Cloud Console for the same project (or a dedicated one). Optional: set `NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID` if you use a custom Map ID; otherwise `DEMO_MAP_ID` is used for development.
+
+When the monthly load counter reaches `GOOGLE_MAPS_MONTHLY_LIMIT`, maps automatically fall back to a styled **Leaflet + OpenStreetMap/CARTO** view (free).
 
 Restart dev server, then test: [http://localhost:3000/de/login](http://localhost:3000/de/login) → **Mit Google anmelden**
 
@@ -218,11 +221,16 @@ supabase/migrations/  # SQL schema, RLS, seed data
 - Daily scrape cron with generic JSON-LD parser + placeholder site-specific parsers
 - Monthly newsletter cron via Resend
 
-## Scraping
+## Scraping & agenda sync
 
-The scrape endpoint (`/api/cron/scrape`) fetches active sources from `scraping_sources`, runs the matching parser, and inserts events as **drafts**. Duplicates are prevented by a unique index on `(source_url, title, start_date)`.
+The daily cron (`/api/cron/scrape`, 06:00 UTC) syncs the public agenda:
 
-To add a site-specific parser, implement logic in `src/lib/scraping/parsers.ts` and register the type in admin sources.
+1. **Scrape** — fetches active sources plus organization websites, parses JSON-LD events, and publishes activities within the next **365 days**.
+2. **Expand** — turns recurring templates into dated occurrences (weekly/bi-weekly) for the same one-year horizon.
+
+Recurring rows marked as templates are hidden from the public agenda; only their dated occurrences appear. Duplicates are prevented by unique slugs and `(source_url, title, start_date)` for scraped events.
+
+To run a manual sync locally: `npx tsx scripts/sync-agenda.mjs`
 
 ## License
 

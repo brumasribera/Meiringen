@@ -13,6 +13,8 @@ const migrationFiles = [
   "0004_meiringen_organizations.sql",
   "0005_organization_localities.sql",
   "0006_org_descriptions_logos.sql",
+  "0007_map_usage.sql",
+  "0008_agenda_recurrence.sql",
 ];
 
 function loadEnvFile(filePath) {
@@ -96,7 +98,12 @@ async function main() {
   try {
     const hasSchema = await tableExists(client, "organizations");
     const filesToRun = hasSchema
-      ? ["0005_organization_localities.sql", "0006_org_descriptions_logos.sql"]
+      ? [
+          "0005_organization_localities.sql",
+          "0006_org_descriptions_logos.sql",
+          "0007_map_usage.sql",
+          "0008_agenda_recurrence.sql",
+        ]
       : migrationFiles;
 
     for (const file of filesToRun) {

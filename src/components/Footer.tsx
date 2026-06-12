@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { SiteLogo } from "@/components/SiteLogo";
 
 export function Footer() {
   const t = useTranslations("footer");
@@ -11,9 +12,7 @@ export function Footer() {
     <footer className="mt-auto border-t border-border bg-card">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 md:flex-row md:justify-between">
         <div>
-          <p className="text-lg font-bold text-primary">
-            Meiringen<span className="text-accent">.org</span>
-          </p>
+          <SiteLogo href={null} />
           <p className="mt-2 text-sm text-muted">{t("tagline")}</p>
           <p className="mt-1 text-xs text-muted">{t("madeWith")}</p>
         </div>
