@@ -7,6 +7,7 @@ import { Link } from "@/i18n/routing";
 import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
 import type { AlertFrequency, Category, ContentLanguage } from "@/lib/constants";
 import type { Organization } from "@/lib/types";
+import { OrganizationSearchSelect } from "@/components/OrganizationSearchSelect";
 
 type Props = {
   organizations: Organization[];
@@ -129,6 +130,11 @@ export function EventAlertSignup({ organizations }: Props) {
     .map((id) => organizations.find((o) => o.id === id)?.name)
     .filter(Boolean);
 
+  const alertPageHref =
+    organizationIds.length > 0
+      ? `/alerts?organization=${encodeURIComponent(organizationIds[0])}`
+      : "/alerts";
+
   if (success) {
     return (
       <div className="mt-4 rounded-2xl border border-[#F4C430] bg-[#F4C430]/15 p-5">
@@ -246,7 +252,7 @@ export function EventAlertSignup({ organizations }: Props) {
               {t("alertResetFilters")}
             </button>
           )}
-          <Link href="/alerts" className="text-sm text-muted hover:text-[#111111]">
+          <Link href={alertPageHref} className="text-sm text-muted hover:text-[#111111]">
             {t("alertFullForm")}
           </Link>
         </div>
@@ -274,20 +280,17 @@ export function EventAlertSignup({ organizations }: Props) {
             </div>
             <div>
               <p className="text-xs font-medium text-muted">{ta("organizations")}</p>
-              <select
-                value={organizationIds[0] ?? ""}
-                onChange={(e) =>
-                  setOrganizationIds(e.target.value ? [e.target.value] : [])
-                }
-                className="mt-2 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm"
-              >
-                <option value="">{t("all")}</option>
-                {organizations.map((o) => (
-                  <option key={o.id} value={o.id}>
-                    {o.name}
-                  </option>
-                ))}
-              </select>
+              <div className="mt-2">
+                <OrganizationSearchSelect
+                  organizations={organizations}
+                  value={organizationIds[0] ?? ""}
+                  onChange={(organizationId) =>
+                    setOrganizationIds(organizationId ? [organizationId] : [])
+                  }
+                  allLabel={t("all")}
+                  id="event-alert-org-search"
+                />
+              </div>
             </div>
             <div>
               <p className="text-xs font-medium text-muted">{ta("languages")}</p>

@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
 import type { Organization } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
+import { OrganizationSearchSelect } from "@/components/OrganizationSearchSelect";
 
 type Props = {
   organizations: Organization[];
@@ -81,18 +82,13 @@ export function EventFilters({ organizations }: Props) {
         <label className="mb-1 block text-xs font-medium text-muted">
           {t("events.organization")}
         </label>
-        <select
+        <OrganizationSearchSelect
+          organizations={organizations}
           value={searchParams.get("organization") ?? ""}
-          onChange={(e) => update("organization", e.target.value)}
-          className={selectClass}
-        >
-          <option value="">{t("events.all")}</option>
-          {organizations.map((o) => (
-            <option key={o.id} value={o.id}>
-              {o.name}
-            </option>
-          ))}
-        </select>
+          onChange={(organizationId) => update("organization", organizationId)}
+          allLabel={t("events.all")}
+          id="event-org-search"
+        />
       </div>
       <div>
         <label className="mb-1 block text-xs font-medium text-muted">

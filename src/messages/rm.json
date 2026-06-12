@@ -110,6 +110,8 @@
     "categories": "Tipus d'occurrenzas",
     "categoriesHint": "Lasa vid per retschaiver tut las categorias.",
     "organizations": "Organisaziuns",
+    "organizationsHint": "Tippar per filtrar la glista. Lasa vid per retschaiver occurrenzas da tut las organisaziuns.",
+    "organizationsSelected": "{count} tschernidas",
     "languages": "Linguas",
     "save": "Memorisar preferenzas",
     "saved": "Memorisà",

@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { AlertPreferencesForm } from "@/components/AlertPreferencesForm";
 import type { AlertPreferencesState } from "@/components/AlertPreferencesForm";
+import type { Organization } from "@/lib/types";
 
 type Props = {
   token: string;
+  organizations: Organization[];
 };
 
-export function AlertManageClient({ token }: Props) {
+export function AlertManageClient({ token, organizations }: Props) {
   const t = useTranslations("alerts");
   const [initial, setInitial] = useState<Partial<AlertPreferencesState> | null>(
     null
@@ -49,6 +51,8 @@ export function AlertManageClient({ token }: Props) {
       initial={initial}
       manageToken={token}
       emailReadOnly
+      showOrganizations
+      organizations={organizations}
       showUnsubscribe
     />
   );

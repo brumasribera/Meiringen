@@ -110,6 +110,8 @@
     "categories": "Veranstaltungstypen",
     "categoriesHint": "Leer lassen = alle Kategorien.",
     "organizations": "Organisationen",
+    "organizationsHint": "Tippe, um die Liste zu filtern. Leer lassen für Veranstaltungen aller Organisationen.",
+    "organizationsSelected": "{count} ausgewählt",
     "languages": "Sprachen",
     "save": "Einstellungen speichern",
     "saved": "Gespeichert",

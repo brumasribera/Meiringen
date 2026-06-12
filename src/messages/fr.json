@@ -110,6 +110,8 @@
     "categories": "Types d'événements",
     "categoriesHint": "Laissez vide pour recevoir toutes les catégories.",
     "organizations": "Organisations",
+    "organizationsHint": "Tapez pour filtrer la liste. Laissez vide pour recevoir les événements de toutes les organisations.",
+    "organizationsSelected": "{count} sélectionnée(s)",
     "languages": "Langues",
     "save": "Enregistrer les préférences",
     "saved": "Enregistré",

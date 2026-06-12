@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AlertManageClient } from "@/components/AlertManageClient";
+import { getOrganizations } from "@/lib/data";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -25,7 +26,7 @@ export default async function AlertManagePage({ params, searchParams }: Props) {
       <h1 className="text-3xl font-bold">{t("manageTitle")}</h1>
       <p className="mt-2 text-muted">{t("manageSubtitle")}</p>
       <div className="mt-8 rounded-2xl border border-border bg-card p-6">
-        <AlertManageClient token={token} />
+        <AlertManageClient token={token} organizations={await getOrganizations()} />
       </div>
     </div>
   );

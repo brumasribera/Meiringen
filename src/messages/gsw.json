@@ -110,6 +110,8 @@
     "categories": "Event-Typen",
     "categoriesHint": "Leer loh für alli Kategorie.",
     "organizations": "Organisatione",
+    "organizationsHint": "Tippe zum Filtere. Leer loh für Veranstaltige vo allne Organisatione.",
+    "organizationsSelected": "{count} gwählt",
     "languages": "Sprache",
     "save": "Istellige speichere",
     "saved": "Gspeicheret",

@@ -1,17 +1,29 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { AlertPreferencesForm } from "@/components/AlertPreferencesForm";
+import { getOrganizations } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
 
-type Props = { params: Promise<{ locale: string }> };
+type Props = {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ organization?: string }>;
+};
 
-export default async function AlertsPage({ params }: Props) {
+export default async function AlertsPage({ params, searchParams }: Props) {
   const { locale } = await params;
+  const { organization } = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations("alerts");
 
-  const supabase = await createClient();
+  const [organizations, supabase] = await Promise.all([
+    getOrganizations(),
+    createClient(),
+  ]);
   const user = supabase ? (await supabase.auth.getUser()).data.user : null;
+  const organizationIds =
+    organization && organizations.some((o) => o.id === organization)
+      ? [organization]
+      : undefined;
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">
@@ -24,7 +36,12 @@ export default async function AlertsPage({ params }: Props) {
           <p className="mt-3 max-w-xl text-base opacity-90">{t("subtitle")}</p>
         </div>
         <div className="p-6 md:p-8">
-          <AlertPreferencesForm userId={user?.id} />
+          <AlertPreferencesForm
+            userId={user?.id}
+            showOrganizations
+            organizations={organizations}
+            initial={organizationIds ? { organization_ids: organizationIds } : undefined}
+          />
           {user ? (
             <p className="mt-6 text-sm text-muted">
               {t("loggedInHint")}{" "}

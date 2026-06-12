@@ -110,6 +110,8 @@
     "categories": "Event types",
     "categoriesHint": "Leave empty to receive all categories.",
     "organizations": "Organizations",
+    "organizationsHint": "Type to filter the list. Leave empty to receive events from all organizations.",
+    "organizationsSelected": "{count} selected",
     "languages": "Languages",
     "save": "Save preferences",
     "saved": "Saved",

@@ -6,6 +6,7 @@ import { Link } from "@/i18n/routing";
 import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
 import type { AlertFrequency } from "@/lib/constants";
 import type { Organization } from "@/lib/types";
+import { OrganizationPicker } from "@/components/OrganizationPicker";
 
 export type AlertPreferencesState = {
   email: string;
@@ -188,18 +189,12 @@ export function AlertPreferencesForm({
       {showOrganizations && organizations.length > 0 && (
         <fieldset>
           <legend className="font-semibold">{t("organizations")}</legend>
-          <div className="mt-3 max-h-48 space-y-2 overflow-y-auto rounded-xl border border-border p-4">
-            {organizations.map((o) => (
-              <label key={o.id} className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={organizationIds.includes(o.id)}
-                  onChange={() => toggle(organizationIds, o.id, setOrganizationIds)}
-                />
-                {o.name}
-              </label>
-            ))}
-          </div>
+          <OrganizationPicker
+            id="alert-org-search"
+            organizations={organizations}
+            selectedIds={organizationIds}
+            onChange={setOrganizationIds}
+          />
         </fieldset>
       )}
 
