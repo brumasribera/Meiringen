@@ -93,7 +93,7 @@ export function Header() {
           {user ? (
             <>
               <Link
-                href="/account/newsletter"
+                href="/alerts"
                 className="text-sm font-medium text-muted hover:text-primary"
               >
                 {t("newsletter")}
@@ -144,7 +144,7 @@ export function Header() {
             ))}
             {user ? (
               <>
-                <Link href="/account/newsletter" className="text-sm" onClick={() => setMenuOpen(false)}>{t("newsletter")}</Link>
+                <Link href="/alerts" className="text-sm" onClick={() => setMenuOpen(false)}>{t("newsletter")}</Link>
                 {isAdmin && <Link href="/admin" className="text-sm" onClick={() => setMenuOpen(false)}>{t("admin")}</Link>}
                 <button onClick={handleLogout} className="text-left text-sm text-primary">{t("logout")}</button>
               </>

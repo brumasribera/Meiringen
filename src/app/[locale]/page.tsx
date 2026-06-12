@@ -106,7 +106,7 @@ export default async function HomePage({ params }: Props) {
           <h2 className="text-2xl font-bold">{t("newsletterTitle")}</h2>
           <p className="mx-auto mt-4 max-w-md text-muted">{t("newsletterSubtitle")}</p>
           <Link
-            href="/account/newsletter"
+            href="/alerts"
             className="mt-6 inline-block rounded-full bg-primary px-8 py-3 font-semibold text-white transition hover:bg-primary-light"
           >
             {t("newsletterCta")}

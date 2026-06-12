@@ -51,5 +51,8 @@ export type ContentLanguage = (typeof CONTENT_LANGUAGES)[number];
 export const EVENT_STATUSES = ["draft", "published"] as const;
 export type EventStatus = (typeof EVENT_STATUSES)[number];
 
+export const ALERT_FREQUENCIES = ["weekly", "monthly"] as const;
+export type AlertFrequency = (typeof ALERT_FREQUENCIES)[number];
+
 export const SCRAPER_TYPES = ["generic", "meiringen_ch", "haslital_ch"] as const;
 export type ScraperType = (typeof SCRAPER_TYPES)[number];

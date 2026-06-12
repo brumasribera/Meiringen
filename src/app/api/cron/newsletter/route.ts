@@ -1,8 +1,18 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { createServiceClient } from "@/lib/supabase/server";
-import { matchEventsForUser, buildNewsletterHtml } from "@/lib/newsletter";
+import {
+  eventWindowDays,
+  matchEventsForUser,
+  shouldSendAlertToday,
+} from "@/lib/alerts/newsletter-utils";
+import { buildAlertDigestEmailHtml } from "@/lib/email/alert-template";
+import { markAlertSent } from "@/lib/alerts/service";
 import type { Event, NewsletterPreferences } from "@/lib/types";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 function verifyCron(request: Request) {
   const auth = request.headers.get("authorization");
@@ -14,61 +24,73 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Run newsletter only on the 1st of each month (Vercel Hobby: daily cron max)
-  const today = new Date();
-  if (today.getDate() !== 1) {
-    return NextResponse.json({ skipped: true, reason: "Not first of month" });
+  if (!process.env.RESEND_API_KEY) {
+    return NextResponse.json({ skipped: true, reason: "RESEND_API_KEY missing" });
   }
 
   const resend = new Resend(process.env.RESEND_API_KEY);
   const supabase = await createServiceClient();
-
-  const rangeEnd = new Date();
-  rangeEnd.setDate(rangeEnd.getDate() + 30);
-
-  const { data: allEvents } = await supabase
-    .from("events")
-    .select("*")
-    .eq("status", "published")
-    .gte("start_date", new Date().toISOString())
-    .lte("start_date", rangeEnd.toISOString())
-    .order("start_date");
+  const today = new Date();
 
   const { data: preferences } = await supabase
     .from("newsletter_preferences")
-    .select("*");
+    .select("*")
+    .eq("active", true);
 
   let sent = 0;
+  let skipped = 0;
   let failed = 0;
 
   for (const pref of preferences ?? []) {
-    try {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("email")
-        .eq("id", pref.user_id)
-        .single();
+    const subscription = pref as NewsletterPreferences;
+    if (!shouldSendAlertToday(subscription, today)) {
+      skipped++;
+      continue;
+    }
 
-      const email = profile?.email;
-      if (!email) continue;
+    try {
+      const windowDays = eventWindowDays(subscription.frequency);
+      const rangeEnd = new Date();
+      rangeEnd.setDate(rangeEnd.getDate() + windowDays);
+
+      const { data: allEvents } = await supabase
+        .from("events")
+        .select("*")
+        .eq("status", "published")
+        .eq("is_recurring_template", false)
+        .gte("start_date", new Date().toISOString())
+        .lte("start_date", rangeEnd.toISOString())
+        .order("start_date");
 
       const matched = matchEventsForUser(
         (allEvents ?? []) as Event[],
-        pref as NewsletterPreferences
+        subscription
       );
 
-      if (matched.length === 0) continue;
+      if (matched.length === 0) {
+        skipped++;
+        continue;
+      }
 
-      const locale = pref.languages?.[0] ?? "de";
-      const html = buildNewsletterHtml(matched, locale);
+      const locale = subscription.locale || subscription.languages?.[0] || "de";
+      const html = buildAlertDigestEmailHtml({
+        events: matched,
+        locale,
+        frequency: subscription.frequency,
+        manageToken: subscription.manage_token,
+      });
 
       await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? "newsletter@meiringen.org",
-        to: email,
-        subject: `Meiringen.org — ${matched.length} upcoming events`,
+        from: process.env.RESEND_FROM_EMAIL ?? "alerts@meiringen.org",
+        to: subscription.email,
+        subject:
+          locale === "de"
+            ? `Meiringen.org — ${matched.length} Veranstaltungen für dich`
+            : `Meiringen.org — ${matched.length} events for you`,
         html,
       });
 
+      await markAlertSent(supabase, subscription.id);
       sent++;
     } catch (err) {
       console.error("Newsletter send failed:", err);
@@ -76,5 +98,5 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.json({ sent, failed });
+  return NextResponse.json({ sent, skipped, failed });
 }

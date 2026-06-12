@@ -4,6 +4,7 @@ import type {
   EventStatus,
   Locality,
   ScraperType,
+  AlertFrequency,
 } from "./constants";
 
 export type Organization = {
@@ -64,11 +65,16 @@ export type Profile = {
 
 export type NewsletterPreferences = {
   id: string;
-  user_id: string;
-  frequency: "monthly";
+  user_id: string | null;
+  email: string;
+  frequency: AlertFrequency;
   categories: Category[];
   organization_ids: string[];
   languages: ContentLanguage[];
+  locale: string;
+  manage_token: string;
+  active: boolean;
+  last_sent_at: string | null;
   created_at: string;
   updated_at: string;
 };
