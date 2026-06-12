@@ -14,6 +14,7 @@ export function Footer() {
         <div>
           <SiteLogo href={null} />
           <p className="mt-2 text-sm text-muted">{t("tagline")}</p>
+          <p className="mt-3 max-w-sm text-xs text-muted">{t("disclaimer")}</p>
           <p className="mt-1 text-xs text-muted">{t("madeWith")}</p>
         </div>
         <div className="flex gap-8 text-sm">

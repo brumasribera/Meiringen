@@ -20,6 +20,7 @@ type EmailCopy = {
   manage: string;
   unsubscribe: string;
   footer: string;
+  disclaimer: string;
   frequencyLabel: string;
 };
 
@@ -33,6 +34,8 @@ const COPY: Record<string, EmailCopy> = {
     manage: "Einstellungen ändern",
     unsubscribe: "Abmelden",
     footer: "Meiringen.life — kostenlos, mehrsprachig, für die Region.",
+    disclaimer:
+      "Organisations- und Veranstaltungsangaben können fehlerhaft oder veraltet sein. Bitte vor Ort oder direkt beim Veranstalter nachfragen.",
     frequencyLabel: "Digest",
   },
   en: {
@@ -44,6 +47,8 @@ const COPY: Record<string, EmailCopy> = {
     manage: "Change settings",
     unsubscribe: "Unsubscribe",
     footer: "Meiringen.life — free, multilingual, built for the region.",
+    disclaimer:
+      "Organization and event information may be inaccurate or outdated. Please verify details with the organizer before attending.",
     frequencyLabel: "Digest",
   },
 };
@@ -216,6 +221,7 @@ function wrapEmail(options: {
           </tr>
           <tr>
             <td style="padding:20px 8px 0;text-align:center;font-size:13px;line-height:1.6;color:#78716c;">
+              <p style="margin:0 0 12px;font-size:12px;line-height:1.6;color:#a8a29e;">${getCopy(options.locale).disclaimer}</p>
               ${getCopy(options.locale).footer}<br />
               <a href="${siteUrl}/${options.locale}" style="color:#111111;text-decoration:none;">${siteUrl.replace("https://", "")}</a>
             </td>
