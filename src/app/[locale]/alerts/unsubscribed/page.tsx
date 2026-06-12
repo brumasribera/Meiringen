@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
+import { actionButtonClass } from "@/lib/button-styles";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -15,7 +16,7 @@ export default async function UnsubscribedPage({ params }: Props) {
         <p className="mt-3 text-muted">{t("unsubscribedText")}</p>
         <Link
           href="/alerts"
-          className="mt-6 inline-block rounded-full bg-[#111111] px-6 py-3 font-semibold text-white"
+          className={`mt-6 inline-block ${actionButtonClass} px-6 py-3`}
         >
           {t("resubscribe")}
         </Link>

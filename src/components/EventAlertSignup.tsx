@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { actionButtonClass } from "@/lib/button-styles";
 import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
 import type { AlertFrequency, Category, ContentLanguage } from "@/lib/constants";
 import type { Organization } from "@/lib/types";
@@ -229,7 +230,7 @@ export function EventAlertSignup({ organizations }: Props) {
           <button
             type="submit"
             disabled={loading}
-            className="rounded-full bg-[#111111] px-6 py-2.5 text-sm font-semibold text-[#F4C430] disabled:opacity-50"
+            className={`${actionButtonClass} px-6 py-2.5 text-sm`}
           >
             {loading ? "…" : t("alertSubscribe")}
           </button>

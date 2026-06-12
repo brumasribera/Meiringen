@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { getEvents, getOrganizations } from "@/lib/data";
+import { actionButtonClass } from "@/lib/button-styles";
 import { EventCard } from "@/components/EventCard";
 import { OrganizationCard } from "@/components/OrganizationCard";
 
@@ -107,7 +108,7 @@ export default async function HomePage({ params }: Props) {
           <p className="mx-auto mt-4 max-w-md text-muted">{t("newsletterSubtitle")}</p>
           <Link
             href="/alerts"
-            className="mt-6 inline-block rounded-full bg-primary px-8 py-3 font-semibold text-white transition hover:bg-primary-light"
+            className={`mt-6 inline-block ${actionButtonClass} px-8 py-3`}
           >
             {t("newsletterCta")}
           </Link>

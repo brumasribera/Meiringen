@@ -7,7 +7,8 @@ import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { SiteLogo } from "@/components/SiteLogo";
 import { UserAccountMenu } from "@/components/UserAccountMenu";
-import { LanguagePicker, authButtonClass } from "@/components/LanguagePicker";
+import { LanguagePicker } from "@/components/LanguagePicker";
+import { actionButtonClass } from "@/lib/button-styles";
 
 async function loadIsAdmin(supabase: NonNullable<ReturnType<typeof createClient>>, userId: string) {
   const { data } = await supabase.from("profiles").select("role").eq("id", userId).single();
@@ -103,7 +104,7 @@ export function Header() {
               />
             </>
           ) : (
-            <Link href="/login" className={authButtonClass}>
+            <Link href="/login" className={`${actionButtonClass} px-4 py-2 text-sm`}>
               {t("login")}
             </Link>
           )}
@@ -161,7 +162,7 @@ export function Header() {
                 )}
                 <button
                   onClick={handleLogout}
-                  className={`text-left ${authButtonClass} w-fit px-3 py-1.5 text-xs`}
+                  className={`text-left ${actionButtonClass} w-fit px-3 py-1.5 text-xs`}
                 >
                   {t("logout")}
                 </button>
@@ -169,7 +170,7 @@ export function Header() {
             ) : (
               <Link
                 href="/login"
-                className={`w-fit ${authButtonClass} px-3 py-1.5 text-xs`}
+                className={`w-fit ${actionButtonClass} px-3 py-1.5 text-xs`}
                 onClick={() => setMenuOpen(false)}
               >
                 {t("login")}

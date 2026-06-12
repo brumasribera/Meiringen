@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { actionButtonClass } from "@/lib/button-styles";
 import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
 import type { AlertFrequency } from "@/lib/constants";
 import type { Organization } from "@/lib/types";
@@ -240,7 +241,7 @@ export function AlertPreferencesForm({
         <button
           type="submit"
           disabled={loading}
-          className="rounded-full bg-[#111111] px-8 py-3 font-semibold text-white transition hover:bg-[#333333] disabled:opacity-50"
+          className={`${actionButtonClass} px-8 py-3`}
         >
           {saved ? t("saved") : t("save")}
         </button>

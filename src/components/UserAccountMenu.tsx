@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { Link } from "@/i18n/routing";
-import { authButtonClass } from "@/components/LanguagePicker";
+import { actionButtonClass } from "@/lib/button-styles";
 
 type UserAccountMenuProps = {
   user: User;
@@ -112,7 +112,7 @@ export function UserAccountMenu({
           <button
             type="button"
             role="menuitem"
-            className={`mx-2 mb-2 block w-[calc(100%-1rem)] ${authButtonClass} py-2 text-center text-sm`}
+            className={`mx-2 mb-2 block w-[calc(100%-1rem)] ${actionButtonClass} py-2 text-center text-sm`}
             onClick={() => {
               setOpen(false);
               onLogout();

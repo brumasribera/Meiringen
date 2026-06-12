@@ -28,6 +28,3 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
     </label>
   );
 }
-
-export const authButtonClass =
-  "rounded-full bg-[#111111] px-4 py-2 text-sm font-semibold text-[#F4C430] transition hover:bg-[#333333]";

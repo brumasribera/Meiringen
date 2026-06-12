@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getNewsletterPreferences, getOrganizations } from "@/lib/data";
 import { AlertPreferencesForm } from "@/components/AlertPreferencesForm";
 import { Link } from "@/i18n/routing";
+import { actionButtonClass } from "@/lib/button-styles";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -31,7 +32,7 @@ export default async function NewsletterPage({ params }: Props) {
         <p className="text-muted">{tAccount("loginRequired")}</p>
         <Link
           href="/login"
-          className="mt-4 inline-block rounded-full bg-primary px-6 py-2 text-white"
+          className={`mt-4 inline-block ${actionButtonClass} px-6 py-2`}
         >
           Login
         </Link>
