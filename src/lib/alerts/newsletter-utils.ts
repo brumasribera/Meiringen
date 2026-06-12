@@ -55,10 +55,8 @@ export function shouldSendAlertToday(
 }
 
 export function getSiteUrl(): string {
-  return (
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-    "https://meiringen.org"
-  );
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  return raw?.replace(/\/$/, "") ?? "https://meiringen.org";
 }
 
 export function buildManageUrl(token: string, locale: string): string {
