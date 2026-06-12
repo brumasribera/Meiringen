@@ -94,9 +94,10 @@ async function main() {
   setEnv("RESEND_FROM_EMAIL", FROM, ["production", "preview", "development"]);
 
   if (resendKey) {
-    setEnv("RESEND_API_KEY", resendKey, ["production", "preview", "development"], {
+    setEnv("RESEND_API_KEY", resendKey, ["production", "preview"], {
       sensitive: true,
     });
+    setEnv("RESEND_API_KEY", resendKey, ["development"]);
   } else {
     console.log(
       "RESEND_API_KEY not provided. Create one at resend.com/api-keys or connect Vercel in Resend Integrations."
