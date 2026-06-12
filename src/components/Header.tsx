@@ -2,11 +2,17 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
-import { locales } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { SiteLogo } from "@/components/SiteLogo";
+import { UserAccountMenu } from "@/components/UserAccountMenu";
+import { LanguagePicker, authButtonClass } from "@/components/LanguagePicker";
+
+async function loadIsAdmin(supabase: NonNullable<ReturnType<typeof createClient>>, userId: string) {
+  const { data } = await supabase.from("profiles").select("role").eq("id", userId).single();
+  return data?.role === "admin";
+}
 
 export function Header() {
   const t = useTranslations("nav");
@@ -20,19 +26,19 @@ export function Header() {
     const supabase = createClient();
     if (!supabase) return;
 
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    supabase.auth.getUser().then(async ({ data }) => {
+      setUser(data.user);
+      if (data.user) {
+        setIsAdmin(await loadIsAdmin(supabase, data.user.id));
+      }
+    });
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       if (session?.user) {
-        supabase
-          .from("profiles")
-          .select("role")
-          .eq("id", session.user.id)
-          .single()
-          .then(({ data }) => setIsAdmin(data?.role === "admin"));
+        loadIsAdmin(supabase, session.user.id).then(setIsAdmin);
       } else {
         setIsAdmin(false);
       }
@@ -75,20 +81,7 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <select
-            value={locale}
-            onChange={(e) => {
-              window.location.href = `/${e.target.value}${pathname}`;
-            }}
-            className="rounded-full border border-border bg-card px-3 py-1.5 text-sm"
-            aria-label="Language"
-          >
-            {locales.map((l) => (
-              <option key={l} value={l}>
-                {l.toUpperCase()}
-              </option>
-            ))}
-          </select>
+          <LanguagePicker />
 
           {user ? (
             <>
@@ -98,40 +91,35 @@ export function Header() {
               >
                 {t("newsletter")}
               </Link>
-              {isAdmin && (
-                <Link
-                  href="/admin"
-                  className="text-sm font-medium text-accent hover:text-primary"
-                >
-                  {t("admin")}
-                </Link>
-              )}
-              <button
-                onClick={handleLogout}
-                className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-white transition hover:bg-primary-light"
-              >
-                {t("logout")}
-              </button>
+              <UserAccountMenu
+                user={user}
+                isAdmin={isAdmin}
+                labels={{
+                  account: t("account"),
+                  admin: t("admin"),
+                  logout: t("logout"),
+                }}
+                onLogout={handleLogout}
+              />
             </>
           ) : (
-            <Link
-              href="/login"
-              className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-white transition hover:bg-primary-light"
-            >
+            <Link href="/login" className={authButtonClass}>
               {t("login")}
             </Link>
           )}
         </div>
 
-        <button
-          className="md:hidden"
+        <div className="flex items-center gap-2 md:hidden">
+          <LanguagePicker />
+          <button
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
         >
           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
           </svg>
-        </button>
+          </button>
+        </div>
       </div>
 
       {menuOpen && (
@@ -144,12 +132,48 @@ export function Header() {
             ))}
             {user ? (
               <>
-                <Link href="/alerts" className="text-sm" onClick={() => setMenuOpen(false)}>{t("newsletter")}</Link>
-                {isAdmin && <Link href="/admin" className="text-sm" onClick={() => setMenuOpen(false)}>{t("admin")}</Link>}
-                <button onClick={handleLogout} className="text-left text-sm text-primary">{t("logout")}</button>
+                <Link href="/alerts" className="text-sm" onClick={() => setMenuOpen(false)}>
+                  {t("newsletter")}
+                </Link>
+                <Link
+                  href="/account/newsletter"
+                  className="flex items-center gap-3 text-sm font-medium"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {user.user_metadata?.avatar_url || user.user_metadata?.picture ? (
+                    <img
+                      src={(user.user_metadata.avatar_url ?? user.user_metadata.picture) as string}
+                      alt=""
+                      referrerPolicy="no-referrer"
+                      className="h-8 w-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F4C430] text-xs font-bold text-[#111111]">
+                      {(user.email?.[0] ?? "?").toUpperCase()}
+                    </span>
+                  )}
+                  {t("account")}
+                </Link>
+                {isAdmin && (
+                  <Link href="/admin" className="text-sm" onClick={() => setMenuOpen(false)}>
+                    {t("admin")}
+                  </Link>
+                )}
+                <button
+                  onClick={handleLogout}
+                  className={`text-left ${authButtonClass} w-fit px-3 py-1.5 text-xs`}
+                >
+                  {t("logout")}
+                </button>
               </>
             ) : (
-              <Link href="/login" className="text-sm text-primary" onClick={() => setMenuOpen(false)}>{t("login")}</Link>
+              <Link
+                href="/login"
+                className={`w-fit ${authButtonClass} px-3 py-1.5 text-xs`}
+                onClick={() => setMenuOpen(false)}
+              >
+                {t("login")}
+              </Link>
             )}
           </nav>
         </div>
