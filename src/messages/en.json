@@ -50,7 +50,17 @@
     "alertAllCategories": "All categories",
     "alertDateNote": "Search and date filters apply to the calendar only — not to email alerts.",
     "alertResetFilters": "Reset to calendar filters",
-    "alertFullForm": "More options"
+    "alertFullForm": "More options",
+    "connectTitle": "Stay connected",
+    "connectSubtitle": "Turn this event into an easy next step.",
+    "getAlertsForThis": "Get alerts like this",
+    "visitOrganizer": "View organizer",
+    "openInMaps": "Open in maps",
+    "interestCta": "I'm interested",
+    "interestActive": "Interested",
+    "interestCount": "{count} interested",
+    "relatedTitle": "Similar events",
+    "relatedSubtitle": "More upcoming activities like this in the region."
   },
   "organizations": {
     "title": "Organizations",
@@ -60,7 +70,16 @@
     "locality": "Location",
     "noResults": "No organizations found.",
     "viewDetails": "View details",
-    "contact": "Contact"
+    "contact": "Contact",
+    "getAlertsForOrg": "Get updates from this organization",
+    "visitWebsite": "Visit website",
+    "emailOrganization": "Send email",
+    "callOrganization": "Call organization",
+    "followCta": "Follow organization",
+    "followActive": "Following",
+    "followCount": "{count} followers",
+    "relatedTitle": "Similar organizations",
+    "relatedSubtitle": "More groups people in the region may want to discover."
   },
   "about": {
     "title": "About Meiringen.life",
@@ -132,6 +151,23 @@
     "loginLink": "Sign in to manage alerts",
     "publicSubscribeLink": "Subscribe without an account"
   },
+  "account": {
+    "title": "Your account",
+    "subtitle": "Track what matters locally, keep your saved interests in one place, and manage updates from the community.",
+    "savedInterests": "Saved interests",
+    "savedInterestsEmpty": "No saved interests yet. Set up alerts to save categories, languages, and organizations.",
+    "categories": "Topics",
+    "languages": "Languages",
+    "organizations": "Alert organizations",
+    "followedOrganizations": "Followed organizations",
+    "followedSubtitle": "Groups you decided to keep an eye on.",
+    "followedEmpty": "You are not following any organizations yet.",
+    "interestedEvents": "Interested events",
+    "interestedSubtitle": "Upcoming events you marked to revisit.",
+    "interestedEmpty": "You have not marked any events yet.",
+    "exploreOrganizations": "Explore organizations",
+    "exploreEvents": "Explore events"
+  },
   "admin": {
     "title": "Admin",
     "dashboard": "Dashboard",
@@ -199,6 +235,12 @@
     "back": "Back",
     "loading": "Loading…",
     "error": "Something went wrong.",
-    "readMore": "Read more"
+    "readMore": "Read more",
+    "address": "Address",
+    "email": "Email",
+    "phone": "Phone",
+    "website": "Website",
+    "share": "Share",
+    "copied": "Link copied"
   }
 }

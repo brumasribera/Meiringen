@@ -50,7 +50,17 @@
     "alertAllCategories": "Toutes les catégories",
     "alertDateNote": "Recherche et dates = calendrier seulement, pas les e-mails.",
     "alertResetFilters": "Reprendre les filtres du calendrier",
-    "alertFullForm": "Plus d'options"
+    "alertFullForm": "Plus d'options",
+    "connectTitle": "Rester connecté",
+    "connectSubtitle": "Transformez cet événement en prochaine étape simple.",
+    "getAlertsForThis": "Recevoir des alertes similaires",
+    "visitOrganizer": "Voir l'organisateur",
+    "openInMaps": "Ouvrir dans Maps",
+    "interestCta": "Je suis intéressé",
+    "interestActive": "Intéressé",
+    "interestCount": "{count} intéressés",
+    "relatedTitle": "Événements similaires",
+    "relatedSubtitle": "D'autres activités à venir dans le même esprit dans la région."
   },
   "organizations": {
     "title": "Organisations",
@@ -60,7 +70,16 @@
     "locality": "Localité",
     "noResults": "Aucune organisation trouvée.",
     "viewDetails": "Voir les détails",
-    "contact": "Contact"
+    "contact": "Contact",
+    "getAlertsForOrg": "Recevoir les infos de cette organisation",
+    "visitWebsite": "Visiter le site",
+    "emailOrganization": "Envoyer un e-mail",
+    "callOrganization": "Appeler l'organisation",
+    "followCta": "Suivre l'organisation",
+    "followActive": "Suivi",
+    "followCount": "{count} abonnés",
+    "relatedTitle": "Organisations similaires",
+    "relatedSubtitle": "D'autres groupes que les habitants de la région pourraient aimer découvrir."
   },
   "about": {
     "title": "À propos de Meiringen.life",
@@ -132,6 +151,23 @@
     "loginLink": "Connectez-vous pour gérer les alertes",
     "publicSubscribeLink": "S'abonner sans compte"
   },
+  "account": {
+    "title": "Votre compte",
+    "subtitle": "Gardez vos intérêts locaux ensemble et gérez plus facilement ce que vous suivez dans la communauté.",
+    "savedInterests": "Intérêts enregistrés",
+    "savedInterestsEmpty": "Aucun intérêt enregistré pour le moment. Configurez des alertes pour enregistrer des thèmes, langues et organisations.",
+    "categories": "Thèmes",
+    "languages": "Langues",
+    "organizations": "Organisations dans les alertes",
+    "followedOrganizations": "Organisations suivies",
+    "followedSubtitle": "Les groupes que vous souhaitez garder à l'œil.",
+    "followedEmpty": "Vous ne suivez encore aucune organisation.",
+    "interestedEvents": "Événements enregistrés",
+    "interestedSubtitle": "Les prochains événements que vous avez marqués.",
+    "interestedEmpty": "Vous n'avez encore marqué aucun événement.",
+    "exploreOrganizations": "Explorer les organisations",
+    "exploreEvents": "Explorer les événements"
+  },
   "admin": {
     "title": "Admin",
     "dashboard": "Tableau de bord",
@@ -199,6 +235,12 @@
     "back": "Retour",
     "loading": "Chargement…",
     "error": "Une erreur s'est produite.",
-    "readMore": "Lire la suite"
+    "readMore": "Lire la suite",
+    "address": "Adresse",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "website": "Site web",
+    "share": "Partager",
+    "copied": "Lien copié"
   }
 }

@@ -50,7 +50,17 @@
     "alertAllCategories": "Alli Kategorie",
     "alertDateNote": "Suche und Datum = nume Kalender, nöd E-Mail.",
     "alertResetFilters": "Kalender-Filter überneh",
-    "alertFullForm": "Meh Optione"
+    "alertFullForm": "Meh Optione",
+    "connectTitle": "In Verbindig bliibe",
+    "connectSubtitle": "Mach us däre Veranstaltig dr nöchst eifachi Schritt.",
+    "getAlertsForThis": "Alerts für so öppis",
+    "visitOrganizer": "Organisation aluege",
+    "openInMaps": "I Karte öffne",
+    "interestCta": "Das interessiert mi",
+    "interestActive": "Interessiert",
+    "interestCount": "{count} interessiert",
+    "relatedTitle": "Ähnlichi Veranstaltige",
+    "relatedSubtitle": "Witeri passendi Aktivitäte i dr Region."
   },
   "organizations": {
     "title": "Organisatione",
@@ -60,7 +70,16 @@
     "locality": "Ort",
     "noResults": "Kei Organisatione gfunde.",
     "viewDetails": "Details azeige",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "getAlertsForOrg": "Updates zu däre Organisation",
+    "visitWebsite": "Website bsueche",
+    "emailOrganization": "E-Mail schicke",
+    "callOrganization": "Organisation aalüüte",
+    "followCta": "Organisation folge",
+    "followActive": "Du folgsch",
+    "followCount": "{count} Folger",
+    "relatedTitle": "Ähnlichi Organisatione",
+    "relatedSubtitle": "Witeri Gruppe, wo Lüüt i dr Region chönnte interessiere."
   },
   "about": {
     "title": "Über Meiringen.life",
@@ -132,6 +151,23 @@
     "loginLink": "Aamälde zum Alerts verwalte",
     "publicSubscribeLink": "Ohni Konto abonnere"
   },
+  "account": {
+    "title": "Dis Konto",
+    "subtitle": "Heb dini lokale Interesse zäme und verwalt eifacher, was du i dr Gmeinschaft im Blick hesch.",
+    "savedInterests": "Gspeichereti Interesse",
+    "savedInterestsEmpty": "No kei Interesse gspeicheret. Richt Alerts ii, zum Themen, Sprache und Organisatione z speichere.",
+    "categories": "Themä",
+    "languages": "Sprache",
+    "organizations": "Organisatione i Alerts",
+    "followedOrganizations": "Gfolgti Organisatione",
+    "followedSubtitle": "Gruppe, wo du wotsch im Blick bhalte.",
+    "followedEmpty": "Du folgsch no keina Organisation.",
+    "interestedEvents": "Gmerktti Veranstaltige",
+    "interestedSubtitle": "Kommendi Events, wo du markiert hesch.",
+    "interestedEmpty": "Du hesch no kei Veranstaltig markiert.",
+    "exploreOrganizations": "Organisatione entdecke",
+    "exploreEvents": "Veranstaltige entdecke"
+  },
   "admin": {
     "title": "Admin",
     "dashboard": "Dashboard",
@@ -199,6 +235,12 @@
     "back": "Zrugg",
     "loading": "Ladet…",
     "error": "Öppis isch schief gloffe.",
-    "readMore": "Meh läse"
+    "readMore": "Meh läse",
+    "address": "Adrässe",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "website": "Website",
+    "share": "Teile",
+    "copied": "Link kopiert"
   }
 }

@@ -3,15 +3,21 @@ import { Link } from "@/i18n/routing";
 import { AlertPreferencesForm } from "@/components/AlertPreferencesForm";
 import { getOrganizations } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
+import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
+import type { Category, ContentLanguage } from "@/lib/constants";
 
 type Props = {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ organization?: string }>;
+  searchParams: Promise<{
+    category?: string;
+    language?: string;
+    organization?: string;
+  }>;
 };
 
 export default async function AlertsPage({ params, searchParams }: Props) {
   const { locale } = await params;
-  const { organization } = await searchParams;
+  const { category, language, organization } = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations("alerts");
 
@@ -23,6 +29,14 @@ export default async function AlertsPage({ params, searchParams }: Props) {
   const organizationIds =
     organization && organizations.some((o) => o.id === organization)
       ? [organization]
+      : undefined;
+  const categories =
+    category && CATEGORIES.includes(category as Category)
+      ? [category as Category]
+      : undefined;
+  const languages =
+    language && CONTENT_LANGUAGES.includes(language as ContentLanguage)
+      ? [language as ContentLanguage]
       : undefined;
 
   return (
@@ -40,7 +54,15 @@ export default async function AlertsPage({ params, searchParams }: Props) {
             userId={user?.id}
             showOrganizations
             organizations={organizations}
-            initial={organizationIds ? { organization_ids: organizationIds } : undefined}
+            initial={
+              organizationIds || categories || languages
+                ? {
+                    organization_ids: organizationIds,
+                    categories,
+                    languages,
+                  }
+                : undefined
+            }
           />
           {user ? (
             <p className="mt-6 text-sm text-muted">

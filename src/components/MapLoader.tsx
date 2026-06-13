@@ -10,3 +10,5 @@ export const MapLoader = dynamic(() => import("./Map").then((m) => m.Map), {
     </div>
   ),
 });
+
+export type { MapMarker } from "./map-types";

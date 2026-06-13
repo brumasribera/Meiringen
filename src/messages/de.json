@@ -50,7 +50,17 @@
     "alertAllCategories": "Alle Kategorien",
     "alertDateNote": "Suche und Datumsfilter gelten nur für den Kalender — nicht für E-Mail-Alerts.",
     "alertResetFilters": "Auf Kalender-Filter zurücksetzen",
-    "alertFullForm": "Weitere Optionen"
+    "alertFullForm": "Weitere Optionen",
+    "connectTitle": "In Verbindung bleiben",
+    "connectSubtitle": "Mach aus diesem Event den nächsten einfachen Schritt.",
+    "getAlertsForThis": "Alerts für ähnliche Events",
+    "visitOrganizer": "Organisation ansehen",
+    "openInMaps": "In Karten öffnen",
+    "interestCta": "Ich bin interessiert",
+    "interestActive": "Interessiert",
+    "interestCount": "{count} interessiert",
+    "relatedTitle": "Ähnliche Veranstaltungen",
+    "relatedSubtitle": "Weitere passende Aktivitäten in der Region."
   },
   "organizations": {
     "title": "Organisationen",
@@ -60,7 +70,16 @@
     "locality": "Ort",
     "noResults": "Keine Organisationen gefunden.",
     "viewDetails": "Details anzeigen",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "getAlertsForOrg": "Updates zu dieser Organisation",
+    "visitWebsite": "Website besuchen",
+    "emailOrganization": "E-Mail senden",
+    "callOrganization": "Organisation anrufen",
+    "followCta": "Organisation folgen",
+    "followActive": "Du folgst",
+    "followCount": "{count} Follower",
+    "relatedTitle": "Ähnliche Organisationen",
+    "relatedSubtitle": "Weitere Gruppen, die Menschen in der Region interessieren könnten."
   },
   "about": {
     "title": "Über Meiringen.life",
@@ -132,6 +151,23 @@
     "loginLink": "Anmelden und Alerts verwalten",
     "publicSubscribeLink": "Ohne Konto abonnieren"
   },
+  "account": {
+    "title": "Dein Konto",
+    "subtitle": "Behalte lokale Themen im Blick, sammle deine gespeicherten Interessen an einem Ort und verwalte Community-Updates einfacher.",
+    "savedInterests": "Gespeicherte Interessen",
+    "savedInterestsEmpty": "Noch keine gespeicherten Interessen. Richte Alerts ein, um Kategorien, Sprachen und Organisationen zu speichern.",
+    "categories": "Themen",
+    "languages": "Sprachen",
+    "organizations": "Organisationen in Alerts",
+    "followedOrganizations": "Gefolgte Organisationen",
+    "followedSubtitle": "Gruppen, die du im Blick behalten willst.",
+    "followedEmpty": "Du folgst noch keinen Organisationen.",
+    "interestedEvents": "Interessante Veranstaltungen",
+    "interestedSubtitle": "Kommende Events, die du markieren wolltest.",
+    "interestedEmpty": "Du hast noch keine Veranstaltungen markiert.",
+    "exploreOrganizations": "Organisationen entdecken",
+    "exploreEvents": "Veranstaltungen entdecken"
+  },
   "admin": {
     "title": "Admin",
     "dashboard": "Dashboard",
@@ -199,6 +235,12 @@
     "back": "Zurück",
     "loading": "Laden…",
     "error": "Etwas ist schiefgelaufen.",
-    "readMore": "Mehr lesen"
+    "readMore": "Mehr lesen",
+    "address": "Adresse",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "website": "Website",
+    "share": "Teilen",
+    "copied": "Link kopiert"
   }
 }

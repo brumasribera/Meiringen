@@ -16,6 +16,9 @@ const migrationFiles = [
   "0007_map_usage.sql",
   "0008_agenda_recurrence.sql",
   "0009_event_alerts.sql",
+  "0010_organization_websites.sql",
+  "0011_fix_dead_org_websites.sql",
+  "0012_social_features.sql",
 ];
 
 function loadEnvFile(filePath) {
@@ -105,6 +108,9 @@ async function main() {
           "0007_map_usage.sql",
           "0008_agenda_recurrence.sql",
           "0009_event_alerts.sql",
+          "0010_organization_websites.sql",
+          "0011_fix_dead_org_websites.sql",
+          "0012_social_features.sql",
         ]
       : migrationFiles;
 

@@ -11,6 +11,12 @@ import {
 } from "@vis.gl/react-google-maps";
 import type { MapMarker } from "./map-types";
 
+declare global {
+  interface Window {
+    gm_authFailure?: (() => void) | undefined;
+  }
+}
+
 type Props = {
   markers: MapMarker[];
   center?: [number, number];
@@ -111,6 +117,14 @@ export function GoogleMapView({
     if (!apiKey || !onAuthFailure) return;
     const root = containerRef.current;
     if (!root) return;
+    const previousAuthFailure = window.gm_authFailure;
+
+    const handleAuthFailure = () => {
+      onAuthFailure();
+      previousAuthFailure?.();
+    };
+
+    window.gm_authFailure = handleAuthFailure;
 
     const check = () => {
       if (root.querySelector(".gm-err-container")) onAuthFailure();
@@ -122,6 +136,9 @@ export function GoogleMapView({
     const timeout = window.setTimeout(check, 4000);
 
     return () => {
+      if (window.gm_authFailure === handleAuthFailure) {
+        window.gm_authFailure = previousAuthFailure;
+      }
       observer.disconnect();
       window.clearInterval(timer);
       window.clearTimeout(timeout);

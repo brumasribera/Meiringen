@@ -59,6 +59,7 @@ export function Header() {
     { href: "/", label: t("home") },
     { href: "/events", label: t("events") },
     { href: "/organizations", label: t("organizations") },
+    { href: "/alerts", label: t("newsletter") },
     { href: "/about", label: t("about") },
   ];
 
@@ -86,12 +87,6 @@ export function Header() {
 
           {user ? (
             <>
-              <Link
-                href="/alerts"
-                className="text-sm font-medium text-muted hover:text-primary"
-              >
-                {t("newsletter")}
-              </Link>
               <UserAccountMenu
                 user={user}
                 isAdmin={isAdmin}
@@ -133,9 +128,6 @@ export function Header() {
             ))}
             {user ? (
               <>
-                <Link href="/alerts" className="text-sm" onClick={() => setMenuOpen(false)}>
-                  {t("newsletter")}
-                </Link>
                 <Link
                   href="/account/newsletter"
                   className="flex items-center gap-3 text-sm font-medium"

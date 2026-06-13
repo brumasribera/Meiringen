@@ -1,9 +1,22 @@
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
-import { getEventBySlug } from "@/lib/data";
-import { formatDateRange } from "@/lib/utils";
+import {
+  getEventBySlug,
+  getEventInterestSummary,
+  getRelatedEventsForEvent,
+} from "@/lib/data";
+import {
+  buildAlertHref,
+  buildGoogleMapsUrl,
+  formatDateRange,
+} from "@/lib/utils";
 import { MapLoader } from "@/components/MapLoader";
+import { ShareButton } from "@/components/ShareButton";
+import { actionButtonClass } from "@/lib/button-styles";
+import { EventCard } from "@/components/EventCard";
+import { EventInterestButton } from "@/components/EventInterestButton";
+import { createClient } from "@/lib/supabase/server";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -15,7 +28,23 @@ export default async function EventDetailPage({ params }: Props) {
 
   if (!event || event.status !== "published") notFound();
 
+  const supabase = await createClient();
+  const user = supabase ? (await supabase.auth.getUser()).data.user : null;
   const hasCoords = event.latitude && event.longitude;
+  const alertHref = buildAlertHref({
+    category: event.category,
+    language: event.language,
+    organizationId: event.organization_id,
+  });
+  const mapsHref = buildGoogleMapsUrl({
+    query: [event.location_name, event.address].filter(Boolean).join(", "),
+    latitude: event.latitude,
+    longitude: event.longitude,
+  });
+  const [interestSummary, relatedEvents] = await Promise.all([
+    getEventInterestSummary(event.id, user?.id),
+    getRelatedEventsForEvent(event, 3),
+  ]);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
@@ -68,6 +97,45 @@ export default async function EventDetailPage({ params }: Props) {
         </p>
       )}
 
+      <section className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <h2 className="text-lg font-semibold">{t("events.connectTitle")}</h2>
+        <p className="mt-1 text-sm text-muted">{t("events.connectSubtitle")}</p>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <EventInterestButton
+            eventId={event.id}
+            initialInterested={interestSummary.isInterested}
+            initialCount={interestSummary.interestCount}
+            locale={locale}
+            userId={user?.id}
+          />
+          <Link href={alertHref} className={`${actionButtonClass} px-5 py-2.5 text-sm`}>
+            {t("events.getAlertsForThis")}
+          </Link>
+          {event.organization && (
+            <Link
+              href={`/organizations/${event.organization.slug}`}
+              className="rounded-full border border-border px-5 py-2.5 text-sm font-medium transition hover:border-primary hover:text-primary"
+            >
+              {t("events.visitOrganizer")}
+            </Link>
+          )}
+          {mapsHref && (
+            <a
+              href={mapsHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-border px-5 py-2.5 text-sm font-medium transition hover:border-primary hover:text-primary"
+            >
+              {t("events.openInMaps")}
+            </a>
+          )}
+          <ShareButton
+            title={event.title}
+            className="rounded-full border border-border px-5 py-2.5 text-sm font-medium transition hover:border-primary hover:text-primary"
+          />
+        </div>
+      </section>
+
       {event.description && (
         <div className="prose mt-8 max-w-none">
           <p className="whitespace-pre-wrap text-foreground">{event.description}</p>
@@ -92,6 +160,18 @@ export default async function EventDetailPage({ params }: Props) {
             center={[event.latitude!, event.longitude!]}
           />
         </div>
+      )}
+
+      {relatedEvents.length > 0 && (
+        <section className="mt-12">
+          <h2 className="text-2xl font-bold">{t("events.relatedTitle")}</h2>
+          <p className="mt-2 text-muted">{t("events.relatedSubtitle")}</p>
+          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {relatedEvents.map((relatedEvent) => (
+              <EventCard key={relatedEvent.id} event={relatedEvent} />
+            ))}
+          </div>
+        </section>
       )}
     </div>
   );

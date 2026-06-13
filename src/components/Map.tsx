@@ -19,11 +19,12 @@ type Props = {
   center?: [number, number];
   zoom?: number;
   className?: string;
+  preferLeaflet?: boolean;
 };
 
 export type { MapMarker } from "./map-types";
 
-export function Map({ markers, center, zoom = 12, className = "h-80" }: Props) {
+export function Map({ markers, center, zoom = 12, className = "h-80", preferLeaflet = false }: Props) {
   const [status, setStatus] = useState<MapProviderStatus | null>(null);
   const [error, setError] = useState(false);
   const [googleFailed, setGoogleFailed] = useState(false);
@@ -58,6 +59,18 @@ export function Map({ markers, center, zoom = 12, className = "h-80" }: Props) {
   }, []);
 
   if (markers.length === 0) return null;
+
+  if (preferLeaflet) {
+    return (
+      <LeafletMapView
+        markers={markers}
+        center={center}
+        zoom={zoom}
+        className={className}
+        fallbackReason="multi_marker"
+      />
+    );
+  }
 
   if (!status) {
     return (

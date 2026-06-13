@@ -61,6 +61,9 @@ function markerIcon(marker: MapMarker) {
 }
 
 function fallbackLabel(reason?: string) {
+  if (reason === "multi_marker") {
+    return "OpenStreetMap — overview map";
+  }
   if (reason === "limit_reached") {
     return "OpenStreetMap fallback — monthly Google Maps limit reached";
   }

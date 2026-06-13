@@ -50,7 +50,17 @@
     "alertAllCategories": "Tutte le categorie",
     "alertDateNote": "Ricerca e date valgono solo per il calendario.",
     "alertResetFilters": "Ripristina filtri calendario",
-    "alertFullForm": "Altre opzioni"
+    "alertFullForm": "Altre opzioni",
+    "connectTitle": "Resta connesso",
+    "connectSubtitle": "Trasforma questo evento in un prossimo passo semplice.",
+    "getAlertsForThis": "Ricevi avvisi simili",
+    "visitOrganizer": "Vedi organizzatore",
+    "openInMaps": "Apri in Maps",
+    "interestCta": "Mi interessa",
+    "interestActive": "Interessato",
+    "interestCount": "{count} interessati",
+    "relatedTitle": "Eventi simili",
+    "relatedSubtitle": "Altre attività in arrivo dello stesso tipo nella regione."
   },
   "organizations": {
     "title": "Organizzazioni",
@@ -60,7 +70,16 @@
     "locality": "Località",
     "noResults": "Nessuna organizzazione trovata.",
     "viewDetails": "Vedi dettagli",
-    "contact": "Contatto"
+    "contact": "Contatto",
+    "getAlertsForOrg": "Ricevi aggiornamenti su questa organizzazione",
+    "visitWebsite": "Visita sito web",
+    "emailOrganization": "Invia e-mail",
+    "callOrganization": "Chiama l'organizzazione",
+    "followCta": "Segui l'organizzazione",
+    "followActive": "Seguita",
+    "followCount": "{count} follower",
+    "relatedTitle": "Organizzazioni simili",
+    "relatedSubtitle": "Altri gruppi che le persone della regione potrebbero voler scoprire."
   },
   "about": {
     "title": "Chi è Meiringen.life",
@@ -132,6 +151,23 @@
     "loginLink": "Accedi per gestire gli avvisi",
     "publicSubscribeLink": "Iscriviti senza account"
   },
+  "account": {
+    "title": "Il tuo account",
+    "subtitle": "Tieni insieme i tuoi interessi locali e gestisci più facilmente ciò che segui nella comunità.",
+    "savedInterests": "Interessi salvati",
+    "savedInterestsEmpty": "Nessun interesse salvato. Configura gli avvisi per salvare temi, lingue e organizzazioni.",
+    "categories": "Temi",
+    "languages": "Lingue",
+    "organizations": "Organizzazioni negli avvisi",
+    "followedOrganizations": "Organizzazioni seguite",
+    "followedSubtitle": "I gruppi che vuoi tenere d'occhio.",
+    "followedEmpty": "Non segui ancora nessuna organizzazione.",
+    "interestedEvents": "Eventi salvati",
+    "interestedSubtitle": "I prossimi eventi che hai segnato.",
+    "interestedEmpty": "Non hai ancora segnato nessun evento.",
+    "exploreOrganizations": "Esplora organizzazioni",
+    "exploreEvents": "Esplora eventi"
+  },
   "admin": {
     "title": "Admin",
     "dashboard": "Dashboard",
@@ -199,6 +235,12 @@
     "back": "Indietro",
     "loading": "Caricamento…",
     "error": "Qualcosa è andato storto.",
-    "readMore": "Leggi di più"
+    "readMore": "Leggi di più",
+    "address": "Indirizzo",
+    "email": "E-mail",
+    "phone": "Telefono",
+    "website": "Sito web",
+    "share": "Condividi",
+    "copied": "Link copiato"
   }
 }

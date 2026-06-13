@@ -40,3 +40,55 @@ export function formatDateRange(
 
   return `${dateTimeFormatter.format(startDate)} – ${dateTimeFormatter.format(endDate)}`;
 }
+
+type AlertHrefOptions = {
+  category?: string | null;
+  language?: string | null;
+  organizationId?: string | null;
+};
+
+export function buildAlertHref({
+  category,
+  language,
+  organizationId,
+}: AlertHrefOptions = {}): string {
+  const params = new URLSearchParams();
+
+  if (category) {
+    params.set("category", category);
+  }
+
+  if (language) {
+    params.set("language", language);
+  }
+
+  if (organizationId) {
+    params.set("organization", organizationId);
+  }
+
+  const query = params.toString();
+  return query ? `/alerts?${query}` : "/alerts";
+}
+
+type GoogleMapsUrlOptions = {
+  query?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+};
+
+export function buildGoogleMapsUrl({
+  query,
+  latitude,
+  longitude,
+}: GoogleMapsUrlOptions): string | null {
+  const value =
+    latitude != null && longitude != null
+      ? `${latitude},${longitude}`
+      : query?.trim();
+
+  if (!value) {
+    return null;
+  }
+
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(value)}`;
+}

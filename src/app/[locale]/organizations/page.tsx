@@ -4,7 +4,7 @@ import { getOrganizations } from "@/lib/data";
 import { resolveOrgImageUrl } from "@/lib/org-content";
 import { OrganizationCard } from "@/components/OrganizationCard";
 import { OrganizationFilters } from "@/components/OrganizationFilters";
-import { MapLoader } from "@/components/MapLoader";
+import { DeferredMapLoader } from "@/components/DeferredMapLoader";
 import type { Category, Locality } from "@/lib/constants";
 import { getLocalityCenter } from "@/lib/constants";
 
@@ -56,7 +56,7 @@ export default async function OrganizationsPage({ params, searchParams }: Props)
 
       {markers.length > 0 && (
         <div className="mt-8">
-          <MapLoader markers={markers} center={mapCenter} className="h-96" />
+          <DeferredMapLoader markers={markers} center={mapCenter} className="h-96" preferLeaflet />
         </div>
       )}
 

@@ -50,7 +50,17 @@
     "alertAllCategories": "Todas as categorias",
     "alertDateNote": "Pesquisa e datas aplicam-se só ao calendário.",
     "alertResetFilters": "Repor filtros do calendário",
-    "alertFullForm": "Mais opções"
+    "alertFullForm": "Mais opções",
+    "connectTitle": "Manter ligação",
+    "connectSubtitle": "Transforme este evento no próximo passo fácil.",
+    "getAlertsForThis": "Receber alertas semelhantes",
+    "visitOrganizer": "Ver organização",
+    "openInMaps": "Abrir no Maps",
+    "interestCta": "Tenho interesse",
+    "interestActive": "Interessado",
+    "interestCount": "{count} interessados",
+    "relatedTitle": "Eventos semelhantes",
+    "relatedSubtitle": "Mais atividades próximas do mesmo tipo na região."
   },
   "organizations": {
     "title": "Organizações",
@@ -60,7 +70,16 @@
     "locality": "Localidade",
     "noResults": "Nenhuma organização encontrada.",
     "viewDetails": "Ver detalhes",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "getAlertsForOrg": "Receber atualizações desta organização",
+    "visitWebsite": "Visitar site",
+    "emailOrganization": "Enviar e-mail",
+    "callOrganization": "Ligar para a organização",
+    "followCta": "Seguir organização",
+    "followActive": "A seguir",
+    "followCount": "{count} seguidores",
+    "relatedTitle": "Organizações semelhantes",
+    "relatedSubtitle": "Mais grupos que as pessoas da região poderão querer descobrir."
   },
   "about": {
     "title": "Sobre Meiringen.life",
@@ -132,6 +151,23 @@
     "loginLink": "Iniciar sessão para gerir alertas",
     "publicSubscribeLink": "Subscrever sem conta"
   },
+  "account": {
+    "title": "A sua conta",
+    "subtitle": "Junte os seus interesses locais num só lugar e gira com mais facilidade o que segue na comunidade.",
+    "savedInterests": "Interesses guardados",
+    "savedInterestsEmpty": "Ainda não há interesses guardados. Configure alertas para guardar temas, línguas e organizações.",
+    "categories": "Temas",
+    "languages": "Línguas",
+    "organizations": "Organizações nos alertas",
+    "followedOrganizations": "Organizações seguidas",
+    "followedSubtitle": "Grupos que decidiu acompanhar.",
+    "followedEmpty": "Ainda não segue nenhuma organização.",
+    "interestedEvents": "Eventos guardados",
+    "interestedSubtitle": "Próximos eventos que marcou para rever.",
+    "interestedEmpty": "Ainda não marcou nenhum evento.",
+    "exploreOrganizations": "Explorar organizações",
+    "exploreEvents": "Explorar eventos"
+  },
   "admin": {
     "title": "Admin",
     "dashboard": "Painel",
@@ -199,6 +235,12 @@
     "back": "Voltar",
     "loading": "A carregar…",
     "error": "Algo correu mal.",
-    "readMore": "Ler mais"
+    "readMore": "Ler mais",
+    "address": "Morada",
+    "email": "E-mail",
+    "phone": "Telefone",
+    "website": "Site",
+    "share": "Partilhar",
+    "copied": "Link copiado"
   }
 }

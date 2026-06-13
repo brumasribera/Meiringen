@@ -50,7 +50,17 @@
     "alertAllCategories": "Tut las categorias",
     "alertDateNote": "Tschertga e datas = mo calender, betg e-mail.",
     "alertResetFilters": "Reprender filters dal calender",
-    "alertFullForm": "Dapli opziuns"
+    "alertFullForm": "Dapli opziuns",
+    "connectTitle": "Restar collià",
+    "connectSubtitle": "Fa da questa occurrenza il proxim pass simpel.",
+    "getAlertsForThis": "Retschaiver alerts sumegliants",
+    "visitOrganizer": "Vesair l'organisaziun",
+    "openInMaps": "Avrir en Maps",
+    "interestCta": "Jau sun interessà",
+    "interestActive": "Interessà",
+    "interestCount": "{count} interessads",
+    "relatedTitle": "Occurrenzas sumegliantas",
+    "relatedSubtitle": "Ulteriuras novitads e novitads che pudessan star bain en la regiun."
   },
   "organizations": {
     "title": "Organisaziuns",
@@ -60,7 +70,16 @@
     "locality": "Localitad",
     "noResults": "Naginas organisaziuns chattadas.",
     "viewDetails": "Vesair detagls",
-    "contact": "Contact"
+    "contact": "Contact",
+    "getAlertsForOrg": "Retschaiver novitads da questa organisaziun",
+    "visitWebsite": "Visitar il site web",
+    "emailOrganization": "Trametter e-mail",
+    "callOrganization": "Telefonar l'organisaziun",
+    "followCta": "Suandar l'organisaziun",
+    "followActive": "Suandada",
+    "followCount": "{count} followers",
+    "relatedTitle": "Organisaziuns sumegliantas",
+    "relatedSubtitle": "Ulteriuras gruppas che persunas en la regiun pudessan vulair scuvrir."
   },
   "about": {
     "title": "Davart Meiringen.life",
@@ -132,6 +151,23 @@
     "loginLink": "S'annunziar per administrar alerts",
     "publicSubscribeLink": "Abonnar senza conto"
   },
+  "account": {
+    "title": "Tes conto",
+    "subtitle": "Tegna ensemen tes interess locals e administrescha pli simpel quai che ti suondas en la communitad.",
+    "savedInterests": "Interests memorisads",
+    "savedInterestsEmpty": "Anc nagins interess memorisads. Configurescha alerts per memorisar temas, linguas ed organisaziuns.",
+    "categories": "Temas",
+    "languages": "Linguas",
+    "organizations": "Organisaziuns en ils alerts",
+    "followedOrganizations": "Organisaziuns suandadas",
+    "followedSubtitle": "Gruppas che ti vuls tegnair en egl.",
+    "followedEmpty": "Ti na suondas anc nagina organisaziun.",
+    "interestedEvents": "Occurrenzas memorisadas",
+    "interestedSubtitle": "Las proximas novitads che ti has marcà.",
+    "interestedEmpty": "Ti n'has anc marcà nagina occurrenza.",
+    "exploreOrganizations": "Scuvrir organisaziuns",
+    "exploreEvents": "Scuvrir novitads"
+  },
   "admin": {
     "title": "Admin",
     "dashboard": "Dashboard",
@@ -199,6 +235,12 @@
     "back": "Enavos",
     "loading": "Chargiar…",
     "error": "Insatge è ì a mias.",
-    "readMore": "Leger dapli"
+    "readMore": "Leger dapli",
+    "address": "Adressa",
+    "email": "E-mail",
+    "phone": "Telefon",
+    "website": "Website",
+    "share": "Parter",
+    "copied": "Link copià"
   }
 }
