@@ -1,13 +1,23 @@
 import { defineRouting } from "next-intl/routing";
 import { createNavigation } from "next-intl/navigation";
+import {
+  defaultLocale,
+  localeCookieMaxAge,
+  localeCookieName,
+  locales,
+} from "./constants";
 
-export const locales = ["de", "gsw", "en", "fr", "it", "rm", "pt"] as const;
-export type Locale = (typeof locales)[number];
+export type { Locale } from "./constants";
+export { defaultLocale, localeCookieMaxAge, localeCookieName, locales };
 
 export const routing = defineRouting({
   locales,
-  defaultLocale: "de",
-  localePrefix: "always",
+  defaultLocale,
+  localePrefix: "never",
+  localeCookie: {
+    name: localeCookieName,
+    maxAge: localeCookieMaxAge,
+  },
 });
 
 export const { Link, redirect, usePathname, useRouter } =

@@ -6,7 +6,11 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { actionButtonClass } from "@/lib/button-styles";
 import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
-import type { AlertFrequency, Category, ContentLanguage } from "@/lib/constants";
+import type {
+  AlertFrequency,
+  Category,
+  ContentLanguage,
+} from "@/lib/constants";
 import type { Organization } from "@/lib/types";
 import { OrganizationSearchSelect } from "@/components/OrganizationSearchSelect";
 
@@ -16,7 +20,7 @@ type Props = {
 
 function filtersFromParams(
   params: URLSearchParams,
-  locale: string
+  locale: string,
 ): {
   categories: Category[];
   languages: ContentLanguage[];
@@ -48,15 +52,19 @@ export function EventAlertSignup({ organizations }: Props) {
 
   const urlFilters = useMemo(
     () => filtersFromParams(searchParams, locale),
-    [searchParams, locale]
+    [searchParams, locale],
   );
 
   const [email, setEmail] = useState("");
   const [frequency, setFrequency] = useState<AlertFrequency>("weekly");
-  const [categories, setCategories] = useState<Category[]>(urlFilters.categories);
-  const [languages, setLanguages] = useState<ContentLanguage[]>(urlFilters.languages);
+  const [categories, setCategories] = useState<Category[]>(
+    urlFilters.categories,
+  );
+  const [languages, setLanguages] = useState<ContentLanguage[]>(
+    urlFilters.languages,
+  );
   const [organizationIds, setOrganizationIds] = useState<string[]>(
-    urlFilters.organizationIds
+    urlFilters.organizationIds,
   );
   const [customize, setCustomize] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -75,8 +83,8 @@ export function EventAlertSignup({ organizations }: Props) {
 
   const hasCalendarFilters = Boolean(
     searchParams.get("search") ||
-      searchParams.get("dateFrom") ||
-      searchParams.get("dateTo")
+    searchParams.get("dateFrom") ||
+    searchParams.get("dateTo"),
   );
 
   const hasAlertFilters =
@@ -85,8 +93,14 @@ export function EventAlertSignup({ organizations }: Props) {
     languages.length !== 1 ||
     !languages.includes(locale as ContentLanguage);
 
-  function toggle<T extends string>(arr: T[], value: T, setter: (v: T[]) => void) {
-    setter(arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value]);
+  function toggle<T extends string>(
+    arr: T[],
+    value: T,
+    setter: (v: T[]) => void,
+  ) {
+    setter(
+      arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value],
+    );
   }
 
   async function handleSubscribe(e: React.FormEvent) {
@@ -111,7 +125,7 @@ export function EventAlertSignup({ organizations }: Props) {
       if (!response.ok) throw new Error(data.error ?? ta("error"));
 
       setSuccess({
-        manageUrl: data.manageUrlFull ?? data.manageUrl,
+        manageUrl: data.manageUrl ?? data.manageUrlFull,
         emailSent: Boolean(data.emailSent),
       });
     } catch (err) {
@@ -143,7 +157,9 @@ export function EventAlertSignup({ organizations }: Props) {
           {success.emailSent ? ta("savedWithEmail") : ta("savedNoEmail")}
         </p>
         <Link
-          href={success.manageUrl.startsWith("/") ? success.manageUrl : "/alerts"}
+          href={
+            success.manageUrl.startsWith("/") ? success.manageUrl : "/alerts"
+          }
           className="mt-2 inline-block text-sm font-medium text-[#111111] underline-offset-4 hover:underline"
         >
           {ta("manageLink")}
@@ -253,7 +269,10 @@ export function EventAlertSignup({ organizations }: Props) {
               {t("alertResetFilters")}
             </button>
           )}
-          <Link href={alertPageHref} className="text-sm text-muted hover:text-[#111111]">
+          <Link
+            href={alertPageHref}
+            className="text-sm text-muted hover:text-[#111111]"
+          >
             {t("alertFullForm")}
           </Link>
         </div>
@@ -261,7 +280,9 @@ export function EventAlertSignup({ organizations }: Props) {
         {customize && (
           <div className="space-y-4 rounded-xl border border-border bg-card p-4">
             <div>
-              <p className="text-xs font-medium text-muted">{ta("categories")}</p>
+              <p className="text-xs font-medium text-muted">
+                {ta("categories")}
+              </p>
               <div className="mt-2 flex flex-wrap gap-2">
                 {CATEGORIES.map((c) => (
                   <button
@@ -280,7 +301,9 @@ export function EventAlertSignup({ organizations }: Props) {
               </div>
             </div>
             <div>
-              <p className="text-xs font-medium text-muted">{ta("organizations")}</p>
+              <p className="text-xs font-medium text-muted">
+                {ta("organizations")}
+              </p>
               <div className="mt-2">
                 <OrganizationSearchSelect
                   organizations={organizations}
@@ -294,7 +317,9 @@ export function EventAlertSignup({ organizations }: Props) {
               </div>
             </div>
             <div>
-              <p className="text-xs font-medium text-muted">{ta("languages")}</p>
+              <p className="text-xs font-medium text-muted">
+                {ta("languages")}
+              </p>
               <div className="mt-2 flex flex-wrap gap-2">
                 {CONTENT_LANGUAGES.map((l) => (
                   <button

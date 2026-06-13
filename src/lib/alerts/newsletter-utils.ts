@@ -6,10 +6,13 @@ export function matchEventsForUser(
   prefs: Pick<
     NewsletterPreferences,
     "categories" | "organization_ids" | "languages"
-  >
+  >,
 ): Event[] {
   return events.filter((event) => {
-    if (prefs.categories.length > 0 && !prefs.categories.includes(event.category)) {
+    if (
+      prefs.categories.length > 0 &&
+      !prefs.categories.includes(event.category)
+    ) {
       return false;
     }
     if (
@@ -36,7 +39,7 @@ export function eventWindowDays(frequency: AlertFrequency): number {
 
 export function shouldSendAlertToday(
   pref: Pick<NewsletterPreferences, "frequency" | "last_sent_at" | "active">,
-  today = new Date()
+  today = new Date(),
 ): boolean {
   if (!pref.active) return false;
 
@@ -59,10 +62,14 @@ export function getSiteUrl(): string {
   return raw?.replace(/\/$/, "") ?? "https://www.meiringen.life";
 }
 
-export function buildManageUrl(token: string, locale: string): string {
-  return `${getSiteUrl()}/${locale}/alerts/manage?token=${encodeURIComponent(token)}`;
+export function buildManageUrl(token: string, _locale: string): string {
+  return `${getSiteUrl()}/api/alerts/manage?token=${encodeURIComponent(
+    token,
+  )}&action=open`;
 }
 
-export function buildUnsubscribeUrl(token: string, locale: string): string {
-  return `${getSiteUrl()}/api/alerts/manage?token=${encodeURIComponent(token)}`;
+export function buildUnsubscribeUrl(token: string, _locale: string): string {
+  return `${getSiteUrl()}/api/alerts/manage?token=${encodeURIComponent(
+    token,
+  )}&action=unsubscribe`;
 }

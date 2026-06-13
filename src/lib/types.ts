@@ -6,6 +6,7 @@ import type {
   ScraperType,
   AlertFrequency,
 } from "./constants";
+import type { Locale } from "@/i18n/constants";
 
 export type Organization = {
   id: string;
@@ -59,6 +60,7 @@ export type Profile = {
   id: string;
   email: string;
   full_name: string | null;
+  preferred_locale: Locale | null;
   role: "user" | "admin";
   created_at: string;
 };

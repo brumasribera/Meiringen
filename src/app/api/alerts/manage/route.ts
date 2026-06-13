@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createServiceClient } from "@/lib/supabase/server";
+import { localeCookieMaxAge, localeCookieName } from "@/i18n/constants";
 import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
 import type { AlertFrequency } from "@/lib/constants";
 import type { Category, ContentLanguage } from "@/lib/constants";
@@ -10,6 +10,7 @@ import {
   updateAlertByToken,
 } from "@/lib/alerts/service";
 import { getSiteUrl } from "@/lib/alerts/newsletter-utils";
+import { createServiceClient } from "@/lib/supabase/server";
 
 function tokenFromRequest(request: Request): string | null {
   const url = new URL(request.url);
@@ -19,15 +20,25 @@ function tokenFromRequest(request: Request): string | null {
 function parseCategories(value: unknown): Category[] | undefined {
   if (!Array.isArray(value)) return undefined;
   return value.filter((item): item is Category =>
-    CATEGORIES.includes(item as Category)
+    CATEGORIES.includes(item as Category),
   );
 }
 
 function parseLanguages(value: unknown): ContentLanguage[] | undefined {
   if (!Array.isArray(value)) return undefined;
   return value.filter((item): item is ContentLanguage =>
-    CONTENT_LANGUAGES.includes(item as ContentLanguage)
+    CONTENT_LANGUAGES.includes(item as ContentLanguage),
   );
+}
+
+function redirectWithLocale(path: string, locale: string): NextResponse {
+  const response = NextResponse.redirect(`${getSiteUrl()}${path}`, 303);
+  response.cookies.set(localeCookieName, locale, {
+    maxAge: localeCookieMaxAge,
+    path: "/",
+    sameSite: "lax",
+  });
+  return response;
 }
 
 export async function GET(request: Request) {
@@ -37,25 +48,7 @@ export async function GET(request: Request) {
   }
 
   const url = new URL(request.url);
-  if (url.searchParams.get("action") === "unsubscribe") {
-    try {
-      const supabase = await createServiceClient();
-      const pref = await getAlertByToken(supabase, token);
-      if (!pref) {
-        return NextResponse.json({ error: "Not found" }, { status: 404 });
-      }
-      await deactivateAlertByToken(supabase, token);
-      return NextResponse.redirect(
-        `${getSiteUrl()}/${pref.locale}/alerts/unsubscribed`,
-        303
-      );
-    } catch (error) {
-      return NextResponse.json(
-        { error: error instanceof Error ? error.message : "Failed" },
-        { status: 500 }
-      );
-    }
-  }
+  const action = url.searchParams.get("action");
 
   try {
     const supabase = await createServiceClient();
@@ -64,11 +57,23 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
+    if (action === "open") {
+      return redirectWithLocale(
+        `/alerts/manage?token=${encodeURIComponent(token)}`,
+        pref.locale,
+      );
+    }
+
+    if (action === "unsubscribe") {
+      await deactivateAlertByToken(supabase, token);
+      return redirectWithLocale("/alerts/unsubscribed", pref.locale);
+    }
+
     return NextResponse.json(publicAlertView(pref));
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -94,8 +99,10 @@ export async function PATCH(request: Request) {
         ? body.organization_ids.filter((id: unknown) => typeof id === "string")
         : undefined,
       languages: parseLanguages(body.languages),
-      locale: typeof body.locale === "string" ? body.locale.slice(0, 5) : undefined,
-      active: body.active === false ? false : body.active === true ? true : undefined,
+      locale:
+        typeof body.locale === "string" ? body.locale.slice(0, 5) : undefined,
+      active:
+        body.active === false ? false : body.active === true ? true : undefined,
     });
 
     if (!updated) {
@@ -106,7 +113,7 @@ export async function PATCH(request: Request) {
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -125,12 +132,11 @@ export async function DELETE(request: Request) {
     }
 
     await deactivateAlertByToken(supabase, token);
-    const redirectUrl = `${getSiteUrl()}/${pref.locale}/alerts/unsubscribed`;
-    return NextResponse.redirect(redirectUrl, 303);
+    return redirectWithLocale("/alerts/unsubscribed", pref.locale);
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

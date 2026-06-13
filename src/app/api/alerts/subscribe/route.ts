@@ -4,10 +4,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
 import type { AlertFrequency } from "@/lib/constants";
 import type { Category, ContentLanguage } from "@/lib/constants";
-import {
-  isValidEmail,
-  upsertAlertSubscription,
-} from "@/lib/alerts/service";
+import { isValidEmail, upsertAlertSubscription } from "@/lib/alerts/service";
 import { buildManageUrl } from "@/lib/alerts/newsletter-utils";
 import { buildWelcomeEmailHtml } from "@/lib/email/alert-template";
 import { getFromEmail } from "@/lib/email/config";
@@ -15,14 +12,14 @@ import { getFromEmail } from "@/lib/email/config";
 function parseCategories(value: unknown): Category[] {
   if (!Array.isArray(value)) return [];
   return value.filter((item): item is Category =>
-    CATEGORIES.includes(item as Category)
+    CATEGORIES.includes(item as Category),
   );
 }
 
 function parseLanguages(value: unknown): ContentLanguage[] {
   if (!Array.isArray(value)) return ["de"];
   const parsed = value.filter((item): item is ContentLanguage =>
-    CONTENT_LANGUAGES.includes(item as ContentLanguage)
+    CONTENT_LANGUAGES.includes(item as ContentLanguage),
   );
   return parsed.length > 0 ? parsed : ["de"];
 }
@@ -89,17 +86,17 @@ export async function POST(request: Request) {
       ok: true,
       emailSent,
       emailError,
-      manageUrl: `/${subscription.locale}/alerts/manage?token=${subscription.manage_token}`,
+      manageUrl: `/alerts/manage?token=${subscription.manage_token}`,
       manageUrlFull: buildManageUrl(
         subscription.manage_token,
-        subscription.locale
+        subscription.locale,
       ),
     });
   } catch (error) {
     console.error("alerts/subscribe:", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Subscribe failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

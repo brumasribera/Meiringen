@@ -1,4 +1,5 @@
 const BASE = process.env.TEST_BASE ?? "https://www.meiringen.life";
+const EXPECTED_SITE = "https://www.meiringen.life";
 
 const results = [];
 
@@ -22,6 +23,26 @@ async function get(path) {
 
 async function main() {
   console.log(`Testing ${BASE}\n`);
+
+  await check("Apex redirects to www", async () => {
+    const response = await fetch("https://meiringen.life/", { redirect: "manual" });
+    if (![301, 307, 308].includes(response.status)) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    const location = response.headers.get("location") ?? "";
+    if (!location.includes("www.meiringen.life")) {
+      throw new Error(`Unexpected redirect: ${location}`);
+    }
+  });
+
+  await check("Login page", () => get("/de/login"));
+
+  await check("Auth callback route", async () => {
+    const response = await fetch(`${BASE}/auth/callback`, { redirect: "manual" });
+    if (![302, 307].includes(response.status)) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+  });
 
   await check("Home DE", () => get("/de"));
   await check("Events page", () => get("/de/events"));
@@ -55,8 +76,14 @@ async function main() {
     if (!response.ok) throw new Error(JSON.stringify(data));
     if (!data.ok) throw new Error("ok false");
     if (!data.manageUrl) throw new Error("missing manageUrl");
+    if (!data.manageUrlFull?.startsWith(EXPECTED_SITE)) {
+      throw new Error(`manageUrlFull uses wrong site: ${data.manageUrlFull}`);
+    }
     token = data.manageUrl.split("token=")[1] ?? "";
     console.log(`  emailSent=${data.emailSent} emailError=${data.emailError ?? "none"}`);
+    if (!data.emailSent) {
+      console.log("  (Install Resend on Vercel to enable welcome emails)");
+    }
   });
 
   if (token) {

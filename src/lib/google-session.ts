@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
+import { isLocale, type Locale } from "@/i18n/constants";
 import type { GoogleUserInfo } from "@/lib/google-oauth";
 import { getSupabaseAnonKey, getSupabaseServiceRoleKey, getSupabaseUrl } from "@/lib/supabase/config";
 
@@ -84,5 +85,17 @@ export async function createSessionFromGoogleUser(user: GoogleUserInfo) {
     throw error ?? new Error("Failed to create Supabase session");
   }
 
-  return data.session;
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("preferred_locale")
+    .limit(1)
+    .single();
+
+  const preferredLocale =
+    typeof profile?.preferred_locale === "string" &&
+    isLocale(profile.preferred_locale)
+      ? (profile.preferred_locale as Locale)
+      : null;
+
+  return { preferredLocale, session: data.session };
 }

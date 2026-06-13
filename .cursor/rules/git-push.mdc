@@ -1,0 +1,12 @@
+---
+description: Push commits to remote after completing work
+alwaysApply: true
+---
+
+# Git push policy
+
+After committing changes for a completed task, always push to the remote (`git push origin HEAD` or the active branch) unless the user explicitly says not to push.
+
+If a commit was made but not yet pushed, push before marking the task finished.
+
+Do not force-push to main/master unless the user explicitly requests it.

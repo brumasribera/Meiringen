@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { localeCookieMaxAge, localeCookieName } from "@/i18n/constants";
 import {
   exchangeGoogleCode,
   fetchGoogleUserInfo,
@@ -50,9 +51,16 @@ export async function GET(request: Request) {
       redirectUri,
     });
     const user = await fetchGoogleUserInfo(token.access_token);
-    await createSessionFromGoogleUser(user);
+    const { preferredLocale } = await createSessionFromGoogleUser(user);
 
     const response = NextResponse.redirect(new URL(next, origin));
+    if (preferredLocale) {
+      response.cookies.set(localeCookieName, preferredLocale, {
+        maxAge: localeCookieMaxAge,
+        path: "/",
+        sameSite: "lax",
+      });
+    }
     response.cookies.delete(STATE_COOKIE);
     response.cookies.delete(NEXT_COOKIE);
     return response;

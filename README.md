@@ -37,7 +37,7 @@ vercel env pull .env.local --environment=development --yes
 npm run dev
 ```
 
-Open [http://localhost:3000/de/organizations](http://localhost:3000/de/organizations)
+Open [http://localhost:3000/organizations](http://localhost:3000/organizations)
 
 **Option B — Manual**
 
@@ -92,10 +92,10 @@ Google auth uses **Supabase Auth** as the OAuth broker. You configure Google onc
 
 Authentication → **URL Configuration**:
 
-| Setting | Local dev | Production (Vercel) |
-|---------|-----------|---------------------|
-| **Site URL** | `http://localhost:3000` | `https://meiringen.life` |
-| **Redirect URLs** | Add all of these: | |
+| Setting           | Local dev               | Production (Vercel)      |
+| ----------------- | ----------------------- | ------------------------ |
+| **Site URL**      | `http://localhost:3000` | `https://meiringen.life` |
+| **Redirect URLs** | Add all of these:       |                          |
 
 ```
 http://localhost:3000/**
@@ -119,7 +119,7 @@ Enable **Maps JavaScript API** in Google Cloud Console for the same project (or 
 
 When the monthly load counter reaches `GOOGLE_MAPS_MONTHLY_LIMIT`, maps automatically fall back to a styled **Leaflet + OpenStreetMap/CARTO** view (free).
 
-Restart dev server, then test: [http://localhost:3000/de/login](http://localhost:3000/de/login) → **Mit Google anmelden**
+Restart dev server, then test: [http://localhost:3000/login](http://localhost:3000/login) → **Mit Google anmelden**
 
 #### Step E — Vercel production env vars
 
@@ -133,7 +133,7 @@ NEXT_PUBLIC_SITE_URL=https://meiringen.life
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your-maps-javascript-api-key
 ```
 
-After adding vars, **redeploy**. Then test: `https://meiringen.life/de/login`
+After adding vars, **redeploy**. Then test: `https://meiringen.life/login`
 
 #### How the redirect flow works
 
@@ -141,22 +141,22 @@ After adding vars, **redeploy**. Then test: `https://meiringen.life/de/login`
 User clicks Google
   → Google login
   → Supabase (/auth/v1/callback)
-  → Your app (/auth/callback?next=/de/account/newsletter)
+  → Your app (/auth/callback?next=/account/newsletter)
   → Newsletter preferences page
 ```
 
 #### Troubleshooting
 
-| Error | Fix |
-|-------|-----|
-| `redirect_uri_mismatch` | Google redirect URI must be exactly `https://YOUR_PROJECT_REF.supabase.co/auth/v1/callback` |
-| Redirected to login after Google | Add `http://localhost:3000/**` or `https://meiringen.life/**` to Supabase Redirect URLs |
-| Works locally, not on Vercel | Check env vars on Vercel; redeploy after adding them |
-| `Access blocked: app not verified` | Add your Google account as a test user, or publish OAuth consent screen |
+| Error                              | Fix                                                                                         |
+| ---------------------------------- | ------------------------------------------------------------------------------------------- |
+| `redirect_uri_mismatch`            | Google redirect URI must be exactly `https://YOUR_PROJECT_REF.supabase.co/auth/v1/callback` |
+| Redirected to login after Google   | Add `http://localhost:3000/**` or `https://meiringen.life/**` to Supabase Redirect URLs     |
+| Works locally, not on Vercel       | Check env vars on Vercel; redeploy after adding them                                        |
+| `Access blocked: app not verified` | Add your Google account as a test user, or publish OAuth consent screen                     |
 
 ### 5. Create an admin user
 
-1. Sign up via the app (`/de/login`)
+1. Sign up via the app (`/login`)
 2. In Supabase SQL Editor:
 
 ```sql
@@ -189,9 +189,10 @@ Open [http://localhost:3000/de](http://localhost:3000/de)
 2. Install Supabase + Resend via Vercel Marketplace
 3. Set environment variables:
    - `CRON_SECRET` — random secure string
-   - `NEXT_PUBLIC_SITE_URL` — `https://meiringen.life`
-4. Add custom domain `meiringen.life`
-5. Cron jobs are configured in `vercel.json`:
+   - `NEXT_PUBLIC_SITE_URL` — `https://www.meiringen.life`
+4. Add custom domain `meiringen.life` (apex redirects to `www`)
+5. Verify production: `npm run test:production`
+6. Cron jobs are configured in `vercel.json`:
    - Newsletter: 1st of each month at 08:00 UTC
    - Scrape: daily at 06:00 UTC
 
@@ -201,7 +202,7 @@ Vercel automatically sends `Authorization: Bearer <CRON_SECRET>` to cron endpoin
 
 ```
 src/
-  app/[locale]/     # Public pages + admin (locale-prefixed routes)
+  app/[locale]/     # Public pages + admin (locale resolved from cookie; URLs are unprefixed)
   app/api/cron/     # Newsletter + scrape cron endpoints
   app/auth/         # OAuth callback
   components/       # UI components

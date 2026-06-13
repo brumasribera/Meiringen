@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { getEvents, getOrganizations } from "@/lib/data";
 import { actionButtonClass } from "@/lib/button-styles";
@@ -27,25 +28,62 @@ export default async function HomePage({ params }: Props) {
 
   return (
     <div>
-      <section className="hero-gradient relative overflow-hidden px-4 py-20 text-white md:py-28">
-        <div className="absolute inset-0 opacity-10">
-          <svg viewBox="0 0 1200 200" className="h-full w-full" preserveAspectRatio="none">
-            <path d="M0,200 L200,80 L400,120 L600,40 L800,100 L1000,60 L1200,140 L1200,200 Z" fill="white" />
-          </svg>
-        </div>
+      <section className="relative isolate overflow-hidden px-4 py-20 text-white md:py-28">
+        <Image
+          src="/images/meiringen-hero-wellhorn.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(7,12,20,0.82)_0%,rgba(15,23,42,0.58)_42%,rgba(15,23,42,0.22)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/35 to-transparent" />
         <div className="relative mx-auto max-w-6xl">
-          <h1 className="max-w-2xl text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-            {t("heroTitle")}
-          </h1>
-          <p className="mt-6 max-w-xl text-lg text-white/90 md:text-xl">
-            {t("heroSubtitle")}
-          </p>
-          <Link
-            href="/events"
-            className="mt-8 inline-block rounded-full bg-white px-8 py-3 font-semibold text-primary transition hover:bg-accent-light"
-          >
-            {t("heroCta")}
-          </Link>
+          <div className="max-w-2xl rounded-[2rem] border border-white/10 bg-black/20 p-8 shadow-2xl shadow-black/30 backdrop-blur-[2px] md:p-10">
+            <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
+              {t("heroTitle")}
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-white/90 md:text-xl">
+              {t("heroSubtitle")}
+            </p>
+            <Link
+              href="/events"
+              className="mt-8 inline-block rounded-full bg-white px-8 py-3 font-semibold text-primary transition hover:bg-accent-light"
+            >
+              {t("heroCta")}
+            </Link>
+            <p className="mt-5 text-xs text-white/70">
+              Photo:{" "}
+              <a
+                href="https://commons.wikimedia.org/wiki/File:Wellhorn_from_Meiringen_BE,_Switzerland_(12881259074).jpg"
+                target="_blank"
+                rel="noreferrer"
+                className="underline underline-offset-2 transition hover:text-white"
+              >
+                Jan Remund
+              </a>{" "}
+              /{" "}
+              <a
+                href="https://commons.wikimedia.org/wiki/File:Wellhorn_from_Meiringen_BE,_Switzerland_(12881259074).jpg"
+                target="_blank"
+                rel="noreferrer"
+                className="underline underline-offset-2 transition hover:text-white"
+              >
+                Wikimedia Commons
+              </a>{" "}
+              (
+              <a
+                href="https://creativecommons.org/licenses/by/2.0/"
+                target="_blank"
+                rel="noreferrer"
+                className="underline underline-offset-2 transition hover:text-white"
+              >
+                CC BY 2.0
+              </a>
+              )
+            </p>
+          </div>
         </div>
       </section>
 

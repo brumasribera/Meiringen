@@ -1,19 +1,24 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import {
+  isLocale,
+  localeCookieMaxAge,
+  localeCookieName,
+} from "@/i18n/constants";
 import { getSupabaseAnonKey, getSupabaseUrl } from "@/lib/supabase/config";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/de";
+  const next = searchParams.get("next") ?? "/";
 
   if (code) {
     const supabaseUrl = getSupabaseUrl();
     const supabaseAnonKey = getSupabaseAnonKey();
 
     if (!supabaseUrl || !supabaseAnonKey) {
-      return NextResponse.redirect(`${origin}/de/login`);
+      return NextResponse.redirect(`${origin}/login`);
     }
 
     const cookieStore = await cookies();
@@ -24,7 +29,7 @@ export async function GET(request: Request) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options)
+            cookieStore.set(name, value, options),
           );
         },
       },
@@ -32,9 +37,27 @@ export async function GET(request: Request) {
 
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      return NextResponse.redirect(`${origin}${next}`);
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("preferred_locale")
+        .limit(1)
+        .single();
+
+      const response = NextResponse.redirect(`${origin}${next}`);
+      if (
+        typeof profile?.preferred_locale === "string" &&
+        isLocale(profile.preferred_locale)
+      ) {
+        response.cookies.set(localeCookieName, profile.preferred_locale, {
+          maxAge: localeCookieMaxAge,
+          path: "/",
+          sameSite: "lax",
+        });
+      }
+
+      return response;
     }
   }
 
-  return NextResponse.redirect(`${origin}/de/login`);
+  return NextResponse.redirect(`${origin}/login`);
 }

@@ -89,7 +89,8 @@ export function buildWelcomeEmailHtml(options: {
   const manageUrl = buildManageUrl(options.manageToken, options.locale);
   const siteUrl = getSiteUrl();
 
-  const title = options.locale === "de" ? "Du bist dabei!" : "You're subscribed!";
+  const title =
+    options.locale === "de" ? "Du bist dabei!" : "You're subscribed!";
   const body =
     options.locale === "de"
       ? `Ab sofort erhältst du ${options.frequency === "weekly" ? "wöchentliche" : "monatliche"} E-Mail-Updates zu Veranstaltungen, die zu deinen Interessen passen.`
@@ -103,7 +104,7 @@ export function buildWelcomeEmailHtml(options: {
       <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#57534e;">${body}</p>
       <a href="${manageUrl}" style="display:inline-block;background:#111111;color:#ffffff;text-decoration:none;font-weight:600;font-size:15px;padding:14px 24px;border-radius:999px;">${copy.manage}</a>
       <p style="margin:24px 0 0;font-size:14px;line-height:1.6;color:#78716c;">
-        <a href="${siteUrl}/${options.locale}/events" style="color:#111111;">${copy.cta}</a>
+        <a href="${siteUrl}/events" style="color:#111111;">${copy.cta}</a>
       </p>
     `,
   });
@@ -132,7 +133,7 @@ export function buildAlertDigestEmailHtml(options: BuildEmailOptions): string {
             const when = formatDateRange(
               event.start_date,
               event.end_date,
-              options.locale
+              options.locale,
             );
             const location = event.location_name
               ? ` · ${escapeHtml(event.location_name)}`
@@ -140,7 +141,7 @@ export function buildAlertDigestEmailHtml(options: BuildEmailOptions): string {
             const badgeColor = categoryColor(event.category);
 
             return `
-              <a href="${siteUrl}/${options.locale}/events/${escapeHtml(event.slug)}" style="display:block;text-decoration:none;margin-bottom:12px;">
+              <a href="${siteUrl}/events/${escapeHtml(event.slug)}" style="display:block;text-decoration:none;margin-bottom:12px;">
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #ece7df;border-radius:18px;background:#ffffff;overflow:hidden;">
                   <tr>
                     <td style="padding:18px 20px;">
@@ -165,7 +166,7 @@ export function buildAlertDigestEmailHtml(options: BuildEmailOptions): string {
       <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:28px;">
         <tr>
           <td>
-            <a href="${siteUrl}/${options.locale}/events" style="display:inline-block;background:#F4C430;color:#111111;text-decoration:none;font-weight:700;font-size:15px;padding:14px 22px;border-radius:999px;">${copy.cta}</a>
+            <a href="${siteUrl}/events" style="display:inline-block;background:#F4C430;color:#111111;text-decoration:none;font-weight:700;font-size:15px;padding:14px 22px;border-radius:999px;">${copy.cta}</a>
           </td>
         </tr>
       </table>
@@ -223,7 +224,7 @@ function wrapEmail(options: {
             <td style="padding:20px 8px 0;text-align:center;font-size:13px;line-height:1.6;color:#78716c;">
               <p style="margin:0 0 12px;font-size:12px;line-height:1.6;color:#a8a29e;">${getCopy(options.locale).disclaimer}</p>
               ${getCopy(options.locale).footer}<br />
-              <a href="${siteUrl}/${options.locale}" style="color:#111111;text-decoration:none;">${siteUrl.replace("https://", "")}</a>
+              <a href="${siteUrl}" style="color:#111111;text-decoration:none;">${siteUrl.replace("https://", "")}</a>
             </td>
           </tr>
         </table>

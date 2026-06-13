@@ -19,6 +19,7 @@ const migrationFiles = [
   "0010_organization_websites.sql",
   "0011_fix_dead_org_websites.sql",
   "0012_social_features.sql",
+  "0013_profile_preferred_locale.sql",
 ];
 
 function loadEnvFile(filePath) {
@@ -111,6 +112,7 @@ async function main() {
           "0010_organization_websites.sql",
           "0011_fix_dead_org_websites.sql",
           "0012_social_features.sql",
+          "0013_profile_preferred_locale.sql",
         ]
       : migrationFiles;
 

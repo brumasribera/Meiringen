@@ -1,9 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
+import {
+  isLocale,
+  localeCookieMaxAge,
+  localeCookieName,
+} from "@/i18n/constants";
 
 type LoginFormProps = {
   googleEnabled?: boolean;
@@ -18,6 +22,30 @@ function safeNextPath(value: string | undefined, locale: string) {
     return fallback;
   }
   return value;
+}
+
+function persistLocaleCookie(value: string) {
+  document.cookie = `${localeCookieName}=${encodeURIComponent(
+    value,
+  )}; path=/; max-age=${localeCookieMaxAge}; SameSite=Lax`;
+}
+
+async function syncPreferredLocaleCookie(
+  supabase: NonNullable<ReturnType<typeof createClient>>
+) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("preferred_locale")
+    .limit(1)
+    .single();
+
+  if (error) {
+    return;
+  }
+
+  if (typeof data?.preferred_locale === "string" && isLocale(data.preferred_locale)) {
+    persistLocaleCookie(data.preferred_locale);
+  }
 }
 
 function GoogleLogo({ className = "h-5 w-5" }: { className?: string }) {
@@ -77,7 +105,7 @@ export function LoginForm({
         email,
         password,
         options: {
-          data: { full_name: fullName },
+          data: { full_name: fullName, preferred_locale: locale },
           emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
         },
       });
@@ -89,7 +117,10 @@ export function LoginForm({
         password,
       });
       if (signInError) setError(signInError.message);
-      else window.location.href = nextPath;
+      else {
+        await syncPreferredLocaleCookie(supabase);
+        window.location.href = nextPath;
+      }
     }
     setLoading(false);
   }
@@ -191,7 +222,7 @@ export function LoginForm({
             disabled={loading}
             className="w-full rounded-full bg-[#F4C430] px-4 py-3 text-sm font-bold text-[#111111] transition hover:bg-[#e0b02d] disabled:opacity-50"
           >
-            {loading ? "…" : mode === "signin" ? t("signIn") : t("signUp")}
+            {loading ? "..." : mode === "signin" ? t("signIn") : t("signUp")}
           </button>
         </form>
 

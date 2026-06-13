@@ -8,7 +8,12 @@
     "start": "next start",
     "lint": "eslint",
     "setup:supabase": "node scripts/setup-supabase.mjs",
-    "setup:database": "node scripts/setup-database.mjs"
+    "setup:database": "node scripts/setup-database.mjs",
+    "setup:life": "node scripts/setup-meiringen-life.mjs",
+    "configure:production": "node scripts/configure-production.mjs",
+    "setup:google-auth": "node scripts/setup-google-auth.mjs",
+    "test:production": "node scripts/test-features.mjs",
+    "test:org-links": "node scripts/test-org-links.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
