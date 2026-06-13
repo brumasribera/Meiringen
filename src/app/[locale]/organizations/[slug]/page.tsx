@@ -9,7 +9,12 @@ import {
 } from "@/lib/data";
 import { EventCard } from "@/components/EventCard";
 import { DeferredMapLoader } from "@/components/DeferredMapLoader";
-import { resolveOrgDescription, resolveOrgImageUrl } from "@/lib/org-content";
+import {
+  resolveOrgCoverImageUrl,
+  resolveOrgDescription,
+  resolveOrgImageUrl,
+} from "@/lib/org-content";
+import { OrgCoverArt } from "@/components/OrgCoverArt";
 import { OrgLogo } from "@/components/OrgLogo";
 import { ShareButton } from "@/components/ShareButton";
 import { actionButtonClass } from "@/lib/button-styles";
@@ -37,6 +42,7 @@ export default async function OrganizationDetailPage({ params }: Props) {
   ]);
   const hasCoords = organization.latitude && organization.longitude;
   const description = resolveOrgDescription(organization, locale);
+  const coverImageUrl = resolveOrgCoverImageUrl(organization.image_url);
   const alertHref = buildAlertHref({ organizationId: organization.id });
   const phoneHref = organization.phone
     ? `tel:${organization.phone.replace(/\s+/g, "")}`
@@ -48,27 +54,42 @@ export default async function OrganizationDetailPage({ params }: Props) {
         ← {t("common.back")}
       </Link>
 
-      <div className="mt-6 flex items-start gap-5">
-        <OrgLogo
-          name={organization.name}
-          imageUrl={organization.image_url}
-          websiteUrl={organization.website_url}
-          locality={organization.locality}
-          size="lg"
-        />
-        <div>
-          <span className="inline-block pill bg-primary/10 text-primary">
-            {t(`categories.${organization.category}`)}
-          </span>
-          <h1 className="mt-3 text-3xl font-bold md:text-4xl">
+      <div className="mt-6 overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm">
+        <div className="relative">
+          <OrgCoverArt
+            name={organization.name}
+            category={organization.category}
+            coverImageUrl={coverImageUrl}
+            className="h-52 md:h-64"
+          />
+          <div className="absolute inset-x-0 top-0 flex justify-end px-6 pt-6 md:px-8">
+            <span className="inline-block pill border border-white/45 bg-white/88 text-primary shadow-sm backdrop-blur-sm">
+              {t(`categories.${organization.category}`)}
+            </span>
+          </div>
+          <div className="absolute left-6 top-full -translate-y-1/2 md:left-8">
+            <div className="rounded-[1.75rem] bg-white p-2 shadow-[0_22px_44px_-24px_rgba(15,23,42,0.65)] ring-1 ring-black/5">
+              <OrgLogo
+                name={organization.name}
+                imageUrl={organization.image_url}
+                websiteUrl={organization.website_url}
+                locality={organization.locality}
+                size="lg"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="px-6 pb-8 pt-14 md:px-8 md:pt-16">
+          <h1 className="text-3xl font-bold md:text-4xl">
             {organization.name}
           </h1>
+          {description && (
+            <p className="mt-5 max-w-3xl text-lg leading-8 text-muted">
+              {description}
+            </p>
+          )}
         </div>
       </div>
-
-      {description && (
-        <p className="mt-6 text-lg text-muted">{description}</p>
-      )}
 
       <div className="mt-8 rounded-2xl border border-border bg-card p-6">
         <h2 className="font-semibold">{t("organizations.contact")}</h2>

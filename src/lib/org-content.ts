@@ -10,6 +10,16 @@ export function isGenericPortalFavicon(imageUrl: string): boolean {
   );
 }
 
+export function isLikelyOrgIconImage(imageUrl: string): boolean {
+  const normalized = imageUrl.toLowerCase();
+  return (
+    normalized.includes("google.com/s2/favicons") ||
+    normalized.includes("favicon") ||
+    normalized.includes("apple-touch-icon") ||
+    normalized.endsWith(".ico")
+  );
+}
+
 export function faviconFromWebsite(websiteUrl: string): string {
   try {
     const hostname = new URL(websiteUrl).hostname;
@@ -56,6 +66,14 @@ export function resolveOrgImageUrl(
   }
 
   return null;
+}
+
+export function resolveOrgCoverImageUrl(imageUrl: string | null): string | null {
+  if (!imageUrl || isGenericPortalFavicon(imageUrl) || isLikelyOrgIconImage(imageUrl)) {
+    return null;
+  }
+
+  return imageUrl;
 }
 
 export function resolveOrgDescription(
