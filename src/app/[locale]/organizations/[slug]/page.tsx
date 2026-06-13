@@ -42,7 +42,10 @@ export default async function OrganizationDetailPage({ params }: Props) {
   ]);
   const hasCoords = organization.latitude && organization.longitude;
   const description = resolveOrgDescription(organization, locale);
-  const coverImageUrl = resolveOrgCoverImageUrl(organization.image_url);
+  const coverImageUrl = resolveOrgCoverImageUrl(
+    organization.cover_image_url,
+    organization.image_url
+  );
   const alertHref = buildAlertHref({ organizationId: organization.id });
   const phoneHref = organization.phone
     ? `tel:${organization.phone.replace(/\s+/g, "")}`

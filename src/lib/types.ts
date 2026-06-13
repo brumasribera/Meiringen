@@ -23,6 +23,7 @@ export type Organization = {
   longitude: number | null;
   languages: ContentLanguage[];
   image_url: string | null;
+  cover_image_url: string | null;
   source_url: string | null;
   description_en: string | null;
   created_at: string;

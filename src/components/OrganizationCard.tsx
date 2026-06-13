@@ -13,7 +13,10 @@ export function OrganizationCard({ organization }: Props) {
   const t = useTranslations();
   const locale = useLocale();
   const description = resolveOrgDescription(organization, locale);
-  const coverImageUrl = resolveOrgCoverImageUrl(organization.image_url);
+  const coverImageUrl = resolveOrgCoverImageUrl(
+    organization.cover_image_url,
+    organization.image_url
+  );
 
   return (
     <Link

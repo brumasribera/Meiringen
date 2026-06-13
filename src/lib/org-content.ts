@@ -68,12 +68,31 @@ export function resolveOrgImageUrl(
   return null;
 }
 
-export function resolveOrgCoverImageUrl(imageUrl: string | null): string | null {
-  if (!imageUrl || isGenericPortalFavicon(imageUrl) || isLikelyOrgIconImage(imageUrl)) {
-    return null;
+function isUsableCoverImage(imageUrl: string | null | undefined): imageUrl is string {
+  if (
+    !imageUrl ||
+    isGenericPortalFavicon(imageUrl) ||
+    isLikelyOrgIconImage(imageUrl)
+  ) {
+    return false;
   }
 
-  return imageUrl;
+  return true;
+}
+
+export function resolveOrgCoverImageUrl(
+  coverImageUrl: string | null,
+  imageUrl?: string | null
+): string | null {
+  if (isUsableCoverImage(coverImageUrl)) {
+    return coverImageUrl;
+  }
+
+  if (isUsableCoverImage(imageUrl)) {
+    return imageUrl;
+  }
+
+  return null;
 }
 
 export function resolveOrgDescription(

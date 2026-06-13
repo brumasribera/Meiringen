@@ -11,6 +11,7 @@ const seedFiles = [
   "0004_meiringen_organizations.sql",
   "0005_organization_localities.sql",
   "0006_org_descriptions_logos.sql",
+  "0014_organization_cover_images.sql",
 ];
 
 function verifySetupRequest(request: Request) {

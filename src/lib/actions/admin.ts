@@ -47,6 +47,7 @@ export async function saveOrganization(formData: FormData, id?: string) {
       .map((l) => l.trim())
       .filter(Boolean),
     image_url: (formData.get("image_url") as string) || null,
+    cover_image_url: (formData.get("cover_image_url") as string) || null,
     source_url: (formData.get("source_url") as string) || null,
   };
 

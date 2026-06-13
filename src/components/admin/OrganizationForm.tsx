@@ -95,6 +95,20 @@ export function OrganizationForm({ organization, locale }: Props) {
         <label className="text-sm font-medium">Website URL</label>
         <input name="website_url" type="url" defaultValue={organization?.website_url ?? ""} className={inputClass} />
       </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label className="text-sm font-medium">Logo Image URL</label>
+          <input name="image_url" type="url" defaultValue={organization?.image_url ?? ""} className={inputClass} />
+        </div>
+        <div>
+          <label className="text-sm font-medium">Cover Image URL</label>
+          <input name="cover_image_url" type="url" defaultValue={organization?.cover_image_url ?? ""} className={inputClass} />
+        </div>
+      </div>
+      <div>
+        <label className="text-sm font-medium">Source URL</label>
+        <input name="source_url" type="url" defaultValue={organization?.source_url ?? ""} className={inputClass} />
+      </div>
       <button type="submit" className="rounded-full bg-primary px-6 py-2 text-sm font-semibold text-white">
         Save
       </button>
