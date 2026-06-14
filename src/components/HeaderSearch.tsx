@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import type { SearchResult } from "@/lib/types";
@@ -79,6 +80,115 @@ export function HeaderSearch() {
     [results]
   );
 
+  const modal = open
+    ? createPortal(
+        <div
+          className="fixed inset-0 z-[80] bg-black/75 backdrop-blur-md"
+          onClick={() => setOpen(false)}
+        >
+          <div className="mx-auto flex h-full w-full max-w-2xl items-start px-4 py-6">
+            <div
+              className="mt-10 w-full overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="border-b border-border p-4">
+                <div className="flex items-center gap-3">
+                  <input
+                    autoFocus
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder={`${t("common.search")} orgs, events...`}
+                    className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    className="rounded-full border border-border px-4 py-3 text-sm font-medium transition hover:border-primary hover:text-primary"
+                  >
+                    {t("common.back")}
+                  </button>
+                </div>
+              </div>
+              <div className="max-h-[70vh] overflow-auto p-4">
+                {!query.trim() ? (
+                  <p className="text-sm text-muted">{t("common.search")}</p>
+                ) : loading ? (
+                  <p className="text-sm text-muted">Loading…</p>
+                ) : (
+                  <div className="space-y-5">
+                    {grouped.orgs.length > 0 && (
+                      <section>
+                        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted">
+                          Organizations
+                        </h3>
+                        <div className="space-y-2">
+                          {grouped.orgs.map((result) => (
+                            <Link
+                              key={`${result.type}-${result.id}`}
+                              href={result.href}
+                              onClick={() => setOpen(false)}
+                              className="flex items-center gap-3 rounded-2xl border border-border bg-background p-3 transition hover:border-primary hover:bg-primary/5"
+                            >
+                              <SearchThumb
+                                src={result.image_url}
+                                category={result.category}
+                              />
+                              <div className="min-w-0">
+                                <div className="truncate text-sm font-semibold">
+                                  {result.title}
+                                </div>
+                                <div className="truncate text-xs text-muted">
+                                  {result.subtitle}
+                                </div>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      </section>
+                    )}
+                    {grouped.events.length > 0 && (
+                      <section>
+                        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted">
+                          Events
+                        </h3>
+                        <div className="space-y-2">
+                          {grouped.events.map((result) => (
+                            <Link
+                              key={`${result.type}-${result.id}`}
+                              href={result.href}
+                              onClick={() => setOpen(false)}
+                              className="flex items-center gap-3 rounded-2xl border border-border bg-background p-3 transition hover:border-primary hover:bg-primary/5"
+                            >
+                              <SearchThumb
+                                src={result.image_url}
+                                category={result.category}
+                              />
+                              <div className="min-w-0">
+                                <div className="truncate text-sm font-semibold">
+                                  {result.title}
+                                </div>
+                                <div className="truncate text-xs text-muted">
+                                  {result.subtitle}
+                                </div>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      </section>
+                    )}
+                    {grouped.orgs.length === 0 && grouped.events.length === 0 && (
+                      <p className="text-sm text-muted">No results.</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )
+    : null;
+
   return (
     <>
       <button
@@ -103,109 +213,7 @@ export function HeaderSearch() {
         <span className="hidden text-sm lg:inline">{t("common.search")}</span>
       </button>
 
-      {open && (
-        <div
-          className="fixed inset-0 z-[80] bg-black/70 px-4 py-6 backdrop-blur-sm"
-          onClick={() => setOpen(false)}
-        >
-          <div
-            className="mx-auto mt-10 w-full max-w-2xl overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="border-b border-border p-4">
-              <div className="flex items-center gap-3">
-                <input
-                  autoFocus
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder={`${t("common.search")} orgs, events...`}
-                  className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary"
-                />
-                <button
-                  type="button"
-                  onClick={() => setOpen(false)}
-                  className="rounded-full border border-border px-4 py-3 text-sm font-medium transition hover:border-primary hover:text-primary"
-                >
-                  {t("common.back")}
-                </button>
-              </div>
-            </div>
-            <div className="max-h-[70vh] overflow-auto p-4">
-              {!query.trim() ? (
-                <p className="text-sm text-muted">{t("common.search")}</p>
-              ) : loading ? (
-                <p className="text-sm text-muted">Loading…</p>
-              ) : (
-                <div className="space-y-5">
-                  {grouped.orgs.length > 0 && (
-                    <section>
-                      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted">
-                        Organizations
-                      </h3>
-                      <div className="space-y-2">
-                        {grouped.orgs.map((result) => (
-                          <Link
-                            key={`${result.type}-${result.id}`}
-                            href={result.href}
-                            onClick={() => setOpen(false)}
-                            className="flex items-center gap-3 rounded-2xl border border-border bg-background p-3 transition hover:border-primary hover:bg-primary/5"
-                          >
-                            <SearchThumb
-                              src={result.image_url}
-                              category={result.category}
-                            />
-                            <div className="min-w-0">
-                              <div className="truncate text-sm font-semibold">
-                                {result.title}
-                              </div>
-                              <div className="truncate text-xs text-muted">
-                                {result.subtitle}
-                              </div>
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    </section>
-                  )}
-                  {grouped.events.length > 0 && (
-                    <section>
-                      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted">
-                        Events
-                      </h3>
-                      <div className="space-y-2">
-                        {grouped.events.map((result) => (
-                          <Link
-                            key={`${result.type}-${result.id}`}
-                            href={result.href}
-                            onClick={() => setOpen(false)}
-                            className="flex items-center gap-3 rounded-2xl border border-border bg-background p-3 transition hover:border-primary hover:bg-primary/5"
-                          >
-                            <SearchThumb
-                              src={result.image_url}
-                              category={result.category}
-                            />
-                            <div className="min-w-0">
-                              <div className="truncate text-sm font-semibold">
-                                {result.title}
-                              </div>
-                              <div className="truncate text-xs text-muted">
-                                {result.subtitle}
-                              </div>
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    </section>
-                  )}
-                  {grouped.orgs.length === 0 && grouped.events.length === 0 && (
-                    <p className="text-sm text-muted">No results.</p>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      {modal}
     </>
   );
 }
