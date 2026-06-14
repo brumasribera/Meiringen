@@ -106,7 +106,7 @@ function loadEnvFile(filePath) {
   return env;
 }
 
-async function main() {
+export async function runHaslitalResearch() {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
   const env = { ...process.env, ...loadEnvFile(path.join(root, ".env.local")) };
   const dbUrl = env.POSTGRES_URL_NON_POOLING || env.POSTGRES_URL || env.DATABASE_URL;
@@ -151,9 +151,12 @@ async function main() {
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(outJson, JSON.stringify(report, null, 2));
   console.log(`Wrote ${outJson}`);
+  return outJson;
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
+  runHaslitalResearch().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}

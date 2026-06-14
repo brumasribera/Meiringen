@@ -7,6 +7,10 @@
     {
       "path": "/api/cron/scrape",
       "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/org-research",
+      "schedule": "0 7 * * 1"
     }
   ]
 }
