@@ -6,46 +6,46 @@ alter table public.organizations
 -- Dedicated websites discovered for orgs that only had portal listings
 update public.organizations set
   website_url = 'https://www.jkmeiringen.ch',
-  image_url = 'https://www.google.com/s2/favicons?domain=jkmeiringen.ch&sz=128'
+  image_url = '/brand/org-logos/jkmeiringen.ch.png'
 where slug = 'jodlerklub-meiringen';
 
 update public.organizations set
   website_url = 'https://www.pfadimeiringenbrienz.ch',
-  image_url = 'https://www.google.com/s2/favicons?domain=pfadimeiringenbrienz.ch&sz=128'
+  image_url = '/brand/org-logos/pfadimeiringenbrienz.ch.png'
 where slug = 'pfadfinder-meiringen-brienz';
 
 update public.organizations set
   website_url = 'https://www.uhcbrienz.ch',
-  image_url = 'https://www.google.com/s2/favicons?domain=uhcbrienz.ch&sz=128'
+  image_url = '/brand/org-logos/uhcbrienz.ch.png'
 where slug = 'uhc-brienz-oberhasli';
 
 update public.organizations set
   website_url = 'https://www.alpbachschlucht.ch',
-  image_url = 'https://www.google.com/s2/favicons?domain=alpbachschlucht.ch&sz=128'
+  image_url = '/brand/org-logos/alpbachschlucht.ch.png'
 where slug = 'verein-pro-alpbachschlucht';
 
 -- Replace generic portal favicons with locality municipality logos
-update public.organizations set image_url = 'https://www.google.com/s2/favicons?domain=brienz.ch&sz=128'
+update public.organizations set image_url = '/brand/org-logos/brienz-ch.png'
 where locality in ('brienz', 'brienzwiler', 'oberried', 'schwanden', 'hofstetten')
   and image_url like '%haslital-brienz.ch%';
 
-update public.organizations set image_url = 'https://www.google.com/s2/favicons?domain=innertkirchen.ch&sz=128'
+update public.organizations set image_url = '/brand/org-logos/innertkirchen-ch.png'
 where locality in ('innertkirchen', 'gadmen')
   and image_url like '%haslital-brienz.ch%';
 
-update public.organizations set image_url = 'https://www.google.com/s2/favicons?domain=guttannen.ch&sz=128'
+update public.organizations set image_url = '/brand/org-logos/guttannen-ch.png'
 where locality = 'guttannen'
   and image_url like '%haslital-brienz.ch%';
 
-update public.organizations set image_url = 'https://www.google.com/s2/favicons?domain=hasliberg.ch&sz=128'
+update public.organizations set image_url = '/brand/org-logos/hasliberg-ch.png'
 where locality = 'hasliberg'
   and image_url like '%haslital-brienz.ch%';
 
-update public.organizations set image_url = 'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128'
+update public.organizations set image_url = '/brand/org-logos/meiringen-ch.png'
 where locality in ('meiringen', 'balm', 'hausen', 'schattenhalb')
   and image_url like '%haslital-brienz.ch%';
 
-update public.organizations set image_url = 'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128'
+update public.organizations set image_url = '/brand/org-logos/meiringen-ch.png'
 where image_url like '%vereinsverzeichnis.ch%'
    or image_url like '%localcities.ch%';
 
