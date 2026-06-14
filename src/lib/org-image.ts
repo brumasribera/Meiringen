@@ -1,5 +1,4 @@
 export {
-  faviconFromWebsite,
   isGenericPortalFavicon,
   isLikelyOrgIconImage,
   resolveOrgCoverImageUrl,
