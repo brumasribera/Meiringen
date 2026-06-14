@@ -26,7 +26,7 @@ const LOCAL_LOGO_ASSETS: Record<string, string> = {
   "slrg-thunoberland.ch": "/brand/org-logos/slrg-thunoberland.ch.svg",
 };
 
-const LOCAL_LOGO_ASSET_VERSION = "20260615";
+const LOCAL_LOGO_ASSET_VERSION = "20260616";
 
 export function isGenericPortalFavicon(imageUrl: string): boolean {
   return GENERIC_PORTAL_DOMAINS.some((domain) =>
