@@ -15,7 +15,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const { runHaslitalResearch } = await import("../../../../../../scripts/research-haslital-orgs.mjs");
+    const { runHaslitalResearch } = await import("../../../../../scripts/research-haslital-orgs.mjs");
     const reportPath = await runHaslitalResearch();
     return NextResponse.json({ ok: true, reportPath });
   } catch (error) {
