@@ -20,6 +20,8 @@ const LOCAL_LOGO_ASSETS: Record<string, string> = {
   "procap.ch": "/brand/org-logos/procap.ch.png",
 };
 
+const LOCAL_LOGO_ASSET_VERSION = "20260614";
+
 export function isGenericPortalFavicon(imageUrl: string): boolean {
   return GENERIC_PORTAL_DOMAINS.some((domain) =>
     imageUrl.includes(`domain=${domain}`)
@@ -58,8 +60,11 @@ export function resolveOrgImageUrl(
   websiteUrl: string | null,
   locality?: string | null
 ): string | null {
+  const withCacheBust = (asset: string) =>
+    `${asset}?v=${LOCAL_LOGO_ASSET_VERSION}`;
+
   if (imageUrl && imageUrl.startsWith("/brand/org-logos/")) {
-    return imageUrl;
+    return withCacheBust(imageUrl);
   }
 
   if (imageUrl && !isGenericPortalFavicon(imageUrl)) {
@@ -70,7 +75,7 @@ export function resolveOrgImageUrl(
     try {
       const hostname = new URL(websiteUrl).hostname.replace(/^www\./, "");
       const localAsset = LOCAL_LOGO_ASSETS[hostname];
-      if (localAsset) return localAsset;
+      if (localAsset) return withCacheBust(localAsset);
     } catch {
       // Ignore malformed URLs and fall through to locality mapping.
     }
@@ -78,7 +83,8 @@ export function resolveOrgImageUrl(
 
   if (locality && LOCALITY_LOGO_DOMAINS[locality]) {
     const localityDomain = LOCALITY_LOGO_DOMAINS[locality];
-    return LOCAL_LOGO_ASSETS[localityDomain] ?? null;
+    const asset = LOCAL_LOGO_ASSETS[localityDomain];
+    return asset ? withCacheBust(asset) : null;
   }
 
   return null;
