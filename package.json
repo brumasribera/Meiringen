@@ -12,6 +12,7 @@
     "setup:life": "node scripts/setup-meiringen-life.mjs",
     "configure:production": "node scripts/configure-production.mjs",
     "setup:google-auth": "node scripts/setup-google-auth.mjs",
+    "research:haslital": "node scripts/research-haslital-orgs.mjs",
     "test:production": "node scripts/test-features.mjs",
     "test:org-links": "node scripts/test-org-links.mjs"
   },

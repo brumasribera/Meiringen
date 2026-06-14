@@ -1,0 +1,106 @@
+[
+  {
+    "name": "Samariterverein Meiringen",
+    "slug": "samariterverein-meiringen",
+    "locality": "meiringen",
+    "category": "social",
+    "source_url": "https://www.meiringen.ch/vereinsliste/23663",
+    "website_url": "https://www.samariter-meiringen.ch",
+    "exists_as_slug": false,
+    "duplicate_website_domain": false,
+    "confidence": "confirmed",
+    "needs_review": false
+  },
+  {
+    "name": "Reitverein Oberhasli Brienz",
+    "slug": "reitverein-oberhasli-brienz",
+    "locality": "meiringen",
+    "category": "sport",
+    "source_url": "https://www.meiringen.ch/vereinsliste/23537",
+    "website_url": "https://www.reitverein-oberhasli-brienz.ch",
+    "exists_as_slug": false,
+    "duplicate_website_domain": false,
+    "confidence": "confirmed",
+    "needs_review": false
+  },
+  {
+    "name": "Kindergartenverein Meiringen",
+    "slug": "kindergartenverein-meiringen",
+    "locality": "meiringen",
+    "category": "education",
+    "source_url": "https://www.meiringen.ch/vereinsliste/29353",
+    "exists_as_slug": false,
+    "duplicate_website_domain": false,
+    "confidence": "directory-only",
+    "needs_review": false
+  },
+  {
+    "name": "Berner KMU Oberhasli",
+    "slug": "berner-kmu-oberhasli",
+    "locality": "meiringen",
+    "category": "other",
+    "source_url": "https://www.meiringen.ch/vereinsliste/31127",
+    "website_url": "https://www.kmu-oberhasli.ch",
+    "exists_as_slug": false,
+    "duplicate_website_domain": false,
+    "confidence": "confirmed",
+    "needs_review": false
+  },
+  {
+    "name": "DVO Detaillistenverein Oberhasli",
+    "slug": "dvo-detaillistenverein-oberhasli",
+    "locality": "meiringen",
+    "category": "other",
+    "source_url": "https://www.meiringen.ch/vereinsliste/38719",
+    "exists_as_slug": false,
+    "duplicate_website_domain": false,
+    "confidence": "directory-only",
+    "needs_review": false
+  },
+  {
+    "name": "Fischereiverein Oberhasli",
+    "slug": "fischereiverein-oberhasli",
+    "locality": "meiringen",
+    "category": "nature",
+    "source_url": "https://www.meiringen.ch/vereinsliste/86678",
+    "website_url": "https://www.fv-oberhasli.ch",
+    "exists_as_slug": false,
+    "duplicate_website_domain": false,
+    "confidence": "confirmed",
+    "needs_review": false
+  },
+  {
+    "name": "Dynamo Wiggäfisch",
+    "slug": "dynamo-wiggaefisch",
+    "locality": "schattenhalb",
+    "category": "social",
+    "source_url": "https://www.meiringen.ch/vereinsliste/99346",
+    "exists_as_slug": false,
+    "duplicate_website_domain": false,
+    "confidence": "directory-only",
+    "needs_review": false
+  },
+  {
+    "name": "Ringclub Oberhasli",
+    "slug": "ringclub-oberhasli",
+    "locality": "innertkirchen",
+    "category": "sport",
+    "source_url": "https://www.haslital-brienz.ch/vereine",
+    "exists_as_slug": false,
+    "duplicate_website_domain": false,
+    "confidence": "directory-only",
+    "needs_review": false
+  },
+  {
+    "name": "SLRG Sektion Thun-Oberland / Aussenstation Brienz-Meiringen",
+    "slug": "slrg-sektion-thun-oberland-aussenstation-brienz-meiringen",
+    "locality": "brienz",
+    "category": "sport",
+    "source_url": "https://www.meiringen.ch/vereinsliste/28562",
+    "website_url": "https://slrg-thunoberland.ch/brienz-meiringen",
+    "exists_as_slug": false,
+    "duplicate_website_domain": false,
+    "confidence": "confirmed",
+    "needs_review": false
+  }
+]
