@@ -32,6 +32,16 @@ export type Organization = {
   updated_at: string;
 };
 
+export type SearchResult = {
+  type: "organization" | "event";
+  id: string;
+  title: string;
+  subtitle: string | null;
+  href: string;
+  image_url: string | null;
+  category: Category;
+};
+
 export type Event = {
   id: string;
   organization_id: string | null;

@@ -9,6 +9,7 @@ import { SiteLogo } from "@/components/SiteLogo";
 import { UserAccountMenu } from "@/components/UserAccountMenu";
 import { LanguagePicker } from "@/components/LanguagePicker";
 import { actionButtonClass } from "@/lib/button-styles";
+import { HeaderSearch } from "@/components/HeaderSearch";
 
 async function loadIsAdmin(
   supabase: NonNullable<ReturnType<typeof createClient>>,
@@ -89,6 +90,7 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          <HeaderSearch />
           <LanguagePicker />
 
           {user ? (
@@ -115,6 +117,7 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
+          <HeaderSearch />
           <LanguagePicker />
           <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
             <svg
