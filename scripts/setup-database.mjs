@@ -21,6 +21,8 @@ const migrationFiles = [
   "0012_social_features.sql",
   "0013_profile_preferred_locale.sql",
   "0014_organization_cover_images.sql",
+  "0015_smart_organization_cover_images.sql",
+  "0016_organization_cover_image_credits.sql",
 ];
 
 function loadEnvFile(filePath) {
@@ -115,6 +117,8 @@ async function main() {
           "0012_social_features.sql",
           "0013_profile_preferred_locale.sql",
           "0014_organization_cover_images.sql",
+          "0015_smart_organization_cover_images.sql",
+          "0016_organization_cover_image_credits.sql",
         ]
       : migrationFiles;
 

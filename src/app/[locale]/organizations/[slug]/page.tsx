@@ -70,6 +70,23 @@ export default async function OrganizationDetailPage({ params }: Props) {
               {t(`categories.${organization.category}`)}
             </span>
           </div>
+          {coverImageUrl && organization.cover_image_credit && (
+            <div className="absolute bottom-5 right-5 max-w-[calc(100%-2.5rem)] rounded-2xl bg-black/45 px-3 py-2 text-xs text-white shadow-sm backdrop-blur-sm md:bottom-6 md:right-6 md:max-w-md">
+              <span className="font-medium">{t("organizations.photoCredit")}:</span>{" "}
+              {organization.cover_image_credit_url ? (
+                <a
+                  href={organization.cover_image_credit_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline decoration-white/50 underline-offset-2 transition hover:decoration-white"
+                >
+                  {organization.cover_image_credit}
+                </a>
+              ) : (
+                organization.cover_image_credit
+              )}
+            </div>
+          )}
           <div className="absolute left-6 top-full -translate-y-1/2 md:left-8">
             <div className="rounded-[1.75rem] bg-white p-2 shadow-[0_22px_44px_-24px_rgba(15,23,42,0.65)] ring-1 ring-black/5">
               <OrgLogo

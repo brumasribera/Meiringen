@@ -79,7 +79,8 @@
     "followActive": "Suivi",
     "followCount": "{count} abonnés",
     "relatedTitle": "Organisations similaires",
-    "relatedSubtitle": "D'autres groupes que les habitants de la région pourraient aimer découvrir."
+    "relatedSubtitle": "D'autres groupes que les habitants de la région pourraient aimer découvrir.",
+    "photoCredit": "Crédit photo"
   },
   "about": {
     "title": "À propos de Meiringen.life",

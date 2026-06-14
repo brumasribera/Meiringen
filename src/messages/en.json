@@ -79,7 +79,8 @@
     "followActive": "Following",
     "followCount": "{count} followers",
     "relatedTitle": "Similar organizations",
-    "relatedSubtitle": "More groups people in the region may want to discover."
+    "relatedSubtitle": "More groups people in the region may want to discover.",
+    "photoCredit": "Photo credit"
   },
   "about": {
     "title": "About Meiringen.life",

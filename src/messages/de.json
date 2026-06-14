@@ -79,7 +79,8 @@
     "followActive": "Du folgst",
     "followCount": "{count} Follower",
     "relatedTitle": "Ähnliche Organisationen",
-    "relatedSubtitle": "Weitere Gruppen, die Menschen in der Region interessieren könnten."
+    "relatedSubtitle": "Weitere Gruppen, die Menschen in der Region interessieren könnten.",
+    "photoCredit": "Bildnachweis"
   },
   "about": {
     "title": "Über Meiringen.life",

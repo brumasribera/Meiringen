@@ -105,6 +105,16 @@ export function OrganizationForm({ organization, locale }: Props) {
           <input name="cover_image_url" type="url" defaultValue={organization?.cover_image_url ?? ""} className={inputClass} />
         </div>
       </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label className="text-sm font-medium">Cover Image Credit</label>
+          <input name="cover_image_credit" defaultValue={organization?.cover_image_credit ?? ""} className={inputClass} />
+        </div>
+        <div>
+          <label className="text-sm font-medium">Cover Credit Link</label>
+          <input name="cover_image_credit_url" type="url" defaultValue={organization?.cover_image_credit_url ?? ""} className={inputClass} />
+        </div>
+      </div>
       <div>
         <label className="text-sm font-medium">Source URL</label>
         <input name="source_url" type="url" defaultValue={organization?.source_url ?? ""} className={inputClass} />
