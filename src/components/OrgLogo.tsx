@@ -1,4 +1,6 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
 import { resolveOrgImageUrl } from "@/lib/org-image";
 
 type Props = {
@@ -23,6 +25,7 @@ export function OrgLogo({
   size = "md",
 }: Props) {
   const src = resolveOrgImageUrl(imageUrl ?? null, websiteUrl ?? null, locality);
+  const [imageFailed, setImageFailed] = useState(false);
   const s = sizes[size];
   const initials = name
     .split(" ")
@@ -31,18 +34,16 @@ export function OrgLogo({
     .join("")
     .toUpperCase();
 
-  if (src) {
+  if (src && !imageFailed) {
     return (
       <div
         className={`${s.box} relative shrink-0 overflow-hidden rounded-xl border border-border bg-white`}
       >
-        <Image
+        <img
           src={src}
           alt={`${name} logo`}
-          width={s.px}
-          height={s.px}
           className="h-full w-full object-contain p-1"
-          unoptimized
+          onError={() => setImageFailed(true)}
         />
       </div>
     );
