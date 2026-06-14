@@ -60,25 +60,29 @@ export function EventInterestButton({
   }
 
   return (
-    <div>
+    <div className="flex flex-col items-start">
       <button
         type="button"
         onClick={handleToggle}
         disabled={loading}
         className={
           interested
-            ? "rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-light disabled:opacity-60"
-            : `${actionButtonClass} px-5 py-2.5 text-sm`
+            ? "inline-flex min-w-[10.5rem] items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-light disabled:opacity-60"
+            : `${actionButtonClass} inline-flex min-w-[10.5rem] items-center justify-center px-5 py-2.5 text-sm`
         }
       >
         {loading ? "…" : interested ? t("interestActive") : t("interestCta")}
       </button>
-      {interestCount > 0 && (
-        <p className="mt-2 text-xs text-muted">
-          {t("interestCount", { count: interestCount })}
-        </p>
+      {(interestCount > 0 || error) && (
+        <div className="mt-2 min-h-5">
+          {interestCount > 0 && (
+            <p className="text-xs text-muted">
+              {t("interestCount", { count: interestCount })}
+            </p>
+          )}
+          {error && <p className="text-xs text-red-600">{error}</p>}
+        </div>
       )}
-      {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
     </div>
   );
 }
