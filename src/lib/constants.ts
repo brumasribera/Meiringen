@@ -18,6 +18,7 @@ export const LOCALITIES = [
   { id: "balm", lat: 46.735, lng: 8.18 },
   { id: "hausen", lat: 46.736, lng: 8.179 },
   { id: "schattenhalb", lat: 46.71, lng: 8.21 },
+  { id: "willigen", lat: 46.71, lng: 8.215 },
   { id: "brienz", lat: 46.755, lng: 8.038 },
   { id: "brienzwiler", lat: 46.75, lng: 8.09 },
   { id: "oberried", lat: 46.73, lng: 8.1 },

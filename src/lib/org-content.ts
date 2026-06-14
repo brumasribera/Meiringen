@@ -4,6 +4,22 @@ const GENERIC_PORTAL_DOMAINS = [
   "localcities.ch",
 ];
 
+const LOCAL_LOGO_ASSETS: Record<string, string> = {
+  "mgmeiringen.ch": "/brand/org-logos/mgmeiringen.ch.png",
+  "meiringen.ch": "/brand/org-logos/meiringen-ch.png",
+  "haslital-brienz.ch": "/brand/org-logos/haslital-brienz-ch.png",
+  "brienz.ch": "/brand/org-logos/brienz-ch.png",
+  "innertkirchen.ch": "/brand/org-logos/innertkirchen-ch.png",
+  "guttannen.ch": "/brand/org-logos/guttannen-ch.png",
+  "hasliberg.ch": "/brand/org-logos/hasliberg-ch.png",
+  "kino-meiringen.ch": "/brand/org-logos/kino-meiringen.ch.png",
+  "tvmeiringen.ch": "/brand/org-logos/tvmeiringen.ch.png",
+  "schwingklub-meiringen.ch": "/brand/org-logos/schwingklub-meiringen.ch.png",
+  "tennismeiringen.ch": "/brand/org-logos/tennismeiringen.ch.png",
+  "sac-cas.ch": "/brand/org-logos/sac-cas.ch.png",
+  "procap.ch": "/brand/org-logos/procap.ch.png",
+};
+
 export function isGenericPortalFavicon(imageUrl: string): boolean {
   return GENERIC_PORTAL_DOMAINS.some((domain) =>
     imageUrl.includes(`domain=${domain}`)
@@ -20,20 +36,12 @@ export function isLikelyOrgIconImage(imageUrl: string): boolean {
   );
 }
 
-export function faviconFromWebsite(websiteUrl: string): string {
-  try {
-    const hostname = new URL(websiteUrl).hostname;
-    return `https://www.google.com/s2/favicons?domain=${hostname}&sz=128`;
-  } catch {
-    return "";
-  }
-}
-
 const LOCALITY_LOGO_DOMAINS: Record<string, string> = {
   meiringen: "meiringen.ch",
   balm: "meiringen.ch",
   hausen: "meiringen.ch",
   schattenhalb: "meiringen.ch",
+  willigen: "meiringen.ch",
   brienz: "brienz.ch",
   brienzwiler: "brienz.ch",
   oberried: "brienz.ch",
@@ -50,19 +58,27 @@ export function resolveOrgImageUrl(
   websiteUrl: string | null,
   locality?: string | null
 ): string | null {
+  if (imageUrl && imageUrl.startsWith("/brand/org-logos/")) {
+    return imageUrl;
+  }
+
   if (imageUrl && !isGenericPortalFavicon(imageUrl)) {
     return imageUrl;
   }
 
   if (websiteUrl) {
-    const websiteFavicon = faviconFromWebsite(websiteUrl);
-    if (websiteFavicon) return websiteFavicon;
+    try {
+      const hostname = new URL(websiteUrl).hostname.replace(/^www\./, "");
+      const localAsset = LOCAL_LOGO_ASSETS[hostname];
+      if (localAsset) return localAsset;
+    } catch {
+      // Ignore malformed URLs and fall through to locality mapping.
+    }
   }
 
   if (locality && LOCALITY_LOGO_DOMAINS[locality]) {
-    return faviconFromWebsite(
-      `https://www.${LOCALITY_LOGO_DOMAINS[locality]}`
-    );
+    const localityDomain = LOCALITY_LOGO_DOMAINS[locality];
+    return LOCAL_LOGO_ASSETS[localityDomain] ?? null;
   }
 
   return null;

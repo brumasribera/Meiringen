@@ -21,6 +21,10 @@ update public.organizations set locality = 'brienz'
 update public.organizations set locality = 'meiringen'
   where locality is null;
 
+update public.organizations set locality = 'willigen'
+  where address ilike '%Willigen%'
+    and locality is null;
+
 -- Fix orgs that serve Brienz but were defaulting to Meiringen
 update public.organizations set locality = 'brienz'
   where slug in ('schwingklub-meiringen');
@@ -41,7 +45,7 @@ insert into public.organizations (
   '3862 Innertkirchen',
   46.7000, 8.2300,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'innertkirchen'
 ),
@@ -56,7 +60,7 @@ insert into public.organizations (
   '3862 Innertkirchen',
   46.7005, 8.2295,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'innertkirchen'
 ),
@@ -71,7 +75,7 @@ insert into public.organizations (
   '3862 Innertkirchen',
   46.6995, 8.2310,
   array['de'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'innertkirchen'
 ),
@@ -86,7 +90,7 @@ insert into public.organizations (
   '3862 Innertkirchen',
   46.7000, 8.2300,
   array['de','gsw','en'],
-  'https://www.google.com/s2/favicons?domain=innertkirchen.ch&sz=128',
+  '/brand/org-logos/innertkirchen-ch.png',
   'https://www.innertkirchen.ch',
   'innertkirchen'
 ),
@@ -101,7 +105,7 @@ insert into public.organizations (
   '3855 Brienz',
   46.7550, 8.0380,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'brienz'
 ),
@@ -116,7 +120,7 @@ insert into public.organizations (
   '3855 Brienz',
   46.7545, 8.0390,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'brienz'
 ),
@@ -131,7 +135,7 @@ insert into public.organizations (
   '3855 Brienz',
   46.7555, 8.0370,
   array['de'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'brienz'
 ),
@@ -146,7 +150,7 @@ insert into public.organizations (
   '3855 Brienz',
   46.7560, 8.0400,
   array['de','gsw','en'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'brienz'
 ),
@@ -161,7 +165,7 @@ insert into public.organizations (
   '3855 Brienz',
   46.7550, 8.0380,
   array['de','gsw','en','fr','it'],
-  'https://www.google.com/s2/favicons?domain=brienz.ch&sz=128',
+  '/brand/org-logos/brienz-ch.png',
   'https://www.brienz.ch',
   'brienz'
 ),
@@ -176,7 +180,7 @@ insert into public.organizations (
   '3856 Brienzwiler',
   46.7500, 8.0900,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'brienzwiler'
 ),
@@ -191,7 +195,7 @@ insert into public.organizations (
   '3856 Brienzwiler',
   46.7505, 8.0910,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'brienzwiler'
 ),
@@ -206,7 +210,7 @@ insert into public.organizations (
   '3856 Brienzwiler',
   46.7495, 8.0890,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'brienzwiler'
 ),
@@ -221,7 +225,7 @@ insert into public.organizations (
   '3863 Gadmen',
   46.7350, 8.3500,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'gadmen'
 ),
@@ -236,7 +240,7 @@ insert into public.organizations (
   '3863 Gadmen',
   46.7340, 8.3510,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'gadmen'
 ),
@@ -251,7 +255,7 @@ insert into public.organizations (
   '3863 Gadmen',
   46.7355, 8.3490,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'gadmen'
 ),
@@ -266,7 +270,7 @@ insert into public.organizations (
   '6083 Hasliberg',
   46.7500, 8.1700,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'hasliberg'
 ),
@@ -281,7 +285,7 @@ insert into public.organizations (
   '6083 Hasliberg',
   46.7510, 8.1710,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'hasliberg'
 ),
@@ -296,7 +300,7 @@ insert into public.organizations (
   '6083 Hasliberg',
   46.7490, 8.1690,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'hasliberg'
 ),
@@ -311,7 +315,7 @@ insert into public.organizations (
   '3854 Oberried am Brienzersee',
   46.7300, 8.1000,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'oberried'
 ),
@@ -326,7 +330,7 @@ insert into public.organizations (
   '3854 Oberried am Brienzersee',
   46.7305, 8.1010,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'oberried'
 ),
@@ -341,7 +345,7 @@ insert into public.organizations (
   '3858 Hofstetten bei Brienz',
   46.7800, 8.0700,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'hofstetten'
 ),
@@ -356,7 +360,7 @@ insert into public.organizations (
   '3858 Hofstetten bei Brienz',
   46.7805, 8.0710,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'hofstetten'
 ),
@@ -371,7 +375,7 @@ insert into public.organizations (
   '3857 Schwanden bei Brienz',
   46.7600, 8.1300,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'schwanden'
 ),
@@ -386,7 +390,7 @@ insert into public.organizations (
   '3857 Schwanden bei Brienz',
   46.7605, 8.1310,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'schwanden'
 ),
@@ -401,7 +405,7 @@ insert into public.organizations (
   '3864 Guttannen',
   46.6600, 8.2900,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'guttannen'
 ),
@@ -416,7 +420,7 @@ insert into public.organizations (
   '3864 Guttannen',
   46.6605, 8.2910,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'guttannen'
 ),
@@ -431,7 +435,7 @@ insert into public.organizations (
   '3864 Guttannen',
   46.6595, 8.2890,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'guttannen'
 ),
@@ -446,7 +450,7 @@ insert into public.organizations (
   '3860 Schattenhalb',
   46.7100, 8.2100,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine',
   'schattenhalb'
 )
