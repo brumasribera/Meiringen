@@ -84,16 +84,28 @@ export function HeaderSearch() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-2 rounded-full border border-border bg-white/75 px-4 py-2 text-sm font-medium text-foreground shadow-sm transition hover:border-primary hover:text-primary"
+        className="inline-flex h-10 items-center gap-2 rounded-full border border-border bg-white/75 px-3.5 text-sm font-medium text-foreground shadow-sm transition hover:border-primary hover:text-primary md:px-4"
         aria-label={t("common.search")}
       >
-        <span className="text-base">⌕</span>
-        <span className="hidden lg:inline">{t("common.search")}</span>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-4 w-4 shrink-0"
+          aria-hidden="true"
+        >
+          <circle cx="11" cy="11" r="7" />
+          <path d="m16.5 16.5 4 4" />
+        </svg>
+        <span className="hidden text-sm lg:inline">{t("common.search")}</span>
       </button>
 
       {open && (
         <div
-          className="fixed inset-0 z-[80] bg-black/30 px-4 py-6 backdrop-blur-sm"
+          className="fixed inset-0 z-[80] bg-black/70 px-4 py-6 backdrop-blur-sm"
           onClick={() => setOpen(false)}
         >
           <div
