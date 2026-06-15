@@ -17,7 +17,7 @@ const languageOptions = {
   en: { label: "English", flag: "/flags/england-flag.png" },
   fr: { label: "French", flag: "/flags/france-flag.png" },
   it: { label: "Italian", flag: "/flags/italy-flag.png" },
-  rm: { label: "Romansh", flag: "/flags/rm.svg" },
+  rm: { label: "Romansh", flag: "/flags/romania-flag.png" },
   pt: { label: "Portuguese", flag: "/flags/portugal-flag.png" },
 } satisfies Record<(typeof locales)[number], { label: string; flag: string }>;
 
