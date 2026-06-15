@@ -7,7 +7,7 @@ type Props = {
   href?: string | null;
 };
 
-const iconSizes = { sm: 28, md: 36, lg: 44 };
+const iconSizes = { sm: 32, md: 42, lg: 52 };
 const textSizes = {
   sm: "text-base",
   md: "text-xl",
@@ -22,7 +22,7 @@ function LogoMark({ size }: { size: number }) {
       height={size}
       alt=""
       aria-hidden
-      className="shrink-0 rounded-[0.7rem] object-cover"
+      className="shrink-0 object-cover"
     />
   );
 }
