@@ -18,7 +18,7 @@ const LOCAL_LOGO_ASSETS: Record<string, string> = {
   "tennismeiringen.ch": "/brand/org-logos/tennismeiringen.ch.png",
   "sac-cas.ch": "/brand/org-logos/sac-cas.ch.png",
   "procap.ch": "/brand/org-logos/procap.ch.png",
-  "lgwilligen.ch": "/brand/org-logos/lgwilligen.ch.svg",
+  "lgwilligen.ch": "/brand/org-logos/laufgruppe-willigen.instagram.jpg",
   "samariter-meiringen.ch": "/brand/org-logos/samariter-meiringen.ch.svg",
   "reitverein-oberhasli-brienz.ch": "/brand/org-logos/reitverein-oberhasli-brienz.ch.svg",
   "kmu-oberhasli.ch": "/brand/org-logos/kmu-oberhasli.ch.svg",
@@ -26,7 +26,7 @@ const LOCAL_LOGO_ASSETS: Record<string, string> = {
   "slrg-thunoberland.ch": "/brand/org-logos/slrg-thunoberland.ch.svg",
 };
 
-const LOCAL_LOGO_ASSET_VERSION = "20260616";
+const LOCAL_LOGO_ASSET_VERSION = "20260616b";
 
 export function isGenericPortalFavicon(imageUrl: string): boolean {
   return GENERIC_PORTAL_DOMAINS.some((domain) =>
