@@ -1,0 +1,45 @@
+<svg width="169" height="185" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="171" height="187" id="canvas_background" fill="none"/>
+  <g id="canvasGrid" display="none">
+   <rect id="svg_3" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <text fill="#000000" stroke-width="0" x="-9.804468" y="214.915712" id="svg_1" font-size="24" font-family="'Trebuchet MS', Gadget, sans-serif" text-anchor="start" xml:space="preserve" font-weight="bold" transform="matrix(0.9319821000099181,0,0,1.0116824611855577,15.637588948011398,1.1765366173612168) " stroke="#000">schweizerjodel.ch</text>
+  <text fill="#000000" stroke-width="0" x="-25.826785" y="240.717877" id="svg_2" font-size="24" font-family="'Trebuchet MS', Gadget, sans-serif" text-anchor="start" xml:space="preserve" transform="matrix(0.8509648591662379,0,0,0.9094798679088668,26.540810256280558,23.816181934978708) " stroke="#000">Brauchtum bewahren</text>
+  <g id="svg_50" stroke="null" transform="matrix(0.9319821000099181,0,0,1.0116824611855577,15.637588948011398,1.1765366173612168) ">
+   <g id="svg_48" transform="rotate(59.123199462890625 62.94580078125001,141.4974822998047) matrix(3.3850910595044588,0,0,3.2574007000156877,-56.93612511810717,-219.07596187256217) " stroke="null">
+    <title transform="translate(0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(0,0.30344823002815247) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(0,-0.30344823002815247) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(0,-0.30344823002815247) translate(-2.535782814025879,-3.03448224067688) translate(-1.2678914070129395,0) ">background</title>
+    <rect fill="none" id="svg_46" height="97" width="57" y="63.314945" x="2.868301" stroke="null"/>
+   </g>
+   <g id="svg_49" transform="matrix(3.3850910595044588,0,0,3.2574007000156877,-56.93612511810717,-219.07596187256217) " stroke="null">
+    <title transform="translate(0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(0,0.30344823002815247) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(0,-0.30344823002815247) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(-0.31697285175323486,0) translate(0,-0.30344823002815247) translate(-2.535782814025879,-3.03448224067688) translate(-1.2678914070129395,0) ">Layer 1</title>
+    <path id="svg_45" fill="#D80027" d="m62.717192,67.63388c-0.216,-0.189 -0.501,-0.275 -0.789,-0.241l-31,4.011c-0.498,0.065 -0.871,0.488 -0.871,0.991l0,6.017l0,4.212l0,25.384c-1.826,-2.195 -4.727,-3.623 -8,-3.623c-5.514,0 -10,4.037 -10,9s4.486,9 10,9s10,-4.037 10,-9c0,-0.232 -0.019,-0.46 -0.039,-0.687c0.013,-0.065 0.039,-0.124 0.039,-0.192l0,-29.003l29,-3.753l0,18.257c-1.826,-2.194 -4.727,-3.622 -8,-3.622c-5.514,0 -10,4.037 -10,9s4.486,9 10,9c5.464,0 9.913,-3.966 9.993,-8.867c0,-0.013 0.007,-0.024 0.007,-0.037l0,-24.869l0,-4.211l0,-6.016c0,-0.288 -0.124,-0.562 -0.34,-0.751zm-40.66,52.751c-4.411,0 -8,-3.141 -8,-7s3.589,-7 8,-7s8,3.141 8,7s-3.589,7 -8,7zm31,-10c-4.411,0 -8,-3.141 -8,-7s3.589,-7 8,-7s8,3.141 8,7s-3.589,7 -8,7zm-21,-28.899l0,-3.074l0,-5.138l29,-3.752l0,4.879l0,3.332l-29,3.753z" stroke="null"/>
+    <g id="svg_44" stroke="null"/>
+    <g id="svg_43" stroke="null"/>
+    <g id="svg_42" stroke="null"/>
+    <g id="svg_41" stroke="null"/>
+    <g id="svg_40" stroke="null"/>
+    <g id="svg_39" stroke="null"/>
+    <g id="svg_38" stroke="null"/>
+    <g id="svg_37" stroke="null"/>
+    <g id="svg_36" stroke="null"/>
+    <g id="svg_35" stroke="null"/>
+    <g id="svg_34" stroke="null"/>
+    <g id="svg_33" stroke="null"/>
+    <g id="svg_32" stroke="null"/>
+    <g id="svg_31" stroke="null"/>
+    <g id="svg_30" stroke="null"/>
+    <rect transform="rotate(-8 46.297382354736506,75.79105377197264) " id="svg_29" height="9.334181" width="30.993677" y="71.123946" x="30.800546" fill-opacity="null" stroke-opacity="null" stroke-width="null" fill="#D80027" stroke="null"/>
+    <rect transform="rotate(-8 46.37389755249028,84.68504333496097) " id="svg_28" height="8.155335" width="30.8304" y="80.60736" x="30.958705" fill-opacity="null" stroke-opacity="null" stroke-width="null" fill="#D80027" stroke="null"/>
+    <rect id="svg_27" height="14.368925" width="5.048541" y="71.32502" x="43.384764" stroke-opacity="null" stroke-width="null" fill="#ffffff" stroke="null"/>
+    <rect transform="rotate(90 45.90902709960937,78.50949859619142) " id="svg_26" height="14.368925" width="5.048541" y="71.32502" x="43.384764" stroke-opacity="null" stroke-width="null" fill="#ffffff" stroke="null"/>
+   </g>
+  </g>
+ </g>
+</svg>

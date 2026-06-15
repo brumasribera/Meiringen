@@ -13,6 +13,7 @@
     "configure:production": "node scripts/configure-production.mjs",
     "setup:google-auth": "node scripts/setup-google-auth.mjs",
     "research:haslital": "node scripts/research-haslital-orgs.mjs",
+    "research:org-media": "node scripts/discover-org-media.mjs",
     "test:production": "node scripts/test-features.mjs",
     "test:org-links": "node scripts/test-org-links.mjs"
   },
