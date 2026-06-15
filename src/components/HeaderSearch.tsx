@@ -41,17 +41,10 @@ export function HeaderSearch() {
 
   useEffect(() => {
     if (!open) return;
-    const trimmed = query.trim();
-    if (!trimmed) {
-      setResults([]);
-      setLoading(false);
-      return;
-    }
-
     const controller = new AbortController();
-    setLoading(true);
     const timer = window.setTimeout(async () => {
       try {
+        const trimmed = query.trim();
         const response = await fetch(
           `/api/search?q=${encodeURIComponent(trimmed)}&locale=${locale}`,
           { signal: controller.signal }
@@ -96,7 +89,10 @@ export function HeaderSearch() {
                   <input
                     autoFocus
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e) => {
+                      setQuery(e.target.value);
+                      setLoading(true);
+                    }}
                     placeholder={`${t("common.search")} orgs, events...`}
                     className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary"
                   />
@@ -110,9 +106,7 @@ export function HeaderSearch() {
                 </div>
               </div>
               <div className="max-h-[70vh] overflow-auto p-4">
-                {!query.trim() ? (
-                  <p className="text-sm text-muted">{t("common.search")}</p>
-                ) : loading ? (
+                {loading ? (
                   <p className="text-sm text-muted">Loading…</p>
                 ) : (
                   <div className="space-y-5">
@@ -193,7 +187,11 @@ export function HeaderSearch() {
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setOpen(true);
+          setQuery("");
+          setLoading(true);
+        }}
         className="inline-flex h-10 items-center gap-2 rounded-full border border-border bg-white/75 px-3.5 text-sm font-medium text-foreground shadow-sm transition hover:border-primary hover:text-primary md:px-4"
         aria-label={t("common.search")}
       >

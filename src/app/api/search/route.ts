@@ -10,28 +10,42 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const q = (url.searchParams.get("q") ?? "").trim();
 
-  if (q.length < 2) {
-    return NextResponse.json({ results: [] satisfies SearchResult[] });
-  }
-
   const supabase = await createServiceClient();
   const [orgsRes, eventsRes] = await Promise.all([
-    supabase
-      .from("organizations")
-      .select(
-        "id, slug, name, category, description, website_url, image_url, cover_image_url, locality"
-      )
-      .ilike("name", `%${q}%`)
-      .limit(5),
-    supabase
-      .from("events")
-      .select(
-        "id, slug, title, category, organization:organizations(id, slug, name, category, website_url, image_url, cover_image_url, locality)"
-      )
-      .eq("status", "published")
-      .ilike("title", `%${q}%`)
-      .order("start_date")
-      .limit(5),
+    q
+      ? supabase
+          .from("organizations")
+          .select(
+            "id, slug, name, category, description, website_url, image_url, cover_image_url, locality"
+          )
+          .or(`name.ilike.%${q}%,locality.ilike.%${q}%`)
+          .order("name")
+          .limit(8)
+      : supabase
+          .from("organizations")
+          .select(
+            "id, slug, name, category, description, website_url, image_url, cover_image_url, locality"
+          )
+          .order("name")
+          .limit(12),
+    q
+      ? supabase
+          .from("events")
+          .select(
+            "id, slug, title, category, organization:organizations(id, slug, name, category, website_url, image_url, cover_image_url, locality)"
+          )
+          .eq("status", "published")
+          .or(`title.ilike.%${q}%`)
+          .order("start_date")
+          .limit(8)
+      : supabase
+          .from("events")
+          .select(
+            "id, slug, title, category, organization:organizations(id, slug, name, category, website_url, image_url, cover_image_url, locality)"
+          )
+          .eq("status", "published")
+          .order("start_date")
+          .limit(12),
   ]);
 
   const results: SearchResult[] = [];
