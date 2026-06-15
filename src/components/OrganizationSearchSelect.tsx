@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { Organization } from "@/lib/types";
+import { selectControlClass } from "@/lib/form-styles";
 
 type Props = {
   organizations: Organization[];
@@ -34,9 +35,7 @@ export function OrganizationSearchSelect({
     });
   }, [organizations, search, value]);
 
-  const inputClass =
-    className ??
-    "w-full rounded-xl border border-border bg-card px-3 py-2 text-sm";
+  const inputClass = className ?? selectControlClass;
 
   return (
     <div className="space-y-2">

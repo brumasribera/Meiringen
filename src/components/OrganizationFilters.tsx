@@ -4,6 +4,7 @@ import { useRouter, usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { CATEGORIES, LOCALITIES } from "@/lib/constants";
 import { useSearchParams } from "next/navigation";
+import { selectControlClass } from "@/lib/form-styles";
 
 export function OrganizationFilters() {
   const t = useTranslations();
@@ -21,8 +22,7 @@ export function OrganizationFilters() {
     router.push(`${pathname}?${params.toString()}`);
   }
 
-  const inputClass =
-    "w-full rounded-xl border border-border bg-card px-3 py-2 text-sm";
+  const inputClass = selectControlClass;
 
   return (
     <div className="grid gap-4 rounded-2xl border border-border bg-card p-5 sm:grid-cols-2 lg:grid-cols-3">

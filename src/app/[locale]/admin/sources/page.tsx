@@ -7,6 +7,7 @@ import {
 } from "@/lib/actions/admin";
 import { SCRAPER_TYPES } from "@/lib/constants";
 import type { ScrapingSource } from "@/lib/types";
+import { selectControlClass, textControlClass } from "@/lib/form-styles";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -24,8 +25,8 @@ export default async function AdminSourcesPage({ params }: Props) {
     .select("*")
     .order("name");
 
-  const inputClass =
-    "w-full rounded-xl border border-border bg-background px-3 py-2 text-sm";
+  const inputClass = textControlClass;
+  const selectClass = selectControlClass;
 
   return (
     <div className="space-y-8">
@@ -34,7 +35,7 @@ export default async function AdminSourcesPage({ params }: Props) {
       <form action={createSourceAction} className="grid gap-4 rounded-2xl border border-border bg-card p-6 sm:grid-cols-2">
         <input name="name" required placeholder="Name" className={inputClass} />
         <input name="url" required type="url" placeholder="URL" className={inputClass} />
-        <select name="type" defaultValue="generic" className={inputClass}>
+        <select name="type" defaultValue="generic" className={selectClass}>
           {SCRAPER_TYPES.map((t) => (
             <option key={t} value={t}>{t}</option>
           ))}
@@ -57,7 +58,7 @@ export default async function AdminSourcesPage({ params }: Props) {
           >
             <input name="name" required defaultValue={source.name} className={inputClass} />
             <input name="url" required type="url" defaultValue={source.url} className={inputClass} />
-            <select name="type" defaultValue={source.type} className={inputClass}>
+            <select name="type" defaultValue={source.type} className={selectClass}>
               {SCRAPER_TYPES.map((t) => (
                 <option key={t} value={t}>{t}</option>
               ))}

@@ -4,6 +4,7 @@ import {
   updateOrganizationAction,
 } from "@/lib/actions/admin";
 import type { Organization } from "@/lib/types";
+import { selectControlClass, textControlClass } from "@/lib/form-styles";
 
 type Props = {
   organization?: Organization;
@@ -15,8 +16,8 @@ export function OrganizationForm({ organization, locale }: Props) {
     ? updateOrganizationAction.bind(null, organization.id)
     : createOrganizationAction;
 
-  const inputClass =
-    "w-full rounded-xl border border-border bg-background px-3 py-2 text-sm";
+  const inputClass = textControlClass;
+  const selectClass = selectControlClass;
 
   return (
     <form action={action} className="space-y-4 rounded-2xl border border-border bg-card p-6">
@@ -41,7 +42,7 @@ export function OrganizationForm({ organization, locale }: Props) {
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label className="text-sm font-medium">Category *</label>
-          <select name="category" required defaultValue={organization?.category} className={inputClass}>
+          <select name="category" required defaultValue={organization?.category} className={selectClass}>
             {CATEGORIES.map((c) => (
               <option key={c} value={c}>{c}</option>
             ))}
@@ -73,7 +74,7 @@ export function OrganizationForm({ organization, locale }: Props) {
       </div>
       <div>
         <label className="text-sm font-medium">Locality</label>
-        <select name="locality" defaultValue={organization?.locality ?? "meiringen"} className={inputClass}>
+        <select name="locality" defaultValue={organization?.locality ?? "meiringen"} className={selectClass}>
           {LOCALITIES.map((locality) => (
             <option key={locality.id} value={locality.id}>
               {locality.id}

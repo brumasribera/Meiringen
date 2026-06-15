@@ -6,6 +6,7 @@ import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
 import type { Organization } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
 import { OrganizationSearchSelect } from "@/components/OrganizationSearchSelect";
+import { selectControlClass } from "@/lib/form-styles";
 
 type Props = {
   organizations: Organization[];
@@ -27,9 +28,6 @@ export function EventFilters({ organizations }: Props) {
     router.push(`${pathname}?${params.toString()}`);
   }
 
-  const selectClass =
-    "w-full rounded-xl border border-border bg-card px-3 py-2 text-sm";
-
   return (
     <div className="grid gap-4 rounded-2xl border border-border bg-card p-5 sm:grid-cols-2 lg:grid-cols-3">
       <div>
@@ -40,7 +38,7 @@ export function EventFilters({ organizations }: Props) {
           type="search"
           defaultValue={searchParams.get("search") ?? ""}
           onChange={(e) => update("search", e.target.value)}
-          className={selectClass}
+          className={selectControlClass}
           placeholder={t("events.search")}
         />
       </div>
@@ -51,7 +49,7 @@ export function EventFilters({ organizations }: Props) {
         <select
           value={searchParams.get("category") ?? ""}
           onChange={(e) => update("category", e.target.value)}
-          className={selectClass}
+          className={selectControlClass}
         >
           <option value="">{t("events.all")}</option>
           {CATEGORIES.map((c) => (
@@ -68,7 +66,7 @@ export function EventFilters({ organizations }: Props) {
         <select
           value={searchParams.get("language") ?? ""}
           onChange={(e) => update("language", e.target.value)}
-          className={selectClass}
+          className={selectControlClass}
         >
           <option value="">{t("events.all")}</option>
           {CONTENT_LANGUAGES.map((l) => (
@@ -98,7 +96,7 @@ export function EventFilters({ organizations }: Props) {
           type="date"
           defaultValue={searchParams.get("dateFrom") ?? ""}
           onChange={(e) => update("dateFrom", e.target.value)}
-          className={selectClass}
+          className={selectControlClass}
         />
       </div>
       <div>
@@ -109,7 +107,7 @@ export function EventFilters({ organizations }: Props) {
           type="date"
           defaultValue={searchParams.get("dateTo") ?? ""}
           onChange={(e) => update("dateTo", e.target.value)}
-          className={selectClass}
+          className={selectControlClass}
         />
       </div>
     </div>

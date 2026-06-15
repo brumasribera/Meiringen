@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocale } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import {
@@ -10,16 +10,41 @@ import {
   locales,
 } from "@/i18n/constants";
 
+function persistLocaleCookie(value: string) {
+  document.cookie = `${localeCookieName}=${encodeURIComponent(
+    value,
+  )}; path=/; max-age=${localeCookieMaxAge}; SameSite=Lax`;
+}
+
 export function LanguagePicker({ className = "" }: { className?: string }) {
   const locale = useLocale();
   const [selectedLocale, setSelectedLocale] = useState(locale);
   const [saving, setSaving] = useState(false);
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
 
-  function persistLocaleCookie(value: string) {
-    document.cookie = `${localeCookieName}=${encodeURIComponent(
-      value,
-    )}; path=/; max-age=${localeCookieMaxAge}; SameSite=Lax`;
-  }
+  useEffect(() => {
+    if (!open) return;
+
+    function handlePointerDown(event: MouseEvent) {
+      if (!rootRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [open]);
 
   async function handleChange(nextLocale: string) {
     if (!isLocale(nextLocale)) {
@@ -55,23 +80,63 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
     window.location.reload();
   }
 
+  const currentLocale = saving ? selectedLocale : locale;
+
   return (
-    <label
-      className={`group inline-flex cursor-pointer items-center rounded-full px-1.5 py-0.5 transition hover:bg-[#F4C430]/25 ${className}`}
-    >
-      <select
-        value={saving ? selectedLocale : locale}
-        onChange={(e) => void handleChange(e.target.value)}
+    <div ref={rootRef} className={`relative ${className}`}>
+      <button
+        type="button"
+        onClick={() => setOpen((value) => !value)}
         disabled={saving}
-        className="w-[2.25rem] cursor-pointer appearance-none border-0 bg-transparent text-center text-[11px] font-bold uppercase tracking-wide text-muted outline-none group-hover:text-[#111111]"
+        className="flex min-h-10 min-w-14 items-center justify-between gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold uppercase tracking-wide text-muted shadow-sm transition hover:border-[#F4C430]/60 hover:bg-[#F4C430]/10 hover:text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#F4C430]/25 disabled:cursor-not-allowed disabled:opacity-70"
         aria-label="Language"
+        aria-haspopup="menu"
+        aria-expanded={open}
       >
-        {locales.map((l) => (
-          <option key={l} value={l}>
-            {l.toUpperCase()}
-          </option>
-        ))}
-      </select>
-    </label>
+        <span>{currentLocale.toUpperCase()}</span>
+        <svg
+          className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`}
+          viewBox="0 0 20 20"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="m6 8 4 4 4-4"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+
+      {open && (
+        <div
+          role="menu"
+          className="absolute right-0 z-50 mt-2 min-w-24 overflow-hidden rounded-2xl border border-border bg-card p-1 shadow-[0_18px_45px_-24px_rgba(27,67,50,0.45)]"
+        >
+          {locales.map((l) => (
+            <button
+              key={l}
+              type="button"
+              role="menuitemradio"
+              aria-checked={currentLocale === l}
+              onClick={() => {
+                setOpen(false);
+                void handleChange(l);
+              }}
+              className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-medium transition ${
+                currentLocale === l
+                  ? "bg-[#F4C430] text-[#111111]"
+                  : "text-foreground hover:bg-[#F4C430]/12 hover:text-[#111111]"
+              }`}
+            >
+              <span>{l.toUpperCase()}</span>
+              {currentLocale === l && <span className="text-xs font-bold">✓</span>}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

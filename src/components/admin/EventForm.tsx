@@ -1,6 +1,7 @@
 import { CATEGORIES, CONTENT_LANGUAGES, EVENT_STATUSES } from "@/lib/constants";
 import { createEventAction, updateEventAction } from "@/lib/actions/admin";
 import type { Event, Organization } from "@/lib/types";
+import { selectControlClass, textControlClass } from "@/lib/form-styles";
 
 type Props = {
   event?: Event;
@@ -13,8 +14,8 @@ export function EventForm({ event, organizations, locale }: Props) {
     ? updateEventAction.bind(null, event.id)
     : createEventAction;
 
-  const inputClass =
-    "w-full rounded-xl border border-border bg-background px-3 py-2 text-sm";
+  const inputClass = textControlClass;
+  const selectClass = selectControlClass;
 
   const startDefault = event?.start_date
     ? new Date(event.start_date).toISOString().slice(0, 16)
@@ -42,7 +43,7 @@ export function EventForm({ event, organizations, locale }: Props) {
       <div className="grid gap-4 sm:grid-cols-3">
         <div>
           <label className="text-sm font-medium">Category *</label>
-          <select name="category" required defaultValue={event?.category ?? "culture"} className={inputClass}>
+          <select name="category" required defaultValue={event?.category ?? "culture"} className={selectClass}>
             {CATEGORIES.map((c) => (
               <option key={c} value={c}>{c}</option>
             ))}
@@ -50,7 +51,7 @@ export function EventForm({ event, organizations, locale }: Props) {
         </div>
         <div>
           <label className="text-sm font-medium">Organization</label>
-          <select name="organization_id" defaultValue={event?.organization_id ?? ""} className={inputClass}>
+          <select name="organization_id" defaultValue={event?.organization_id ?? ""} className={selectClass}>
             <option value="">—</option>
             {organizations.map((o) => (
               <option key={o.id} value={o.id}>{o.name}</option>
@@ -59,7 +60,7 @@ export function EventForm({ event, organizations, locale }: Props) {
         </div>
         <div>
           <label className="text-sm font-medium">Status</label>
-          <select name="status" defaultValue={event?.status ?? "published"} className={inputClass}>
+          <select name="status" defaultValue={event?.status ?? "published"} className={selectClass}>
             {EVENT_STATUSES.map((s) => (
               <option key={s} value={s}>{s}</option>
             ))}
@@ -93,7 +94,7 @@ export function EventForm({ event, organizations, locale }: Props) {
         </div>
         <div>
           <label className="text-sm font-medium">Language</label>
-          <select name="language" defaultValue={event?.language ?? ""} className={inputClass}>
+          <select name="language" defaultValue={event?.language ?? ""} className={selectClass}>
             <option value="">—</option>
             {CONTENT_LANGUAGES.map((l) => (
               <option key={l} value={l}>{l}</option>
