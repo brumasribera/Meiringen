@@ -67,7 +67,6 @@ export function Header() {
     { href: "/events", label: t("events") },
     { href: "/organizations", label: t("organizations") },
     { href: "/alerts", label: t("newsletter") },
-    { href: "/about", label: t("about") },
   ];
 
   return (
@@ -119,9 +118,16 @@ export function Header() {
         <div className="flex items-center gap-2 md:hidden">
           <HeaderSearch />
           <LanguagePicker />
-          <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
+          <button
+            type="button"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Menu"
+            aria-expanded={menuOpen}
+            aria-haspopup="menu"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition hover:border-[#F4C430]/60 hover:bg-[#F4C430]/10"
+          >
             <svg
-              className="h-6 w-6"
+              className="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -140,13 +146,15 @@ export function Header() {
       </div>
 
       {menuOpen && (
-        <div className="border-t border-border px-4 py-4 md:hidden">
-          <nav className="flex flex-col gap-3">
+        <div className="border-t border-border bg-card/95 px-4 py-4 shadow-[0_16px_36px_-28px_rgba(27,67,50,0.45)] backdrop-blur md:hidden">
+          <nav className="flex flex-col gap-2">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium"
+                className={`rounded-xl px-3 py-3 text-sm font-medium transition hover:bg-[#F4C430]/12 hover:text-primary ${
+                  pathname === link.href ? "bg-[#F4C430]/10 text-primary" : "text-foreground"
+                }`}
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
@@ -156,7 +164,7 @@ export function Header() {
               <>
                 <Link
                   href="/account/newsletter"
-                  className="flex items-center gap-3 text-sm font-medium"
+                  className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition hover:bg-[#F4C430]/12 hover:text-primary"
                   onClick={() => setMenuOpen(false)}
                 >
                   {user.user_metadata?.avatar_url ||
@@ -180,7 +188,7 @@ export function Header() {
                 {isAdmin && (
                   <Link
                     href="/admin"
-                    className="text-sm"
+                    className="rounded-xl px-3 py-3 text-sm font-medium transition hover:bg-[#F4C430]/12 hover:text-primary"
                     onClick={() => setMenuOpen(false)}
                   >
                     {t("admin")}
@@ -188,7 +196,7 @@ export function Header() {
                 )}
                 <button
                   onClick={handleLogout}
-                  className={`text-left ${actionButtonClass} w-fit px-3 py-1.5 text-xs`}
+                  className={`text-left ${actionButtonClass} mt-1 w-full px-4 py-3 text-sm`}
                 >
                   {t("logout")}
                 </button>
@@ -196,7 +204,7 @@ export function Header() {
             ) : (
               <Link
                 href="/login"
-                className={`w-fit ${actionButtonClass} px-3 py-1.5 text-xs`}
+                className={`w-full ${actionButtonClass} px-4 py-3 text-sm`}
                 onClick={() => setMenuOpen(false)}
               >
                 {t("login")}
