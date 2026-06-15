@@ -50,8 +50,10 @@ async function main() {
   await check("Alerts page", () => get("/de/alerts"));
   await check("Organizations", () => get("/de/organizations"));
   await check("About", () => get("/de/about"));
-  await check("Logo SVG", () => get("/brand/logo-mark.svg"));
   await check("Logo PNG", () => get("/brand/logo-mark.png"));
+  await check("App icon PNG", () => get("/icon.png"));
+  await check("Apple icon PNG", () => get("/apple-icon.png"));
+  await check("Favicon ICO", () => get("/favicon.ico"));
 
   await check("Maps provider API", async () => {
     const response = await fetch(`${BASE}/api/maps/provider`);

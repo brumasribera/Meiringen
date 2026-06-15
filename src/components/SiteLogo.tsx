@@ -17,12 +17,12 @@ const textSizes = {
 function LogoMark({ size }: { size: number }) {
   return (
     <img
-      src="/brand/logo-mark.svg"
+      src="/brand/logo-mark.png"
       width={size}
       height={size}
       alt=""
       aria-hidden
-      className="shrink-0"
+      className="shrink-0 rounded-[0.7rem] object-cover"
     />
   );
 }
