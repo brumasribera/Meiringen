@@ -10,6 +10,20 @@ import {
   locales,
 } from "@/i18n/constants";
 
+const languageOptions = {
+  de: { label: "German", flag: "🇩🇪" },
+  gsw: { label: "Swiss German", flag: "🇨🇭" },
+  en: { label: "English", flag: "🇬🇧" },
+  fr: { label: "French", flag: "🇫🇷" },
+  it: { label: "Italian", flag: "🇮🇹" },
+  rm: { label: "Romansh", flag: "🇨🇭" },
+  pt: { label: "Portuguese", flag: "🇵🇹" },
+} satisfies Record<(typeof locales)[number], { label: string; flag: string }>;
+
+function getLanguageOption(value: string) {
+  return isLocale(value) ? languageOptions[value] : languageOptions.de;
+}
+
 function persistLocaleCookie(value: string) {
   document.cookie = `${localeCookieName}=${encodeURIComponent(
     value,
@@ -81,6 +95,7 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
   }
 
   const currentLocale = saving ? selectedLocale : locale;
+  const currentLanguage = getLanguageOption(currentLocale);
 
   return (
     <div ref={rootRef} className={`relative ${className}`}>
@@ -88,11 +103,14 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
         type="button"
         onClick={() => setOpen((value) => !value)}
         disabled={saving}
-        className="flex min-h-10 min-w-14 items-center justify-between gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold uppercase tracking-wide text-muted shadow-sm transition hover:border-[#F4C430]/60 hover:bg-[#F4C430]/10 hover:text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#F4C430]/25 disabled:cursor-not-allowed disabled:opacity-70"
+        className="flex min-h-10 min-w-20 items-center justify-between gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold uppercase tracking-wide text-muted shadow-sm transition hover:border-[#F4C430]/60 hover:bg-[#F4C430]/10 hover:text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#F4C430]/25 disabled:cursor-not-allowed disabled:opacity-70"
         aria-label="Language"
         aria-haspopup="menu"
         aria-expanded={open}
       >
+        <span className="text-base leading-none" aria-hidden="true">
+          {currentLanguage.flag}
+        </span>
         <span>{currentLocale.toUpperCase()}</span>
         <svg
           className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`}
@@ -113,7 +131,7 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
       {open && (
         <div
           role="menu"
-          className="absolute right-0 z-50 mt-2 min-w-24 overflow-hidden rounded-2xl border border-border bg-card p-1 shadow-[0_18px_45px_-24px_rgba(27,67,50,0.45)]"
+          className="absolute right-0 z-50 mt-2 min-w-44 overflow-hidden rounded-2xl border border-border bg-card p-1 shadow-[0_18px_45px_-24px_rgba(27,67,50,0.45)]"
         >
           {locales.map((l) => (
             <button
@@ -121,17 +139,21 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
               type="button"
               role="menuitemradio"
               aria-checked={currentLocale === l}
+              aria-label={languageOptions[l].label}
               onClick={() => {
                 setOpen(false);
                 void handleChange(l);
               }}
-              className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-medium transition ${
+              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm font-medium transition ${
                 currentLocale === l
                   ? "bg-[#F4C430] text-[#111111]"
                   : "text-foreground hover:bg-[#F4C430]/12 hover:text-[#111111]"
               }`}
             >
-              <span>{l.toUpperCase()}</span>
+              <span className="text-base leading-none" aria-hidden="true">
+                {languageOptions[l].flag}
+              </span>
+              <span className="flex-1">{languageOptions[l].label}</span>
               {currentLocale === l && <span className="text-xs font-bold">✓</span>}
             </button>
           ))}
