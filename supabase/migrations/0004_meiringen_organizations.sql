@@ -19,7 +19,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7275, 8.1875,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=mgmeiringen.ch&sz=128',
+  '/brand/org-logos/mgmeiringen.ch.png',
   'https://mgmeiringen.ch'
 ),
 (
@@ -33,7 +33,7 @@ insert into public.organizations (
   'Zaun 5, 3860 Meiringen',
   46.7268, 8.1868,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://www.meiringen.ch/vereinsliste/24032'
 ),
 (
@@ -47,7 +47,7 @@ insert into public.organizations (
   'Allmendstrasse 8, 3860 Meiringen',
   46.7272, 8.1865,
   array['de','gsw','rm'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://www.meiringen.ch/vereinsliste/24398'
 ),
 (
@@ -61,7 +61,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7278, 8.1880,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine'
 ),
 (
@@ -75,7 +75,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7265, 8.1872,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine'
 ),
 (
@@ -89,7 +89,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7280, 8.1860,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -103,7 +103,7 @@ insert into public.organizations (
   'Bahnhofstrasse 20, 3860 Meiringen',
   46.7270, 8.1870,
   array['de','gsw','en'],
-  'https://www.google.com/s2/favicons?domain=kino-meiringen.ch&sz=128',
+  '/brand/org-logos/kino-meiringen.ch.png',
   'https://www.kino-meiringen.ch/unser-kino'
 ),
 (
@@ -117,7 +117,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7273, 8.1885,
   array['de','gsw','en'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -131,7 +131,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7282, 8.1890,
   array['de','en'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine'
 ),
 (
@@ -145,7 +145,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7260, 8.1888,
   array['de'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine'
 ),
 (
@@ -159,7 +159,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7276, 8.1862,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://www.localcities.ch/de/vereine/meiringen/1665'
 ),
 (
@@ -173,7 +173,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7262, 8.1858,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine'
 ),
 (
@@ -187,7 +187,7 @@ insert into public.organizations (
   'Turnhalle Meiringen, 3860 Meiringen',
   46.7290, 8.1900,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=tvmeiringen.ch&sz=128',
+  '/brand/org-logos/tvmeiringen.ch.png',
   'https://www.tvmeiringen.ch'
 ),
 (
@@ -201,7 +201,7 @@ insert into public.organizations (
   'Langachristrasse 26, 3855 Brienz',
   46.7285, 8.1910,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=schwingklub-meiringen.ch&sz=128',
+  '/brand/org-logos/schwingklub-meiringen.ch.png',
   'https://schwingklub-meiringen.ch'
 ),
 (
@@ -215,7 +215,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7288, 8.1895,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine'
 ),
 (
@@ -229,7 +229,7 @@ insert into public.organizations (
   'Sportplatzweg, 3860 Meiringen',
   46.7300, 8.1920,
   array['de','en'],
-  'https://www.google.com/s2/favicons?domain=tennismeiringen.ch&sz=128',
+  '/brand/org-logos/tennismeiringen.ch.png',
   'https://www.tennismeiringen.ch'
 ),
 (
@@ -243,7 +243,7 @@ insert into public.organizations (
   'Sportplatz Meiringen, 3860 Meiringen',
   46.7310, 8.1930,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://www.localcities.ch/de/vereine/meiringen/1665'
 ),
 (
@@ -257,7 +257,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7258, 8.1845,
   array['de','en'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -271,7 +271,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7320, 8.1950,
   array['de','gsw','en'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -285,7 +285,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7268, 8.1905,
   array['de','en'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -299,7 +299,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7250, 8.1830,
   array['de','en'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -313,7 +313,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7245, 8.1825,
   array['de','en'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -327,7 +327,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7330, 8.1960,
   array['de','en','fr','it'],
-  'https://www.google.com/s2/favicons?domain=sac-cas.ch&sz=128',
+  '/brand/org-logos/sac-cas.ch.png',
   'https://www.localcities.ch/de/vereine/meiringen/1665'
 ),
 (
@@ -341,7 +341,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7295, 8.1915,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://www.localcities.ch/de/vereine/meiringen/1665'
 ),
 (
@@ -355,7 +355,7 @@ insert into public.organizations (
   'Aareschlucht, 3860 Meiringen',
   46.7200, 8.2050,
   array['de','gsw','en'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -369,7 +369,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7255, 8.1840,
   array['de'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -383,7 +383,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7240, 8.1815,
   array['de'],
-  'https://www.google.com/s2/favicons?domain=haslital-brienz.ch&sz=128',
+  '/brand/org-logos/haslital-brienz-ch.png',
   'https://www.haslital-brienz.ch/vereine'
 ),
 (
@@ -397,7 +397,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7340, 8.1970,
   array['de'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -411,7 +411,7 @@ insert into public.organizations (
   'Balm, 3860 Meiringen',
   46.7350, 8.1800,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -425,7 +425,7 @@ insert into public.organizations (
   'Hausen, 3860 Meiringen',
   46.7360, 8.1790,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -439,7 +439,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7270, 8.1880,
   array['de','gsw'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -453,7 +453,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7265, 8.1878,
   array['de','gsw','en'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -467,7 +467,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7263, 8.1875,
   array['de'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -481,7 +481,7 @@ insert into public.organizations (
   '3860 Meiringen',
   46.7260, 8.1870,
   array['de','gsw','fr'],
-  'https://www.google.com/s2/favicons?domain=procap.ch&sz=128',
+  '/brand/org-logos/procap.ch.png',
   'https://vereinsverzeichnis.ch/vereine-kanton/vereine-be/category/berninterlakenoberhaslimeiringen'
 ),
 (
@@ -495,7 +495,7 @@ insert into public.organizations (
   'Rathaus, Bahnhofstrasse 20, 3860 Meiringen',
   46.7270, 8.1868,
   array['de','gsw','en','fr','it','rm'],
-  'https://www.google.com/s2/favicons?domain=meiringen.ch&sz=128',
+  '/brand/org-logos/meiringen-ch.png',
   'https://www.meiringen.ch/vereinsliste'
 );
 

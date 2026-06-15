@@ -6,7 +6,7 @@ update public.organizations set
 where slug = 'samariterverein-meiringen';
 
 update public.organizations set
-  image_url = '/brand/org-logos/reitverein-oberhasli-brienz.ch.svg',
+  image_url = '/brand/org-logos/reitverein-oberhasli-brienz.ch.svg'
 where slug = 'reitverein-oberhasli-brienz';
 
 update public.organizations set
@@ -19,7 +19,7 @@ update public.organizations set
 where slug = 'fischereiverein-oberhasli';
 
 update public.organizations set
-  image_url = '/brand/org-logos/slrg-thunoberland.ch.svg',
+  image_url = '/brand/org-logos/slrg-thunoberland.ch.svg'
 where slug = 'slrg-sektion-thun-oberland-aussenstation-brienz-meiringen';
 
 update public.organizations set
