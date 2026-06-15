@@ -13,7 +13,7 @@ import {
 
 const languageOptions = {
   de: { label: "German", flag: "/flags/germany-flag.png" },
-  gsw: { label: "Swiss German", flag: "/flags/gsw.svg" },
+  gsw: { label: "Hasli-Tütsch", flag: "/brand/logo-mark.png" },
   en: { label: "English", flag: "/flags/england-flag.png" },
   fr: { label: "French", flag: "/flags/france-flag.png" },
   it: { label: "Italian", flag: "/flags/italy-flag.png" },
@@ -143,7 +143,9 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
                 aria-hidden="true"
                 width={24}
                 height={16}
-                className="h-4 w-6 rounded-[2px] object-cover shadow-sm ring-1 ring-black/10"
+                className={`object-cover shadow-sm ring-1 ring-black/10 ${
+                  l === "gsw" ? "h-5 w-5 rounded-[0.65rem]" : "h-4 w-6 rounded-[2px]"
+                }`}
               />
               <span className="flex-1">{languageOptions[l].label}</span>
               {currentLocale === l && <span className="text-base leading-none text-[#8cb4ff]">✓</span>}
