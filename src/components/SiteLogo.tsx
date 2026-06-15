@@ -22,7 +22,7 @@ function LogoMark({ size }: { size: number }) {
       height={size}
       alt=""
       aria-hidden
-      className="shrink-0 object-cover"
+      className="shrink-0 rounded-[0.7rem] object-cover"
     />
   );
 }
