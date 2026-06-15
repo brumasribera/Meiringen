@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import {
   isLocale,
@@ -12,14 +12,14 @@ import {
 } from "@/i18n/constants";
 
 const languageOptions = {
-  de: { label: "German", flag: "/flags/germany-flag.png" },
-  gsw: { label: "Hasli-Tütsch", flag: "/brand/logo-mark.png" },
-  en: { label: "English", flag: "/flags/england-flag.png" },
-  fr: { label: "French", flag: "/flags/france-flag.png" },
-  it: { label: "Italian", flag: "/flags/italy-flag.png" },
-  rm: { label: "Romansh", flag: "/flags/romania-flag.png" },
-  pt: { label: "Portuguese", flag: "/flags/portugal-flag.png" },
-} satisfies Record<(typeof locales)[number], { label: string; flag: string }>;
+  de: { flag: "/flags/germany-flag.png" },
+  gsw: { flag: "/brand/logo-mark.png" },
+  en: { flag: "/flags/england-flag.png" },
+  fr: { flag: "/flags/france-flag.png" },
+  it: { flag: "/flags/italy-flag.png" },
+  rm: { flag: "/flags/romania-flag.png" },
+  pt: { flag: "/flags/portugal-flag.png" },
+} satisfies Record<(typeof locales)[number], { flag: string }>;
 
 function persistLocaleCookie(value: string) {
   document.cookie = `${localeCookieName}=${encodeURIComponent(
@@ -29,6 +29,7 @@ function persistLocaleCookie(value: string) {
 
 export function LanguagePicker({ className = "" }: { className?: string }) {
   const locale = useLocale();
+  const tLanguages = useTranslations("languages");
   const [selectedLocale, setSelectedLocale] = useState(locale);
   const [saving, setSaving] = useState(false);
   const [open, setOpen] = useState(false);
@@ -126,7 +127,7 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
               type="button"
               role="menuitemradio"
               aria-checked={currentLocale === l}
-              aria-label={languageOptions[l].label}
+              aria-label={tLanguages(l)}
               onClick={() => {
                 setOpen(false);
                 void handleChange(l);
@@ -147,7 +148,7 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
                   l === "gsw" ? "h-5 w-5 rounded-[0.65rem]" : "h-4 w-6 rounded-[2px]"
                 }`}
               />
-              <span className="flex-1">{languageOptions[l].label}</span>
+              <span className="flex-1">{tLanguages(l)}</span>
               {currentLocale === l && <span className="text-base leading-none text-[#8cb4ff]">✓</span>}
             </button>
           ))}
