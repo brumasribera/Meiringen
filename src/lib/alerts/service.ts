@@ -1,13 +1,17 @@
 import { randomBytes } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Category, ContentLanguage, AlertFrequency } from "@/lib/constants";
+import type {
+  AlertFrequency,
+  ContentLanguage,
+  EventCategory,
+} from "@/lib/constants";
 import type { NewsletterPreferences } from "@/lib/types";
 import { buildManageUrl } from "./newsletter-utils";
 
 export type AlertSubscriptionInput = {
   email: string;
   frequency: AlertFrequency;
-  categories: Category[];
+  categories: EventCategory[];
   languages: ContentLanguage[];
   locale: string;
   userId?: string | null;

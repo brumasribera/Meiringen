@@ -3,8 +3,8 @@ import { Link } from "@/i18n/routing";
 import { AlertPreferencesForm } from "@/components/AlertPreferencesForm";
 import { getOrganizations } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
-import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
-import type { Category, ContentLanguage } from "@/lib/constants";
+import { CONTENT_LANGUAGES, EVENT_CATEGORIES } from "@/lib/constants";
+import type { ContentLanguage, EventCategory } from "@/lib/constants";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -31,8 +31,8 @@ export default async function AlertsPage({ params, searchParams }: Props) {
       ? [organization]
       : undefined;
   const categories =
-    category && CATEGORIES.includes(category as Category)
-      ? [category as Category]
+    category && EVENT_CATEGORIES.includes(category as EventCategory)
+      ? [category as EventCategory]
       : undefined;
   const languages =
     language && CONTENT_LANGUAGES.includes(language as ContentLanguage)

@@ -1,4 +1,4 @@
-export const CATEGORIES = [
+export const ORGANIZATION_CATEGORIES = [
   "culture",
   "sport",
   "social",
@@ -11,7 +11,16 @@ export const CATEGORIES = [
   "other",
 ] as const;
 
-export type Category = (typeof CATEGORIES)[number];
+export type OrganizationCategory = (typeof ORGANIZATION_CATEGORIES)[number];
+
+export const EVENT_CATEGORIES = [
+  ...ORGANIZATION_CATEGORIES,
+  "tradition",
+] as const;
+
+export type EventCategory = (typeof EVENT_CATEGORIES)[number];
+
+export type Category = OrganizationCategory | EventCategory;
 
 export const LOCALITIES = [
   { id: "meiringen", lat: 46.7275, lng: 8.1875 },

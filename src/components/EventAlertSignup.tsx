@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { actionButtonClass } from "@/lib/button-styles";
-import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
+import { CONTENT_LANGUAGES, EVENT_CATEGORIES } from "@/lib/constants";
 import type {
   AlertFrequency,
-  Category,
   ContentLanguage,
+  EventCategory,
 } from "@/lib/constants";
 import type { Organization } from "@/lib/types";
 import { OrganizationSearchSelect } from "@/components/OrganizationSearchSelect";
@@ -22,7 +22,7 @@ function filtersFromParams(
   params: URLSearchParams,
   locale: string,
 ): {
-  categories: Category[];
+  categories: EventCategory[];
   languages: ContentLanguage[];
   organizationIds: string[];
 } {
@@ -32,8 +32,8 @@ function filtersFromParams(
 
   return {
     categories:
-      category && CATEGORIES.includes(category as Category)
-        ? [category as Category]
+      category && EVENT_CATEGORIES.includes(category as EventCategory)
+        ? [category as EventCategory]
         : [],
     languages:
       language && CONTENT_LANGUAGES.includes(language as ContentLanguage)
@@ -44,20 +44,48 @@ function filtersFromParams(
 }
 
 export function EventAlertSignup({ organizations }: Props) {
-  const t = useTranslations("events");
-  const ta = useTranslations("alerts");
-  const tc = useTranslations("categories");
   const locale = useLocale();
   const searchParams = useSearchParams();
-
   const urlFilters = useMemo(
     () => filtersFromParams(searchParams, locale),
     [searchParams, locale],
   );
+  const resetKey = `${locale}:${searchParams.toString()}`;
 
+  return (
+    <EventAlertSignupForm
+      key={resetKey}
+      organizations={organizations}
+      locale={locale}
+      urlFilters={urlFilters}
+      hasCalendarFilters={Boolean(
+        searchParams.get("search") ||
+        searchParams.get("dateFrom") ||
+        searchParams.get("dateTo"),
+      )}
+    />
+  );
+}
+
+type EventAlertSignupFormProps = {
+  organizations: Organization[];
+  locale: string;
+  urlFilters: ReturnType<typeof filtersFromParams>;
+  hasCalendarFilters: boolean;
+};
+
+function EventAlertSignupForm({
+  organizations,
+  locale,
+  urlFilters,
+  hasCalendarFilters,
+}: EventAlertSignupFormProps) {
+  const t = useTranslations("events");
+  const ta = useTranslations("alerts");
+  const tc = useTranslations("categories");
   const [email, setEmail] = useState("");
   const [frequency, setFrequency] = useState<AlertFrequency>("weekly");
-  const [categories, setCategories] = useState<Category[]>(
+  const [categories, setCategories] = useState<EventCategory[]>(
     urlFilters.categories,
   );
   const [languages, setLanguages] = useState<ContentLanguage[]>(
@@ -73,19 +101,6 @@ export function EventAlertSignup({ organizations }: Props) {
     manageUrl: string;
     emailSent: boolean;
   } | null>(null);
-
-  useEffect(() => {
-    setCategories(urlFilters.categories);
-    setLanguages(urlFilters.languages);
-    setOrganizationIds(urlFilters.organizationIds);
-    setSuccess(null);
-  }, [urlFilters]);
-
-  const hasCalendarFilters = Boolean(
-    searchParams.get("search") ||
-    searchParams.get("dateFrom") ||
-    searchParams.get("dateTo"),
-  );
 
   const hasAlertFilters =
     categories.length > 0 ||
@@ -284,7 +299,7 @@ export function EventAlertSignup({ organizations }: Props) {
                 {ta("categories")}
               </p>
               <div className="mt-2 flex flex-wrap gap-2">
-                {CATEGORIES.map((c) => (
+                {EVENT_CATEGORIES.map((c) => (
                   <button
                     key={c}
                     type="button"

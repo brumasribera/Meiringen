@@ -13,6 +13,11 @@ export function formatDateRange(
   locale: string
 ): string {
   const startDate = new Date(start);
+  const dateFormatter = new Intl.DateTimeFormat(locale, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
   const dateTimeFormatter = new Intl.DateTimeFormat(locale, {
     day: "numeric",
     month: "short",
@@ -26,13 +31,30 @@ export function formatDateRange(
     minute: "2-digit",
     hour12: false,
   });
+  const isDateOnly = (value: Date) =>
+    value.getHours() === 0 &&
+    value.getMinutes() === 0 &&
+    value.getSeconds() === 0 &&
+    value.getMilliseconds() === 0;
 
   if (!end) {
+    if (isDateOnly(startDate)) {
+      return dateFormatter.format(startDate);
+    }
     return dateTimeFormatter.format(startDate);
   }
 
   const endDate = new Date(end);
   const sameDay = startDate.toDateString() === endDate.toDateString();
+  const dateOnlyRange = isDateOnly(startDate) && isDateOnly(endDate);
+
+  if (dateOnlyRange) {
+    if (sameDay) {
+      return dateFormatter.format(startDate);
+    }
+
+    return `${dateFormatter.format(startDate)} – ${dateFormatter.format(endDate)}`;
+  }
 
   if (sameDay) {
     return `${dateTimeFormatter.format(startDate)} – ${timeFormatter.format(endDate)}`;

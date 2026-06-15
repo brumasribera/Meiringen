@@ -5,7 +5,7 @@ import { resolveOrgImageUrl } from "@/lib/org-content";
 import { OrganizationCard } from "@/components/OrganizationCard";
 import { OrganizationFilters } from "@/components/OrganizationFilters";
 import { DeferredMapLoader } from "@/components/DeferredMapLoader";
-import type { Category, Locality } from "@/lib/constants";
+import type { Locality, OrganizationCategory } from "@/lib/constants";
 import { getLocalityCenter } from "@/lib/constants";
 
 type Props = {
@@ -21,7 +21,7 @@ export default async function OrganizationsPage({ params, searchParams }: Props)
 
   const organizations = await getOrganizations({
     search: filters.search,
-    category: filters.category as Category | undefined,
+    category: filters.category as OrganizationCategory | undefined,
     locality: filters.locality as Locality | undefined,
   });
 

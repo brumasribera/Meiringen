@@ -4,7 +4,7 @@ import { getEvents, getOrganizations } from "@/lib/data";
 import { EventCard } from "@/components/EventCard";
 import { EventFilters } from "@/components/EventFilters";
 import { EventAlertSignup } from "@/components/EventAlertSignup";
-import type { Category, ContentLanguage } from "@/lib/constants";
+import type { ContentLanguage, EventCategory } from "@/lib/constants";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -20,7 +20,7 @@ export default async function EventsPage({ params, searchParams }: Props) {
   const [events, organizations] = await Promise.all([
     getEvents({
       search: filters.search,
-      category: filters.category as Category | undefined,
+      category: filters.category as EventCategory | undefined,
       language: filters.language as ContentLanguage | undefined,
       organizationId: filters.organization,
       dateFrom: filters.dateFrom,

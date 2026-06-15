@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { actionButtonClass } from "@/lib/button-styles";
-import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
+import { CONTENT_LANGUAGES, EVENT_CATEGORIES } from "@/lib/constants";
 import type { AlertFrequency } from "@/lib/constants";
 import type { Organization } from "@/lib/types";
 import { OrganizationPicker } from "@/components/OrganizationPicker";
@@ -59,14 +59,6 @@ export function AlertPreferencesForm({
   const [emailSent, setEmailSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (initial?.email) setEmail(initial.email);
-    if (initial?.frequency) setFrequency(initial.frequency);
-    if (initial?.categories) setCategories(initial.categories);
-    if (initial?.languages) setLanguages(initial.languages);
-    if (initial?.organization_ids) setOrganizationIds(initial.organization_ids);
-  }, [initial]);
 
   function toggle(arr: string[], value: string, setter: (v: string[]) => void) {
     setter(arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value]);
@@ -170,7 +162,7 @@ export function AlertPreferencesForm({
         <legend className="font-semibold">{t("categories")}</legend>
         <p className="mt-1 text-sm text-muted">{t("categoriesHint")}</p>
         <div className="mt-3 flex flex-wrap gap-2">
-          {CATEGORIES.map((c) => (
+          {EVENT_CATEGORIES.map((c) => (
             <button
               key={c}
               type="button"

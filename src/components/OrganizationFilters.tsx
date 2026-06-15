@@ -2,7 +2,7 @@
 
 import { useRouter, usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
-import { CATEGORIES, LOCALITIES } from "@/lib/constants";
+import { LOCALITIES, ORGANIZATION_CATEGORIES } from "@/lib/constants";
 import { useSearchParams } from "next/navigation";
 import { selectControlClass } from "@/lib/form-styles";
 
@@ -64,7 +64,7 @@ export function OrganizationFilters() {
           className={inputClass}
         >
           <option value="">{t("events.all")}</option>
-          {CATEGORIES.map((c) => (
+          {ORGANIZATION_CATEGORIES.map((c) => (
             <option key={c} value={c}>
               {t(`categories.${c}`)}
             </option>

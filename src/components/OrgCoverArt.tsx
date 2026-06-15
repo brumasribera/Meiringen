@@ -1,14 +1,14 @@
-import type { Category } from "@/lib/constants";
+import type { OrganizationCategory } from "@/lib/constants";
 
 type Props = {
   name: string;
-  category: Category;
+  category: OrganizationCategory;
   coverImageUrl?: string | null;
   className?: string;
 };
 
 const coverThemes: Record<
-  Category,
+  OrganizationCategory,
   { background: string; glowOne: string; glowTwo: string }
 > = {
   culture: {

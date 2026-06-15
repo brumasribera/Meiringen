@@ -1,8 +1,10 @@
 import type {
   Category,
   ContentLanguage,
+  EventCategory,
   EventStatus,
   Locality,
+  OrganizationCategory,
   ScraperType,
   AlertFrequency,
 } from "./constants";
@@ -13,7 +15,7 @@ export type Organization = {
   name: string;
   slug: string;
   description: string | null;
-  category: Category;
+  category: OrganizationCategory;
   website_url: string | null;
   email: string | null;
   phone: string | null;
@@ -48,7 +50,7 @@ export type Event = {
   title: string;
   slug: string;
   description: string | null;
-  category: Category;
+  category: EventCategory;
   start_date: string;
   end_date: string | null;
   location_name: string | null;
@@ -83,7 +85,7 @@ export type NewsletterPreferences = {
   user_id: string | null;
   email: string;
   frequency: AlertFrequency;
-  categories: Category[];
+  categories: EventCategory[];
   organization_ids: string[];
   languages: ContentLanguage[];
   locale: string;

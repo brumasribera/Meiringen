@@ -1,4 +1,4 @@
-import { CATEGORIES, CONTENT_LANGUAGES, EVENT_STATUSES } from "@/lib/constants";
+import { CONTENT_LANGUAGES, EVENT_CATEGORIES, EVENT_STATUSES } from "@/lib/constants";
 import { createEventAction, updateEventAction } from "@/lib/actions/admin";
 import type { Event, Organization } from "@/lib/types";
 import { selectControlClass, textControlClass } from "@/lib/form-styles";
@@ -44,7 +44,7 @@ export function EventForm({ event, organizations, locale }: Props) {
         <div>
           <label className="text-sm font-medium">Category *</label>
           <select name="category" required defaultValue={event?.category ?? "culture"} className={selectClass}>
-            {CATEGORIES.map((c) => (
+            {EVENT_CATEGORIES.map((c) => (
               <option key={c} value={c}>{c}</option>
             ))}
           </select>

@@ -1,6 +1,11 @@
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { agendaHorizonDate } from "@/lib/agenda/constants";
-import type { Category, ContentLanguage, Locality } from "./constants";
+import type {
+  ContentLanguage,
+  EventCategory,
+  Locality,
+  OrganizationCategory,
+} from "./constants";
 import type {
   Event,
   NewsletterPreferences,
@@ -10,7 +15,7 @@ import type {
 
 export type EventFilters = {
   search?: string;
-  category?: Category;
+  category?: EventCategory;
   language?: ContentLanguage;
   organizationId?: string;
   dateFrom?: string;
@@ -21,7 +26,7 @@ export type EventFilters = {
 
 export type OrganizationFilters = {
   search?: string;
-  category?: Category;
+  category?: OrganizationCategory;
   locality?: Locality;
   limit?: number;
 };

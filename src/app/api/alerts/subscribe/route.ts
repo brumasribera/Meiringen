@@ -1,18 +1,21 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { createServiceClient } from "@/lib/supabase/server";
-import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
-import type { AlertFrequency } from "@/lib/constants";
-import type { Category, ContentLanguage } from "@/lib/constants";
+import { CONTENT_LANGUAGES, EVENT_CATEGORIES } from "@/lib/constants";
+import type {
+  AlertFrequency,
+  ContentLanguage,
+  EventCategory,
+} from "@/lib/constants";
 import { isValidEmail, upsertAlertSubscription } from "@/lib/alerts/service";
 import { buildManageUrl } from "@/lib/alerts/newsletter-utils";
 import { buildWelcomeEmailHtml } from "@/lib/email/alert-template";
 import { getFromEmail } from "@/lib/email/config";
 
-function parseCategories(value: unknown): Category[] {
+function parseCategories(value: unknown): EventCategory[] {
   if (!Array.isArray(value)) return [];
-  return value.filter((item): item is Category =>
-    CATEGORIES.includes(item as Category),
+  return value.filter((item): item is EventCategory =>
+    EVENT_CATEGORIES.includes(item as EventCategory),
   );
 }
 

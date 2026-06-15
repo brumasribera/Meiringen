@@ -1,12 +1,12 @@
 import { slugify } from "@/lib/utils";
-import type { Category } from "@/lib/constants";
+import type { EventCategory } from "@/lib/constants";
 import { isWithinAgendaHorizon } from "@/lib/agenda/constants";
 
 export type ScrapedEvent = {
   title: string;
   slug: string;
   description: string | null;
-  category: Category;
+  category: EventCategory;
   start_date: string;
   end_date: string | null;
   location_name: string | null;
@@ -95,8 +95,11 @@ function mapJsonLdEvent(
   };
 }
 
-function inferCategory(title: string, description: string): Category {
+function inferCategory(title: string, description: string): EventCategory {
   const text = `${title} ${description}`.toLowerCase();
+  if (/(ubersitz|altjahrswoche|trychel|trychler|brauch|brauchtum|warenmarkt)/.test(text)) {
+    return "tradition";
+  }
   if (/(markt|market|wochenmarkt)/.test(text)) return "market";
   if (/(turnier|sport|fussball|tennis|schwing|lauf|volleyball|curling)/.test(text)) {
     return "sport";

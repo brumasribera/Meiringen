@@ -2,7 +2,7 @@
 
 import { useRouter, usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
-import { CATEGORIES, CONTENT_LANGUAGES } from "@/lib/constants";
+import { CONTENT_LANGUAGES, EVENT_CATEGORIES } from "@/lib/constants";
 import type { Organization } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
 import { OrganizationSearchSelect } from "@/components/OrganizationSearchSelect";
@@ -52,7 +52,7 @@ export function EventFilters({ organizations }: Props) {
           className={selectControlClass}
         >
           <option value="">{t("events.all")}</option>
-          {CATEGORIES.map((c) => (
+          {EVENT_CATEGORIES.map((c) => (
             <option key={c} value={c}>
               {t(`categories.${c}`)}
             </option>

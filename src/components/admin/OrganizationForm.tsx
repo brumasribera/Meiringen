@@ -1,4 +1,8 @@
-import { CATEGORIES, CONTENT_LANGUAGES, LOCALITIES } from "@/lib/constants";
+import {
+  CONTENT_LANGUAGES,
+  LOCALITIES,
+  ORGANIZATION_CATEGORIES,
+} from "@/lib/constants";
 import {
   createOrganizationAction,
   updateOrganizationAction,
@@ -43,7 +47,7 @@ export function OrganizationForm({ organization, locale }: Props) {
         <div>
           <label className="text-sm font-medium">Category *</label>
           <select name="category" required defaultValue={organization?.category} className={selectClass}>
-            {CATEGORIES.map((c) => (
+            {ORGANIZATION_CATEGORIES.map((c) => (
               <option key={c} value={c}>{c}</option>
             ))}
           </select>

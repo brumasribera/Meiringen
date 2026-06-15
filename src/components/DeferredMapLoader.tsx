@@ -15,18 +15,30 @@ type Props = {
 
 export function DeferredMapLoader(props: Props) {
   const pathname = usePathname();
+
+  return <DeferredMapLoaderFrame key={pathname} pathname={pathname} {...props} />;
+}
+
+type DeferredMapLoaderFrameProps = Props & {
+  pathname: string;
+};
+
+function DeferredMapLoaderFrame({
+  pathname,
+  className,
+  ...props
+}: DeferredMapLoaderFrameProps) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    setReady(false);
     const frame = requestAnimationFrame(() => setReady(true));
     return () => cancelAnimationFrame(frame);
-  }, [pathname]);
+  }, []);
 
   if (!ready) {
     return (
       <div
-        className={`flex items-center justify-center rounded-2xl border border-border bg-card text-muted ${props.className ?? "h-80"}`}
+        className={`flex items-center justify-center rounded-2xl border border-border bg-card text-muted ${className ?? "h-80"}`}
       >
         Loading map…
       </div>
