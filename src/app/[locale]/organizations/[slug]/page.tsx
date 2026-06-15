@@ -25,6 +25,8 @@ import { createClient } from "@/lib/supabase/server";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
+export const dynamic = "force-dynamic";
+
 export default async function OrganizationDetailPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
