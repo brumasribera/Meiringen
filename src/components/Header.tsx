@@ -124,7 +124,7 @@ export function Header() {
             aria-label="Menu"
             aria-expanded={menuOpen}
             aria-haspopup="menu"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition hover:border-[#F4C430]/60 hover:bg-[#F4C430]/10"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-foreground transition hover:text-primary focus:outline-none focus:ring-2 focus:ring-[#F4C430]/25"
           >
             <svg
               className="h-5 w-5"

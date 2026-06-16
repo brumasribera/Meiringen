@@ -192,7 +192,7 @@ export function HeaderSearch() {
           setQuery("");
           setLoading(true);
         }}
-        className="inline-flex h-10 items-center gap-2 rounded-full border border-border bg-white/75 px-3.5 text-sm font-medium text-foreground shadow-sm transition hover:border-primary hover:text-primary md:px-4"
+        className="inline-flex h-10 w-10 items-center justify-center rounded-full text-foreground transition hover:text-primary md:w-auto md:gap-2 md:border md:border-border md:bg-white/75 md:px-3.5 md:text-sm md:font-medium md:shadow-sm md:hover:border-primary"
         aria-label={t("common.search")}
       >
         <svg
