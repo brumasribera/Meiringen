@@ -41,6 +41,13 @@ export function HeaderSearch() {
 
   useEffect(() => {
     if (!open) return;
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    }
+
     const controller = new AbortController();
     const timer = window.setTimeout(async () => {
       try {
@@ -59,9 +66,12 @@ export function HeaderSearch() {
       }
     }, 180);
 
+    document.addEventListener("keydown", handleKeyDown);
+
     return () => {
       controller.abort();
       window.clearTimeout(timer);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [locale, open, query]);
 
@@ -74,10 +84,14 @@ export function HeaderSearch() {
   );
 
   const modal = open
-    ? createPortal(
+      ? createPortal(
         <div
           className="fixed inset-0 z-[80] bg-black/75 backdrop-blur-md"
-          onClick={() => setOpen(false)}
+          onClick={(event) => {
+            if (event.target === event.currentTarget) {
+              setOpen(false);
+            }
+          }}
         >
           <div className="mx-auto flex h-full w-full max-w-2xl items-start px-4 py-6">
             <div
