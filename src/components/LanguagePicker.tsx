@@ -2,8 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import type { StaticImageData } from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
+import deFlag from "../../flags/germany-flag.png";
+import enFlag from "../../flags/england-flag.png";
+import esFlag from "../../flags/spain-flag.png";
+import frFlag from "../../flags/france-flag.png";
+import itFlag from "../../flags/italy-flag.png";
+import ptFlag from "../../flags/portugal-flag.png";
+import rmFlag from "../../flags/romania-flag.png";
 import {
   isLocale,
   localeCookieMaxAge,
@@ -12,16 +20,16 @@ import {
 } from "@/i18n/constants";
 
 const languageOptions = {
-  de: { flag: "/flags/germany-flag.png" },
+  de: { flag: deFlag },
   gsw: { flag: "/brand/logo-mark.png" },
-  en: { flag: "/flags/england-flag.png" },
-  es: { flag: "/flags/spain-flag.png" },
-  ca: { flag: "/flags/spain-flag.png" },
-  fr: { flag: "/flags/france-flag.png" },
-  it: { flag: "/flags/italy-flag.png" },
-  rm: { flag: "/flags/romania-flag.png" },
-  pt: { flag: "/flags/portugal-flag.png" },
-} satisfies Record<(typeof locales)[number], { flag: string }>;
+  en: { flag: enFlag },
+  es: { flag: esFlag },
+  ca: { flag: esFlag },
+  fr: { flag: frFlag },
+  it: { flag: itFlag },
+  rm: { flag: rmFlag },
+  pt: { flag: ptFlag },
+} satisfies Record<(typeof locales)[number], { flag: StaticImageData | string }>;
 
 function persistLocaleCookie(value: string) {
   document.cookie = `${localeCookieName}=${encodeURIComponent(
