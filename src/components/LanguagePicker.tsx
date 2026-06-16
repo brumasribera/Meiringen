@@ -12,15 +12,15 @@ import {
 } from "@/i18n/constants";
 
 const languageOptions = {
-  de: { flag: "/flags/germany-flag.png" },
+  de: { flag: "/flags/de.svg" },
   gsw: { flag: "/brand/logo-mark.png" },
-  en: { flag: "/flags/england-flag.png" },
-  es: { flag: "/flags/spain-flag.svg" },
-  ca: { flag: "/flags/catalan-flag.svg" },
-  fr: { flag: "/flags/france-flag.png" },
-  it: { flag: "/flags/italy-flag.png" },
-  rm: { flag: "/flags/romania-flag.png" },
-  pt: { flag: "/flags/portugal-flag.png" },
+  en: { flag: "/flags/en.svg" },
+  es: { flag: "/flags/spain-flag.png" },
+  ca: { flag: "/flags/catalan-flag.png" },
+  fr: { flag: "/flags/fr.svg" },
+  it: { flag: "/flags/it.svg" },
+  rm: { flag: "/flags/rm.svg" },
+  pt: { flag: "/flags/pt.svg" },
 } satisfies Record<(typeof locales)[number], { flag: string }>;
 
 function persistLocaleCookie(value: string) {
