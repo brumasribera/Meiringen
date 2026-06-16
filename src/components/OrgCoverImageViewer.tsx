@@ -63,7 +63,7 @@ export function OrgCoverImageViewer({
             role="dialog"
             aria-modal="true"
             aria-label={`${name} cover image`}
-            className="relative flex h-[calc(100vh-44px)] w-[calc(100vw-44px)] items-center justify-center"
+            className="relative inline-flex max-h-[calc(100vh-44px)] max-w-[calc(100vw-44px)] items-center justify-center"
             onClick={(event) => event.stopPropagation()}
           >
             <button
@@ -86,20 +86,20 @@ export function OrgCoverImageViewer({
                 />
               </svg>
             </button>
-            <div className="relative flex h-full w-full items-center justify-center">
+            <div className="relative inline-flex items-center justify-center">
               {coverImageUrl ? (
                 <img
                   src={coverImageUrl}
                   alt=""
                   referrerPolicy="no-referrer"
-                  className="h-full w-full rounded-[1rem] object-contain shadow-[0_24px_60px_-24px_rgba(0,0,0,0.45)]"
+                  className="max-h-[calc(100vh-44px)] max-w-[calc(100vw-44px)] rounded-[1rem] object-contain shadow-[0_24px_60px_-24px_rgba(0,0,0,0.45)]"
                 />
               ) : (
                 <OrgCoverArt
                   name={name}
                   category={category}
                   coverImageUrl={coverImageUrl}
-                  className="h-full w-full"
+                  className="h-auto w-auto max-h-[calc(100vh-44px)] max-w-[calc(100vw-44px)]"
                 />
               )}
             </div>
