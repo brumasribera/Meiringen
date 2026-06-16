@@ -155,7 +155,7 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
               }`}
             >
               {l === "gsw" ? (
-                <span className="flex h-4 w-6 items-center justify-center overflow-hidden rounded-[2px] bg-[#f4c430] shadow-sm ring-1 ring-black/10">
+                <span className="flex h-4 w-6 items-center justify-center overflow-hidden rounded-[2px] bg-[#ffd400] shadow-sm ring-1 ring-black/10">
                   <Image
                     src={languageOptions[l].flag}
                     alt=""
