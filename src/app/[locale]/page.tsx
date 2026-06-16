@@ -39,6 +39,36 @@ export default async function HomePage({ params }: Props) {
         />
         <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(7,12,20,0.82)_0%,rgba(15,23,42,0.58)_42%,rgba(15,23,42,0.22)_100%)]" />
         <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/35 to-transparent" />
+        <p className="absolute bottom-4 right-4 z-10 max-w-[18rem] text-right text-[10px] leading-snug text-white/45 md:bottom-6 md:right-6 md:max-w-[22rem] md:text-xs">
+          Photo: {" "}
+          <a
+            href="https://commons.wikimedia.org/wiki/File:Wellhorn_from_Meiringen_BE,_Switzerland_(12881259074).jpg"
+            target="_blank"
+            rel="noreferrer"
+            className="text-white/55 transition hover:text-white/75"
+          >
+            Jan Remund
+          </a>{" "}
+          /{" "}
+          <a
+            href="https://commons.wikimedia.org/wiki/File:Wellhorn_from_Meiringen_BE,_Switzerland_(12881259074).jpg"
+            target="_blank"
+            rel="noreferrer"
+            className="text-white/55 transition hover:text-white/75"
+          >
+            Wikimedia Commons
+          </a>{" "}
+          (
+          <a
+            href="https://creativecommons.org/licenses/by/2.0/"
+            target="_blank"
+            rel="noreferrer"
+            className="text-white/55 transition hover:text-white/75"
+          >
+            CC BY 2.0
+          </a>
+          )
+        </p>
         <div className="relative mx-auto max-w-6xl">
           <div className="max-w-2xl rounded-[2rem] border border-white/10 bg-black/20 p-8 shadow-2xl shadow-black/30 backdrop-blur-[2px] md:p-10">
             <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
@@ -53,36 +83,6 @@ export default async function HomePage({ params }: Props) {
             >
               {t("heroCta")}
             </Link>
-            <p className="mt-5 text-xs text-white/70">
-              Photo:{" "}
-              <a
-                href="https://commons.wikimedia.org/wiki/File:Wellhorn_from_Meiringen_BE,_Switzerland_(12881259074).jpg"
-                target="_blank"
-                rel="noreferrer"
-                className="underline underline-offset-2 transition hover:text-white"
-              >
-                Jan Remund
-              </a>{" "}
-              /{" "}
-              <a
-                href="https://commons.wikimedia.org/wiki/File:Wellhorn_from_Meiringen_BE,_Switzerland_(12881259074).jpg"
-                target="_blank"
-                rel="noreferrer"
-                className="underline underline-offset-2 transition hover:text-white"
-              >
-                Wikimedia Commons
-              </a>{" "}
-              (
-              <a
-                href="https://creativecommons.org/licenses/by/2.0/"
-                target="_blank"
-                rel="noreferrer"
-                className="underline underline-offset-2 transition hover:text-white"
-              >
-                CC BY 2.0
-              </a>
-              )
-            </p>
           </div>
         </div>
       </section>
