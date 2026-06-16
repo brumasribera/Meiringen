@@ -155,16 +155,15 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
               }`}
             >
               {l === "gsw" ? (
-                <span className="flex h-4 w-6 items-stretch overflow-hidden rounded-[2px] bg-[#f4c430] shadow-sm ring-1 ring-black/10">
-                  <span className="w-1.5 shrink-0 bg-[#f4c430]" aria-hidden="true" />
+                <span className="flex h-4 w-6 items-center justify-center overflow-hidden rounded-[2px] bg-[#f4c430] shadow-sm ring-1 ring-black/10">
                   <Image
                     src={languageOptions[l].flag}
                     alt=""
                     aria-hidden="true"
-                    width={16}
+                    width={24}
                     height={16}
                     loading="eager"
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-contain"
                   />
                 </span>
               ) : (
