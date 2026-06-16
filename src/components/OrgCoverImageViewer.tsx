@@ -86,13 +86,22 @@ export function OrgCoverImageViewer({
                 />
               </svg>
             </button>
-            <div className="max-h-[92vh] overflow-auto bg-black">
-              <OrgCoverArt
-                name={name}
-                category={category}
-                coverImageUrl={coverImageUrl}
-                className="h-[92vh] min-h-[24rem] w-full"
-              />
+            <div className="flex max-h-[92vh] items-center justify-center bg-black p-4">
+              {coverImageUrl ? (
+                <img
+                  src={coverImageUrl}
+                  alt=""
+                  referrerPolicy="no-referrer"
+                  className="max-h-[88vh] w-auto max-w-full object-contain"
+                />
+              ) : (
+                <OrgCoverArt
+                  name={name}
+                  category={category}
+                  coverImageUrl={coverImageUrl}
+                  className="h-[88vh] min-h-[24rem] w-full max-w-6xl"
+                />
+              )}
             </div>
           </div>
         </div>
