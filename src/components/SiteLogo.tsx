@@ -40,7 +40,7 @@ export function SiteLogo({
       {showText && (
         <span className={`font-bold ${textSizes[size]}`} style={{ color: "#111111" }}>
           Meiringen
-          <span style={{ color: "#B8860B" }}>.life</span>
+          <span style={{ color: "#F4C430" }}>.life</span>
         </span>
       )}
     </>

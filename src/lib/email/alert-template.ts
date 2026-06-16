@@ -209,7 +209,7 @@ function wrapEmail(options: {
                     <img src="${siteUrl}/brand/logo-mark.png" width="52" height="52" alt="Meiringen.life" style="display:block;border-radius:12px;" />
                   </td>
                   <td style="padding-left:12px;font-size:22px;font-weight:800;color:#111111;letter-spacing:-0.02em;">
-                    Meiringen<span style="color:#B8860B;">.life</span>
+                    Meiringen<span style="color:#F4C430;">.life</span>
                   </td>
                 </tr>
               </table>
