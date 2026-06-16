@@ -69,13 +69,13 @@ export function OrgCoverImageViewer({
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/45 text-white backdrop-blur-md transition hover:bg-black/65 focus:outline-none focus:ring-2 focus:ring-white/30"
+              className="absolute right-3 top-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/45 text-white backdrop-blur-md transition hover:bg-black/65 focus:outline-none focus:ring-2 focus:ring-white/30"
               aria-label="Close image viewer"
             >
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
-                className="h-5 w-5"
+                className="h-4 w-4"
                 aria-hidden="true"
               >
                 <path
