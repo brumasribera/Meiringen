@@ -55,7 +55,7 @@ export function OrgCoverImageViewer({
 
       {open && (
         <div
-          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/70 px-4 py-6 backdrop-blur-sm"
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/45 px-5 py-5 backdrop-blur-md"
           role="presentation"
           onClick={() => setOpen(false)}
         >
@@ -63,13 +63,13 @@ export function OrgCoverImageViewer({
             role="dialog"
             aria-modal="true"
             aria-label={`${name} cover image`}
-            className="relative max-h-[92vh] w-full max-w-6xl overflow-hidden rounded-[2rem] bg-black shadow-[0_32px_80px_-28px_rgba(0,0,0,0.7)]"
+            className="relative flex h-[calc(100vh-2.5rem)] w-[calc(100vw-2.5rem)] max-w-[1600px] items-center justify-center overflow-hidden rounded-[1.5rem] bg-white/5 shadow-[0_32px_80px_-28px_rgba(0,0,0,0.55)] ring-1 ring-white/10"
             onClick={(event) => event.stopPropagation()}
           >
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/50 text-white backdrop-blur-sm transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/30"
+              className="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/45 text-white backdrop-blur-md transition hover:bg-black/65 focus:outline-none focus:ring-2 focus:ring-white/30"
               aria-label="Close image viewer"
             >
               <svg
@@ -86,20 +86,20 @@ export function OrgCoverImageViewer({
                 />
               </svg>
             </button>
-            <div className="flex max-h-[92vh] items-center justify-center bg-black p-4">
+            <div className="flex h-full w-full items-center justify-center p-4">
               {coverImageUrl ? (
                 <img
                   src={coverImageUrl}
                   alt=""
                   referrerPolicy="no-referrer"
-                  className="max-h-[88vh] w-auto max-w-full object-contain"
+                  className="max-h-full max-w-full rounded-[1rem] object-contain"
                 />
               ) : (
                 <OrgCoverArt
                   name={name}
                   category={category}
                   coverImageUrl={coverImageUrl}
-                  className="h-[88vh] min-h-[24rem] w-full max-w-6xl"
+                  className="h-full w-full"
                 />
               )}
             </div>
