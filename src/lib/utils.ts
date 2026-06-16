@@ -7,29 +7,54 @@ export function slugify(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+function getDateLocale(locale: string): string {
+  switch (locale) {
+    case "en":
+      return "en-GB";
+    case "gsw":
+      return "de-CH";
+    case "rm":
+      return "rm-CH";
+    case "de":
+    case "fr":
+    case "it":
+    case "pt":
+    case "es":
+    case "ca":
+      return locale;
+    default:
+      return "en-GB";
+  }
+}
+
 export function formatDateRange(
   start: string,
   end: string | null,
   locale: string
 ): string {
   const startDate = new Date(start);
-  const dateFormatter = new Intl.DateTimeFormat(locale, {
+  const dateLocale = getDateLocale(locale);
+  const timeZone = "Europe/Zurich";
+  const dateFormatter = new Intl.DateTimeFormat(dateLocale, {
     day: "numeric",
     month: "short",
     year: "numeric",
+    timeZone,
   });
-  const dateTimeFormatter = new Intl.DateTimeFormat(locale, {
+  const dateTimeFormatter = new Intl.DateTimeFormat(dateLocale, {
     day: "numeric",
     month: "short",
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
+    timeZone,
   });
-  const timeFormatter = new Intl.DateTimeFormat(locale, {
+  const timeFormatter = new Intl.DateTimeFormat(dateLocale, {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
+    timeZone,
   });
   const isDateOnly = (value: Date) =>
     value.getHours() === 0 &&
