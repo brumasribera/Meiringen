@@ -23,6 +23,8 @@ const languageOptions = {
   pt: { flag: "/flags/pt.svg" },
 } satisfies Record<(typeof locales)[number], { flag: string }>;
 
+const preloadedFlags = locales.map((locale) => languageOptions[locale].flag);
+
 function persistLocaleCookie(value: string) {
   document.cookie = `${localeCookieName}=${encodeURIComponent(
     value,
@@ -98,6 +100,19 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
 
   return (
     <div ref={rootRef} className={`relative ${className}`}>
+      <div aria-hidden="true" className="pointer-events-none absolute -left-[9999px] h-0 w-0 overflow-hidden">
+        {preloadedFlags.map((flag) => (
+          <Image
+            key={flag}
+            src={flag}
+            alt=""
+            width={24}
+            height={16}
+            loading="eager"
+            className="h-4 w-6"
+          />
+        ))}
+      </div>
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
@@ -148,6 +163,7 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
                     aria-hidden="true"
                     width={16}
                     height={16}
+                    loading="eager"
                     className="h-full w-full object-cover"
                   />
                 </span>
@@ -158,6 +174,7 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
                   aria-hidden="true"
                   width={24}
                   height={16}
+                  loading="eager"
                   className="h-4 w-6 rounded-[2px] object-cover shadow-sm ring-1 ring-black/10"
                 />
               )}
