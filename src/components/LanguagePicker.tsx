@@ -13,7 +13,7 @@ import {
 
 const languageOptions = {
   de: { flag: "/flags/de.svg" },
-  gsw: { flag: "/brand/logo-mark.png" },
+  gsw: { flag: "/flags/gsw.svg" },
   en: { flag: "/flags/en.svg" },
   es: { flag: "/flags/spain-flag.png" },
   ca: { flag: "/flags/catalan-flag.png" },
@@ -140,14 +140,15 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
               }`}
             >
               {l === "gsw" ? (
-                <span className="flex h-4 w-6 items-center justify-center overflow-hidden rounded-[2px] bg-[#f4c430] shadow-sm ring-1 ring-black/10">
+                <span className="flex h-4 w-6 items-stretch overflow-hidden rounded-[2px] bg-[#f4c430] shadow-sm ring-1 ring-black/10">
+                  <span className="w-1.5 shrink-0 bg-[#f4c430]" aria-hidden="true" />
                   <Image
                     src={languageOptions[l].flag}
                     alt=""
                     aria-hidden="true"
                     width={16}
                     height={16}
-                    className="h-3 w-3 object-contain"
+                    className="h-full w-full object-cover"
                   />
                 </span>
               ) : (
