@@ -13,13 +13,13 @@ import {
 
 const languageOptions = {
   de: { flag: "/flags/de.svg" },
-  gsw: { flag: "/flags/hasli-german-flag.png" },
+  gsw: { flag: "/flags/hasli-flag.png" },
   en: { flag: "/flags/en.svg" },
   es: { flag: "/flags/spain-flag.png" },
   ca: { flag: "/flags/catalan-flag.png" },
   fr: { flag: "/flags/fr.svg" },
   it: { flag: "/flags/it.svg" },
-  rm: { flag: "/flags/rm.svg" },
+  rm: { flag: "/flags/romansch-flag.png" },
   pt: { flag: "/flags/pt.svg" },
 } satisfies Record<(typeof locales)[number], { flag: string }>;
 
@@ -156,6 +156,18 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
             >
               {l === "gsw" ? (
                 <span className="flex h-4 w-6 items-center justify-center overflow-hidden rounded-[2px] bg-[#ffd400] shadow-sm ring-1 ring-black/10">
+                  <Image
+                    src={languageOptions[l].flag}
+                    alt=""
+                    aria-hidden="true"
+                    width={24}
+                    height={16}
+                    loading="eager"
+                    className="h-full w-full object-contain"
+                  />
+                </span>
+              ) : l === "rm" ? (
+                <span className="flex h-4 w-6 items-center justify-center overflow-hidden rounded-[2px] bg-white shadow-sm ring-1 ring-black/10">
                   <Image
                     src={languageOptions[l].flag}
                     alt=""
