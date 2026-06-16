@@ -13,7 +13,7 @@ import {
 
 const languageOptions = {
   de: { flag: "/flags/de.svg" },
-  gsw: { flag: "/flags/gsw.svg" },
+  gsw: { flag: "/flags/hasli-german-flag.png" },
   en: { flag: "/flags/en.svg" },
   es: { flag: "/flags/spain-flag.png" },
   ca: { flag: "/flags/catalan-flag.png" },
