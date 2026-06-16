@@ -175,7 +175,7 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
                     width={24}
                     height={16}
                     loading="eager"
-                    className="h-full w-full object-contain"
+                    className="h-full w-full object-cover object-center"
                   />
                 </span>
               ) : (
