@@ -16,7 +16,7 @@ const languageOptions = {
   gsw: { flag: "/brand/logo-mark.png" },
   en: { flag: "/flags/england-flag.png" },
   es: { flag: "/flags/spain-flag.svg" },
-  ca: { flag: "/flags/spain-flag.svg" },
+  ca: { flag: "/flags/catalan-flag.svg" },
   fr: { flag: "/flags/france-flag.png" },
   it: { flag: "/flags/italy-flag.png" },
   rm: { flag: "/flags/romania-flag.png" },
