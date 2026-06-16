@@ -14,7 +14,6 @@ import {
   resolveOrgDescription,
   resolveOrgImageUrl,
 } from "@/lib/org-content";
-import { OrgCoverArt } from "@/components/OrgCoverArt";
 import { OrgLogo } from "@/components/OrgLogo";
 import { ShareButton } from "@/components/ShareButton";
 import { actionButtonClass } from "@/lib/button-styles";
@@ -22,6 +21,7 @@ import { buildAlertHref } from "@/lib/utils";
 import { OrganizationCard } from "@/components/OrganizationCard";
 import { OrganizationFollowButton } from "@/components/OrganizationFollowButton";
 import { createClient } from "@/lib/supabase/server";
+import { OrgCoverImageViewer } from "@/components/OrgCoverImageViewer";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -61,7 +61,7 @@ export default async function OrganizationDetailPage({ params }: Props) {
 
       <div className="mt-6 overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm">
         <div className="relative">
-          <OrgCoverArt
+          <OrgCoverImageViewer
             name={organization.name}
             category={organization.category}
             coverImageUrl={coverImageUrl}
