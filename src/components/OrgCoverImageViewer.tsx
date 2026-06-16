@@ -55,7 +55,7 @@ export function OrgCoverImageViewer({
 
       {open && (
         <div
-          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/45 px-5 py-5 backdrop-blur-md"
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/45 p-5 backdrop-blur-md"
           role="presentation"
           onClick={() => setOpen(false)}
         >
@@ -63,7 +63,7 @@ export function OrgCoverImageViewer({
             role="dialog"
             aria-modal="true"
             aria-label={`${name} cover image`}
-            className="relative flex h-[calc(100vh-2.5rem)] w-[calc(100vw-2.5rem)] max-w-[1600px] items-center justify-center overflow-hidden rounded-[1.5rem] bg-white/5 shadow-[0_32px_80px_-28px_rgba(0,0,0,0.55)] ring-1 ring-white/10"
+            className="relative inline-flex max-h-[calc(100vh-2.5rem)] max-w-[calc(100vw-2.5rem)] items-center justify-center"
             onClick={(event) => event.stopPropagation()}
           >
             <button
@@ -86,20 +86,20 @@ export function OrgCoverImageViewer({
                 />
               </svg>
             </button>
-            <div className="flex h-full w-full items-center justify-center p-4">
+            <div className="relative flex items-center justify-center">
               {coverImageUrl ? (
                 <img
                   src={coverImageUrl}
                   alt=""
                   referrerPolicy="no-referrer"
-                  className="max-h-full max-w-full rounded-[1rem] object-contain"
+                  className="max-h-[calc(100vh-2.5rem)] max-w-[calc(100vw-2.5rem)] rounded-[1rem] object-contain shadow-[0_24px_60px_-24px_rgba(0,0,0,0.45)]"
                 />
               ) : (
                 <OrgCoverArt
                   name={name}
                   category={category}
                   coverImageUrl={coverImageUrl}
-                  className="h-full w-full"
+                  className="h-[calc(100vh-2.5rem)] w-[calc(100vw-2.5rem)]"
                 />
               )}
             </div>
