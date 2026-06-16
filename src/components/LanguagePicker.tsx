@@ -15,6 +15,8 @@ const languageOptions = {
   de: { flag: "/flags/germany-flag.png" },
   gsw: { flag: "/brand/logo-mark.png" },
   en: { flag: "/flags/england-flag.png" },
+  es: { flag: "/flags/spain-flag.png" },
+  ca: { flag: "/flags/spain-flag.png" },
   fr: { flag: "/flags/france-flag.png" },
   it: { flag: "/flags/italy-flag.png" },
   rm: { flag: "/flags/romania-flag.png" },
@@ -100,7 +102,7 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
         type="button"
         onClick={() => setOpen((value) => !value)}
         disabled={saving}
-        className="inline-flex min-h-10 items-center gap-2 rounded-full px-2 py-1 text-sm font-semibold tracking-[0.22em] text-muted transition hover:text-foreground focus:outline-none focus:ring-2 focus:ring-[#F4C430]/25 disabled:cursor-not-allowed disabled:opacity-70"
+        className="inline-flex min-h-10 items-center justify-center rounded-full px-2 py-1 text-muted transition hover:text-foreground focus:outline-none focus:ring-2 focus:ring-[#F4C430]/25 disabled:cursor-not-allowed disabled:opacity-70"
         aria-label="Language"
         aria-haspopup="menu"
         aria-expanded={open}
@@ -113,7 +115,6 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
           height={16}
           className="h-4 w-4 opacity-80"
         />
-        <span>{currentLocale.toUpperCase()}</span>
       </button>
 
       {open && (
@@ -145,7 +146,7 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
                 width={24}
                 height={16}
                 className={`object-cover shadow-sm ring-1 ring-black/10 ${
-                  l === "gsw" ? "h-5 w-5 rounded-[0.65rem]" : "h-4 w-6 rounded-[2px]"
+                  l === "gsw" ? "h-5 w-8 rounded-[2px] bg-[#f4c430] p-0.5" : "h-4 w-6 rounded-[2px]"
                 }`}
               />
               <span className="flex-1">{tLanguages(l)}</span>
