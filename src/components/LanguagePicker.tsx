@@ -139,16 +139,27 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
                   : "text-slate-200 hover:bg-white/10 hover:text-white"
               }`}
             >
-              <Image
-                src={languageOptions[l].flag}
-                alt=""
-                aria-hidden="true"
-                width={24}
-                height={16}
-                className={`object-cover shadow-sm ring-1 ring-black/10 ${
-                  l === "gsw" ? "h-5 w-8 rounded-[2px] bg-[#f4c430] p-0.5" : "h-4 w-6 rounded-[2px]"
-                }`}
-              />
+              {l === "gsw" ? (
+                <span className="flex h-4 w-6 items-center justify-center overflow-hidden rounded-[2px] bg-[#f4c430] shadow-sm ring-1 ring-black/10">
+                  <Image
+                    src={languageOptions[l].flag}
+                    alt=""
+                    aria-hidden="true"
+                    width={16}
+                    height={16}
+                    className="h-3 w-3 object-contain"
+                  />
+                </span>
+              ) : (
+                <Image
+                  src={languageOptions[l].flag}
+                  alt=""
+                  aria-hidden="true"
+                  width={24}
+                  height={16}
+                  className="h-4 w-6 rounded-[2px] object-cover shadow-sm ring-1 ring-black/10"
+                />
+              )}
               <span className="flex-1">{tLanguages(l)}</span>
               {currentLocale === l && <span className="text-base leading-none text-[#8cb4ff]">✓</span>}
             </button>

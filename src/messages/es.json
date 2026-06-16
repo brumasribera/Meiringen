@@ -225,13 +225,15 @@
     "other": "Other"
   },
   "languages": {
-    "de": "German",
+    "de": "Alemán",
     "gsw": "Hasli-Tütsch",
-    "en": "English",
-    "fr": "French",
-    "it": "Italian",
-    "rm": "Romansh",
-    "pt": "Portuguese"
+    "en": "Inglés",
+    "es": "Español",
+    "ca": "Catalán",
+    "fr": "Francés",
+    "it": "Italiano",
+    "rm": "Romanche",
+    "pt": "Portugués"
   },
   "footer": {
     "tagline": "Community for Meiringen & Haslital",
