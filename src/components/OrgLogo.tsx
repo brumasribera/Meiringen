@@ -46,7 +46,7 @@ export function OrgLogo({
         <img
           src={src}
           alt={`${name} logo`}
-          className={`h-full w-full ${radiusClass} object-cover p-1`}
+          className={`h-full w-full ${radiusClass} object-contain p-0.5`}
           onError={() => setImageFailed(true)}
         />
       </div>
