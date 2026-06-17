@@ -5,8 +5,8 @@ import { resolveOrgImageUrl } from "@/lib/org-content";
 import { OrganizationCard } from "@/components/OrganizationCard";
 import { OrganizationFilters } from "@/components/OrganizationFilters";
 import { DeferredMapLoader } from "@/components/DeferredMapLoader";
+import { ORGANIZATION_CATEGORIES, getLocalityCenter } from "@/lib/constants";
 import type { Locality, OrganizationCategory } from "@/lib/constants";
-import { getLocalityCenter } from "@/lib/constants";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -18,10 +18,21 @@ export default async function OrganizationsPage({ params, searchParams }: Props)
   const filters = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations("organizations");
+  const categories = Array.from(
+    new Set(
+      [
+        ...(filters.categories?.split(",") ?? []),
+        ...(filters.category ? [filters.category] : []),
+      ].filter((category): category is OrganizationCategory =>
+        ORGANIZATION_CATEGORIES.includes(category as OrganizationCategory)
+      )
+    )
+  ) as OrganizationCategory[];
 
   const organizations = await getOrganizations({
     search: filters.search,
-    category: filters.category as OrganizationCategory | undefined,
+    category: categories[0],
+    categories,
     locality: filters.locality as Locality | undefined,
   });
 

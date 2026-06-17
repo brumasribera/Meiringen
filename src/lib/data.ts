@@ -27,6 +27,7 @@ export type EventFilters = {
 export type OrganizationFilters = {
   search?: string;
   category?: OrganizationCategory;
+  categories?: OrganizationCategory[];
   locality?: Locality;
   limit?: number;
 };
@@ -39,7 +40,9 @@ export async function getOrganizations(
 
   let query = supabase.from("organizations").select("*").order("name");
 
-  if (filters.category) {
+  if (filters.categories && filters.categories.length > 0) {
+    query = query.in("category", filters.categories);
+  } else if (filters.category) {
     query = query.eq("category", filters.category);
   }
 
