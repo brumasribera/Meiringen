@@ -17,6 +17,9 @@ import { actionButtonClass } from "@/lib/button-styles";
 import { EventCard } from "@/components/EventCard";
 import { EventInterestButton } from "@/components/EventInterestButton";
 import { createClient } from "@/lib/supabase/server";
+import { OrgCoverArt } from "@/components/OrgCoverArt";
+import { OrgLogo } from "@/components/OrgLogo";
+import { resolveOrgCoverImageUrl } from "@/lib/org-content";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -41,6 +44,12 @@ export default async function EventDetailPage({ params }: Props) {
     latitude: event.latitude,
     longitude: event.longitude,
   });
+  const coverImageUrl = event.organization
+    ? resolveOrgCoverImageUrl(
+        event.organization.cover_image_url,
+        event.organization.image_url
+      )
+    : null;
   const [interestSummary, relatedEvents] = await Promise.all([
     getEventInterestSummary(event.id, user?.id),
     getRelatedEventsForEvent(event, 3),
@@ -52,37 +61,97 @@ export default async function EventDetailPage({ params }: Props) {
         ← {t("common.back")}
       </Link>
 
-      <div className="mt-6 flex flex-wrap gap-2">
-        <span className="pill bg-primary/10 text-primary">
-          {t(`categories.${event.category}`)}
-        </span>
-        {event.language && (
-          <span className="pill bg-accent/20 text-foreground">
-            {t(`languages.${event.language}`)}
-          </span>
+      <section className="mt-6 overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm">
+        {event.organization && (
+          <div className="relative min-h-[14rem] overflow-hidden">
+            <OrgCoverArt
+              name={event.organization.name}
+              category={event.organization.category}
+              coverImageUrl={coverImageUrl}
+              className="absolute inset-0 h-full w-full"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
+            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 text-white">
+              <div className="max-w-2xl">
+                <div className="flex flex-wrap gap-2">
+                  <span className="pill border border-white/30 bg-white/15 text-white backdrop-blur-sm">
+                    {t(`categories.${event.category}`)}
+                  </span>
+                  {event.language && (
+                    <span className="pill border border-white/30 bg-white/15 text-white backdrop-blur-sm">
+                      {t(`languages.${event.language}`)}
+                    </span>
+                  )}
+                  {event.is_recurring && (
+                    <span className="pill border border-white/30 bg-white/15 text-white backdrop-blur-sm">
+                      {t("events.recurring")}
+                    </span>
+                  )}
+                </div>
+                <h1 className="mt-4 text-3xl font-bold md:text-4xl">
+                  {event.title}
+                </h1>
+                <p className="mt-4 text-lg text-white/85">
+                  {formatDateRange(event.start_date, event.end_date, locale)}
+                </p>
+              </div>
+              <div className="hidden shrink-0 rounded-2xl bg-white/90 p-2 shadow-lg ring-1 ring-black/10 md:block">
+                <OrgLogo
+                  name={event.organization.name}
+                  imageUrl={event.organization.image_url}
+                  websiteUrl={event.organization.website_url}
+                  locality={event.organization.locality}
+                  size="lg"
+                />
+              </div>
+            </div>
+          </div>
         )}
-        {event.is_recurring && (
-          <span className="pill bg-accent/20 text-foreground">
-            {t("events.recurring")}
-          </span>
+        {!event.organization && (
+          <div className="p-6">
+            <div className="flex flex-wrap gap-2">
+              <span className="pill bg-primary/10 text-primary">
+                {t(`categories.${event.category}`)}
+              </span>
+              {event.language && (
+                <span className="pill bg-accent/20 text-foreground">
+                  {t(`languages.${event.language}`)}
+                </span>
+              )}
+              {event.is_recurring && (
+                <span className="pill bg-accent/20 text-foreground">
+                  {t("events.recurring")}
+                </span>
+              )}
+            </div>
+            <h1 className="mt-4 text-3xl font-bold md:text-4xl">
+              {event.title}
+            </h1>
+            <p className="mt-4 text-lg text-muted">
+              {formatDateRange(event.start_date, event.end_date, locale)}
+            </p>
+          </div>
         )}
-      </div>
 
-      <h1 className="mt-4 text-3xl font-bold md:text-4xl">{event.title}</h1>
-      <p className="mt-4 text-lg text-muted">
-        {formatDateRange(event.start_date, event.end_date, locale)}
-      </p>
-
-      {event.organization && (
-        <p className="mt-2">
-          <Link
-            href={`/organizations/${event.organization.slug}`}
-            className="font-medium text-primary hover:underline"
-          >
-            {event.organization.name}
-          </Link>
-        </p>
-      )}
+        {event.organization && (
+          <div className="border-t border-border bg-card p-6">
+            <p className="text-sm uppercase tracking-wide text-muted">Organizer</p>
+            <Link
+              href={`/organizations/${event.organization.slug}`}
+              className="mt-2 inline-flex items-center gap-3 font-medium text-primary hover:underline"
+            >
+              <OrgLogo
+                name={event.organization.name}
+                imageUrl={event.organization.image_url}
+                websiteUrl={event.organization.website_url}
+                locality={event.organization.locality}
+                size="sm"
+              />
+              <span>{event.organization.name}</span>
+            </Link>
+          </div>
+        )}
+      </section>
 
       {event.location_name && (
         <p className="mt-4 text-muted">

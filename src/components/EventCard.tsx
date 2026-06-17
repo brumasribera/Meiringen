@@ -2,6 +2,7 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { OrgLogo } from "@/components/OrgLogo";
 import type { Event } from "@/lib/types";
 import { formatDateRange } from "@/lib/utils";
 
@@ -14,7 +15,7 @@ export function EventCard({ event }: Props) {
   return (
     <Link
       href={`/events/${event.slug}`}
-      className="card-hover block rounded-2xl border border-border bg-card p-5 shadow-sm"
+      className="card-hover block rounded-2xl border border-border bg-card p-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5"
     >
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <span className="pill bg-primary/10 text-primary">
@@ -34,9 +35,18 @@ export function EventCard({ event }: Props) {
         <p className="mt-1 text-sm text-muted">{event.location_name}</p>
       )}
       {event.organization && (
-        <p className="mt-2 text-sm font-medium text-primary-light">
-          {event.organization.name}
-        </p>
+        <div className="mt-3 flex items-center gap-3">
+          <OrgLogo
+            name={event.organization.name}
+            imageUrl={event.organization.image_url}
+            websiteUrl={event.organization.website_url}
+            locality={event.organization.locality}
+            size="sm"
+          />
+          <p className="min-w-0 text-sm font-medium text-primary-light">
+            {event.organization.name}
+          </p>
+        </div>
       )}
       {event.price && (
         <p className="mt-2 text-sm text-accent">
