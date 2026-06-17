@@ -28,6 +28,9 @@ export function Map({ markers, center, zoom = 12, className = "h-80", preferLeaf
   const [status, setStatus] = useState<MapProviderStatus | null>(null);
   const [error, setError] = useState(false);
   const [googleFailed, setGoogleFailed] = useState(false);
+  const forceLeaflet =
+    typeof window !== "undefined" &&
+    ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname);
 
   useEffect(() => {
     let cancelled = false;
@@ -60,7 +63,7 @@ export function Map({ markers, center, zoom = 12, className = "h-80", preferLeaf
 
   if (markers.length === 0) return null;
 
-  if (preferLeaflet) {
+  if (preferLeaflet || forceLeaflet) {
     return (
       <LeafletMapView
         markers={markers}
