@@ -92,7 +92,7 @@ export function OrgCoverImageViewer({
                   src={coverImageUrl}
                   alt=""
                   referrerPolicy="no-referrer"
-                  className="max-h-[calc(100vh-44px)] max-w-[calc(100vw-44px)] rounded-[1rem] object-contain shadow-[0_24px_60px_-24px_rgba(0,0,0,0.45)]"
+                  className="max-h-[calc(100vh-44px)] max-w-[calc(100vw-44px)] object-contain shadow-[0_24px_60px_-24px_rgba(0,0,0,0.45)]"
                 />
               ) : (
                 <OrgCoverArt
