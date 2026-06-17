@@ -102,6 +102,7 @@ export default async function EventDetailPage({ params }: Props) {
                   websiteUrl={event.organization.website_url}
                   locality={event.organization.locality}
                   size="lg"
+                  shape="square"
                 />
               </div>
             </div>
@@ -146,6 +147,7 @@ export default async function EventDetailPage({ params }: Props) {
                 websiteUrl={event.organization.website_url}
                 locality={event.organization.locality}
                 size="sm"
+                shape="square"
               />
               <span>{event.organization.name}</span>
             </Link>
