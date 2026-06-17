@@ -59,6 +59,26 @@ export function OrgCoverImageViewer({
           role="presentation"
           onClick={() => setOpen(false)}
         >
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="absolute right-5 top-5 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/45 text-white backdrop-blur-md transition hover:bg-black/65 focus:outline-none focus:ring-2 focus:ring-white/30"
+            aria-label="Close image viewer"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              className="h-4 w-4"
+              aria-hidden="true"
+            >
+              <path
+                d="M6 6l12 12M18 6 6 18"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
           <div
             role="dialog"
             aria-modal="true"
@@ -66,26 +86,6 @@ export function OrgCoverImageViewer({
             className="relative inline-flex max-h-[calc(100vh-44px)] max-w-[calc(100vw-44px)] items-center justify-center"
             onClick={(event) => event.stopPropagation()}
           >
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              className="absolute right-3 top-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/45 text-white backdrop-blur-md transition hover:bg-black/65 focus:outline-none focus:ring-2 focus:ring-white/30"
-              aria-label="Close image viewer"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                className="h-4 w-4"
-                aria-hidden="true"
-              >
-                <path
-                  d="M6 6l12 12M18 6 6 18"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </button>
             <div className="relative inline-flex items-center justify-center">
               {coverImageUrl ? (
                 <img
