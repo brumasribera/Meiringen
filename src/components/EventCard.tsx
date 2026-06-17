@@ -26,6 +26,7 @@ export function EventCard({ event }: Props) {
               websiteUrl={event.organization.website_url}
               locality={event.organization.locality}
               size="sm"
+              shape="square"
             />
             <p className="min-w-0 line-clamp-1 text-sm font-medium text-foreground">
               {event.organization.name}

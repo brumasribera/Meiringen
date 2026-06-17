@@ -42,6 +42,7 @@ export function OrganizationCard({ organization }: Props) {
             websiteUrl={organization.website_url}
             locality={organization.locality}
             size="md"
+            shape="square"
           />
         </div>
       </div>
