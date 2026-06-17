@@ -9,6 +9,7 @@ type Props = {
   websiteUrl?: string | null;
   locality?: string | null;
   size?: "sm" | "md" | "lg";
+  shape?: "circle" | "square";
 };
 
 const sizes = {
@@ -23,6 +24,7 @@ export function OrgLogo({
   websiteUrl,
   locality,
   size = "md",
+  shape = "circle",
 }: Props) {
   const src = resolveOrgImageUrl(imageUrl ?? null, websiteUrl ?? null, locality);
   const [imageFailed, setImageFailed] = useState(false);
@@ -34,15 +36,17 @@ export function OrgLogo({
     .join("")
     .toUpperCase();
 
+  const radiusClass = shape === "circle" ? "rounded-full" : "rounded-2xl";
+
   if (src && !imageFailed) {
     return (
       <div
-        className={`${s.box} relative shrink-0 overflow-hidden rounded-full border border-border bg-white`}
+        className={`${s.box} relative shrink-0 overflow-hidden ${radiusClass} border border-border bg-white`}
       >
         <img
           src={src}
           alt={`${name} logo`}
-          className="h-full w-full rounded-full object-cover p-1"
+          className={`h-full w-full ${radiusClass} object-cover p-1`}
           onError={() => setImageFailed(true)}
         />
       </div>
@@ -51,7 +55,7 @@ export function OrgLogo({
 
   return (
     <div
-      className={`${s.box} flex shrink-0 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary ${s.text}`}
+      className={`${s.box} flex shrink-0 items-center justify-center ${radiusClass} bg-primary/10 font-semibold text-primary ${s.text}`}
       aria-hidden
     >
       {initials}
