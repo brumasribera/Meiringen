@@ -1,16 +1,28 @@
 "use client";
 
+import { useMemo } from "react";
 import { useRouter, usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { CONTENT_LANGUAGES, EVENT_CATEGORIES } from "@/lib/constants";
+import type { EventCategory } from "@/lib/constants";
 import type { Organization } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
 import { OrganizationSearchSelect } from "@/components/OrganizationSearchSelect";
 import { selectControlClass } from "@/lib/form-styles";
 
 type Props = {
-  organizations: Organization[]; 
+  organizations: Organization[];
 };
+
+function parseCategories(value: string | null): EventCategory[] {
+  if (!value) return [];
+  return value
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter((entry): entry is EventCategory =>
+      EVENT_CATEGORIES.includes(entry as EventCategory)
+    );
+}
 
 export function EventFilters({ organizations }: Props) {
   const t = useTranslations();
@@ -18,63 +30,55 @@ export function EventFilters({ organizations }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  function update(key: string, value: string) {
+  const categories = useMemo(
+    () => parseCategories(searchParams.get("categories") ?? searchParams.get("category")),
+    [searchParams]
+  );
+
+  function update(paramsToSet: Record<string, string | null>) {
     const params = new URLSearchParams(searchParams.toString());
-    if (value) params.set(key, value);
-    else params.delete(key);
-    router.push(`${pathname}?${params.toString()}`);
+    for (const [key, value] of Object.entries(paramsToSet)) {
+      if (value) params.set(key, value);
+      else params.delete(key);
+    }
+    const query = params.toString();
+    router.push(query ? `${pathname}?${query}` : pathname);
   }
 
+  function toggleCategory(category: EventCategory) {
+    const nextCategories = categories.includes(category)
+      ? categories.filter((item) => item !== category)
+      : [...categories, category];
+    update({
+      categories: nextCategories.length > 0 ? nextCategories.join(",") : null,
+      category: null,
+    });
+  }
+
+  const clearCategories = () => update({ categories: null, category: null });
+
   return (
-    <details className="group rounded-2xl border border-border bg-card p-5">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
-        <div>
-          <p className="text-sm font-semibold text-foreground">
-            {t("events.filtersTitle")}
-          </p>
-          <p className="mt-1 text-sm text-muted">{t("events.filtersSubtitle")}</p>
-        </div>
-        <span className="rounded-full border border-border px-3 py-1 text-xs font-medium text-muted transition group-open:bg-primary group-open:text-white">
-          {t("events.showFilters")}
-        </span>
-      </summary>
-      <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div>
-          <label className="mb-1 block text-xs font-medium text-muted">
+    <div className="rounded-3xl border border-border bg-card/90 p-4 shadow-sm backdrop-blur-sm sm:p-5">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(220px,0.8fr)]">
+        <div className="space-y-2">
+          <label className="block text-xs font-medium uppercase tracking-wide text-muted">
             {t("events.search")}
           </label>
           <input
             type="search"
             defaultValue={searchParams.get("search") ?? ""}
-            onChange={(e) => update("search", e.target.value)}
+            onChange={(e) => update({ search: e.target.value || null })}
             className={selectControlClass}
             placeholder={t("events.search")}
           />
         </div>
-        <div>
-          <label className="mb-1 block text-xs font-medium text-muted">
-            {t("events.category")}
-          </label>
-          <select
-            value={searchParams.get("category") ?? ""}
-            onChange={(e) => update("category", e.target.value)}
-            className={selectControlClass}
-          >
-            <option value="">{t("events.all")}</option>
-            {EVENT_CATEGORIES.map((c) => (
-              <option key={c} value={c}>
-                {t(`categories.${c}`)}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="mb-1 block text-xs font-medium text-muted">
+        <div className="space-y-2">
+          <label className="block text-xs font-medium uppercase tracking-wide text-muted">
             {t("events.language")}
           </label>
           <select
             value={searchParams.get("language") ?? ""}
-            onChange={(e) => update("language", e.target.value)}
+            onChange={(e) => update({ language: e.target.value || null })}
             className={selectControlClass}
           >
             <option value="">{t("events.all")}</option>
@@ -85,41 +89,81 @@ export function EventFilters({ organizations }: Props) {
             ))}
           </select>
         </div>
-        <div>
-          <label className="mb-1 block text-xs font-medium text-muted">
-            {t("events.organization")}
-          </label>
-          <OrganizationSearchSelect
-            organizations={organizations}
-            value={searchParams.get("organization") ?? ""}
-            onChange={(organizationId) => update("organization", organizationId)}
-            allLabel={t("events.all")}
-            id="event-org-search"
-          />
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <div className="mr-1 text-xs font-medium uppercase tracking-wide text-muted">
+          {t("events.category")}
         </div>
+        <button
+          type="button"
+          onClick={clearCategories}
+          className={`rounded-full border px-3 py-1.5 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-primary/20 ${
+            categories.length === 0
+              ? "border-primary/25 bg-primary text-white shadow-sm"
+              : "border-border bg-white/70 text-muted hover:border-primary/30 hover:text-foreground"
+          }`}
+          aria-pressed={categories.length === 0}
+        >
+          {t("events.all")}
+        </button>
+        {EVENT_CATEGORIES.map((category) => {
+          const active = categories.includes(category);
+          return (
+            <button
+              key={category}
+              type="button"
+              onClick={() => toggleCategory(category)}
+              className={`rounded-full border px-3 py-1.5 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-primary/20 ${
+                active
+                  ? "border-primary/25 bg-primary/10 text-primary shadow-sm"
+                  : "border-border bg-white/70 text-muted hover:border-primary/30 hover:text-foreground"
+              }`}
+              aria-pressed={active}
+            >
+              {t(`categories.${category}`)}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="mt-4 space-y-2">
+        <label className="block text-xs font-medium uppercase tracking-wide text-muted">
+          {t("events.organization")}
+        </label>
+        <OrganizationSearchSelect
+          organizations={organizations}
+          value={searchParams.get("organization") ?? ""}
+          onChange={(organizationId) => update({ organization: organizationId || null })}
+          allLabel={t("events.all")}
+          id="event-org-search"
+        />
+      </div>
+
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="mb-1 block text-xs font-medium text-muted">
+          <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-muted">
             {t("events.dateFrom")}
           </label>
           <input
             type="date"
             defaultValue={searchParams.get("dateFrom") ?? ""}
-            onChange={(e) => update("dateFrom", e.target.value)}
+            onChange={(e) => update({ dateFrom: e.target.value || null })}
             className={selectControlClass}
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-muted">
+          <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-muted">
             {t("events.dateTo")}
           </label>
           <input
             type="date"
             defaultValue={searchParams.get("dateTo") ?? ""}
-            onChange={(e) => update("dateTo", e.target.value)}
+            onChange={(e) => update({ dateTo: e.target.value || null })}
             className={selectControlClass}
           />
         </div>
       </div>
-    </details>
+    </div>
   );
 }

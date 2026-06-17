@@ -4,6 +4,7 @@ import { getEvents, getOrganizations } from "@/lib/data";
 import { EventCard } from "@/components/EventCard";
 import { EventFilters } from "@/components/EventFilters";
 import { EventAlertSignup } from "@/components/EventAlertSignup";
+import { EVENT_CATEGORIES } from "@/lib/constants";
 import type { ContentLanguage, EventCategory } from "@/lib/constants";
 
 type Props = {
@@ -16,11 +17,22 @@ export default async function EventsPage({ params, searchParams }: Props) {
   const filters = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations("events");
+  const categories = Array.from(
+    new Set(
+      [
+        ...(filters.categories?.split(",") ?? []),
+        ...(filters.category ? [filters.category] : []),
+      ].filter((category): category is EventCategory =>
+        EVENT_CATEGORIES.includes(category as EventCategory)
+      )
+    )
+  ) as EventCategory[];
 
   const [events, organizations] = await Promise.all([
     getEvents({
       search: filters.search,
-      category: filters.category as EventCategory | undefined,
+      category: categories[0],
+      categories,
       language: filters.language as ContentLanguage | undefined,
       organizationId: filters.organization,
       dateFrom: filters.dateFrom,

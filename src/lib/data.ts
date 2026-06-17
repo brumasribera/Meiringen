@@ -16,6 +16,7 @@ import type {
 export type EventFilters = {
   search?: string;
   category?: EventCategory;
+  categories?: EventCategory[];
   language?: ContentLanguage;
   organizationId?: string;
   dateFrom?: string;
@@ -101,7 +102,9 @@ export async function getEvents(
     query = query.eq("status", "published");
   }
 
-  if (filters.category) {
+  if (filters.categories && filters.categories.length > 0) {
+    query = query.in("category", filters.categories);
+  } else if (filters.category) {
     query = query.eq("category", filters.category);
   }
 
