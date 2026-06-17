@@ -95,7 +95,7 @@ export default async function EventDetailPage({ params }: Props) {
                   {formatDateRange(event.start_date, event.end_date, locale)}
                 </p>
               </div>
-              <div className="hidden shrink-0 rounded-2xl bg-white/90 p-2 shadow-lg ring-1 ring-black/10 md:block">
+              <div className="hidden shrink-0 md:block">
                 <OrgLogo
                   name={event.organization.name}
                   imageUrl={event.organization.image_url}

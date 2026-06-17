@@ -19,7 +19,7 @@ export function EventCard({ event }: Props) {
     >
       <div className="flex items-start justify-between gap-3">
         {event.organization ? (
-          <div className="rounded-full border border-border/70 bg-background/80 p-0.5">
+          <div className="flex items-center gap-2 min-w-0">
             <OrgLogo
               name={event.organization.name}
               imageUrl={event.organization.image_url}
@@ -27,6 +27,9 @@ export function EventCard({ event }: Props) {
               locality={event.organization.locality}
               size="sm"
             />
+            <p className="min-w-0 line-clamp-1 text-sm font-medium text-foreground">
+              {event.organization.name}
+            </p>
           </div>
         ) : (
           <span className="pill bg-primary/10 text-primary">

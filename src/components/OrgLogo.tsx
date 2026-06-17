@@ -37,12 +37,12 @@ export function OrgLogo({
   if (src && !imageFailed) {
     return (
       <div
-        className={`${s.box} relative shrink-0 overflow-hidden rounded-xl border border-border bg-white`}
+        className={`${s.box} relative shrink-0 overflow-hidden rounded-full border border-border bg-white`}
       >
         <img
           src={src}
           alt={`${name} logo`}
-          className="h-full w-full object-contain p-1"
+          className="h-full w-full rounded-full object-cover p-1"
           onError={() => setImageFailed(true)}
         />
       </div>
@@ -51,7 +51,7 @@ export function OrgLogo({
 
   return (
     <div
-      className={`${s.box} flex shrink-0 items-center justify-center rounded-xl bg-primary/10 font-semibold text-primary ${s.text}`}
+      className={`${s.box} flex shrink-0 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary ${s.text}`}
       aria-hidden
     >
       {initials}

@@ -35,7 +35,7 @@ export function OrganizationCard({ organization }: Props) {
             {t(`categories.${organization.category}`)}
           </span>
         </div>
-        <div className="absolute left-5 top-full -translate-y-1/2 rounded-[1.35rem] bg-white p-1.5 shadow-[0_18px_32px_-20px_rgba(15,23,42,0.65)] ring-1 ring-black/5">
+        <div className="absolute left-5 top-full -translate-y-1/2">
           <OrgLogo
             name={organization.name}
             imageUrl={organization.image_url}
