@@ -36,17 +36,29 @@ export function OrgLogo({
     .join("")
     .toUpperCase();
 
-  const radiusClass = shape === "circle" ? "rounded-full" : "rounded-2xl";
+  const getRadiusClass = () => {
+    if (shape === "circle") return "rounded-full";
+    switch (size) {
+      case "sm":
+        return "rounded-lg";
+      case "md":
+        return "rounded-xl";
+      case "lg":
+      default:
+        return "rounded-2xl";
+    }
+  };
+  const radiusClass = getRadiusClass();
 
   if (src && !imageFailed) {
     return (
       <div
-        className={`${s.box} relative shrink-0 overflow-hidden ${radiusClass} border border-border bg-white`}
+        className={`${s.box} relative shrink-0 overflow-hidden ${radiusClass} border border-border bg-white flex items-center justify-center`}
       >
         <img
           src={src}
           alt={`${name} logo`}
-          className={`h-full w-full ${radiusClass} object-contain p-0.5`}
+          className="h-full w-full object-contain p-1.5"
           onError={() => setImageFailed(true)}
         />
       </div>
