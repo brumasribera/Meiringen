@@ -42,7 +42,7 @@ export function OrgCoverImageViewer({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="block w-full cursor-zoom-in text-left"
+        className="block w-full text-left"
         aria-label={`Open large image for ${name}`}
       >
         <OrgCoverArt

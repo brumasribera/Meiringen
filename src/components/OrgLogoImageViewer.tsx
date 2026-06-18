@@ -51,7 +51,7 @@ export function OrgLogoImageViewer({
           e.stopPropagation();
           setOpen(true);
         }}
-        className="block cursor-zoom-in outline-none focus:ring-2 focus:ring-primary/50"
+        className="block outline-none focus:ring-2 focus:ring-primary/50"
         style={{ borderRadius: shape === "square" ? "inherit" : "9999px" }}
         aria-label={`Open large logo for ${name}`}
       >
@@ -103,26 +103,28 @@ export function OrgLogoImageViewer({
             role="dialog"
             aria-modal="true"
             aria-label={`${name} logo`}
-            className="relative flex max-h-[calc(100vh-44px)] max-w-[calc(100vw-44px)] items-center justify-center rounded-3xl bg-white p-8 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.45)]"
+            className="relative inline-flex max-h-[calc(100vh-44px)] max-w-[calc(100vw-44px)] items-center justify-center"
             onClick={(event) => event.stopPropagation()}
           >
-            {src ? (
-              <img
-                src={src}
-                alt={`${name} logo`}
-                referrerPolicy="no-referrer"
-                className="max-h-[calc(100vh-108px)] max-w-[calc(100vw-108px)] object-scale-down"
-              />
-            ) : (
-              <OrgLogo
-                name={name}
-                imageUrl={imageUrl}
-                websiteUrl={websiteUrl}
-                locality={locality}
-                size="lg"
-                shape={shape}
-              />
-            )}
+            <div className="relative inline-flex items-center justify-center">
+              {src ? (
+                <img
+                  src={src}
+                  alt={`${name} logo`}
+                  referrerPolicy="no-referrer"
+                  className="max-h-[calc(100vh-44px)] max-w-[calc(100vw-44px)] object-scale-down shadow-[0_24px_60px_-24px_rgba(0,0,0,0.45)]"
+                />
+              ) : (
+                <OrgLogo
+                  name={name}
+                  imageUrl={imageUrl}
+                  websiteUrl={websiteUrl}
+                  locality={locality}
+                  size="lg"
+                  shape={shape}
+                />
+              )}
+            </div>
           </div>
         </div>
       )}
