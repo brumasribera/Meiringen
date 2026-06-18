@@ -19,6 +19,7 @@ import { EventInterestButton } from "@/components/EventInterestButton";
 import { createClient } from "@/lib/supabase/server";
 import { OrgCoverArt } from "@/components/OrgCoverArt";
 import { OrgLogo } from "@/components/OrgLogo";
+import { OrgLogoImageViewer } from "@/components/OrgLogoImageViewer";
 import { resolveOrgCoverImageUrl } from "@/lib/org-content";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -96,7 +97,7 @@ export default async function EventDetailPage({ params }: Props) {
                 </p>
               </div>
               <div className="hidden shrink-0 md:block">
-                <OrgLogo
+                <OrgLogoImageViewer
                   name={event.organization.name}
                   imageUrl={event.organization.image_url}
                   websiteUrl={event.organization.website_url}

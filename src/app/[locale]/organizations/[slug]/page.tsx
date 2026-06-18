@@ -14,7 +14,7 @@ import {
   resolveOrgDescription,
   resolveOrgImageUrl,
 } from "@/lib/org-content";
-import { OrgLogo } from "@/components/OrgLogo";
+import { OrgLogoImageViewer } from "@/components/OrgLogoImageViewer";
 import { ShareButton } from "@/components/ShareButton";
 import { actionButtonClass } from "@/lib/button-styles";
 import { buildAlertHref } from "@/lib/utils";
@@ -91,7 +91,7 @@ export default async function OrganizationDetailPage({ params }: Props) {
           )}
           <div className="absolute left-6 top-full -translate-y-1/2 md:left-8">
             <div className="rounded-[1.75rem] shadow-[0_22px_44px_-24px_rgba(15,23,42,0.65)] ring-1 ring-black/5">
-              <OrgLogo
+              <OrgLogoImageViewer
                 name={organization.name}
                 imageUrl={organization.image_url}
                 websiteUrl={organization.website_url}
