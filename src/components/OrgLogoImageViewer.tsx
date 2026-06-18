@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { OrgLogo } from "@/components/OrgLogo";
 import { resolveOrgImageUrl } from "@/lib/org-image";
 
@@ -65,7 +66,7 @@ export function OrgLogoImageViewer({
         />
       </button>
 
-      {open && (
+      {open && typeof document !== 'undefined' && createPortal(
         <div
           className="fixed inset-0 z-[70] flex items-center justify-center bg-black/45 p-[22px] backdrop-blur-md"
           role="presentation"
@@ -126,7 +127,8 @@ export function OrgLogoImageViewer({
               )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

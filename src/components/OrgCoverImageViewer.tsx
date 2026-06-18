@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { OrgCoverArt } from "@/components/OrgCoverArt";
 import type { OrganizationCategory } from "@/lib/constants";
 
@@ -53,7 +54,7 @@ export function OrgCoverImageViewer({
         />
       </button>
 
-      {open && (
+      {open && typeof document !== 'undefined' && createPortal(
         <div
           className="fixed inset-0 z-[70] flex items-center justify-center bg-black/45 p-[22px] backdrop-blur-md"
           role="presentation"
@@ -104,7 +105,8 @@ export function OrgCoverImageViewer({
               )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
