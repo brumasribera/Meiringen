@@ -3,7 +3,6 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getEvents, getOrganizations } from "@/lib/data";
 import { EventCard } from "@/components/EventCard";
 import { EventFilters } from "@/components/EventFilters";
-import { EventAlertSignup } from "@/components/EventAlertSignup";
 import { EVENT_CATEGORIES } from "@/lib/constants";
 import type { ContentLanguage, EventCategory } from "@/lib/constants";
 
@@ -49,7 +48,6 @@ export default async function EventsPage({ params, searchParams }: Props) {
       <div className="mt-8">
         <Suspense fallback={<div className="h-32 animate-pulse rounded-2xl bg-border" />}>
           <EventFilters organizations={organizations} />
-          <EventAlertSignup organizations={organizations} />
         </Suspense>
       </div>
 

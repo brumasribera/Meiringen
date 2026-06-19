@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useRouter, usePathname } from "@/i18n/routing";
+import { Link, useRouter, usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { CONTENT_LANGUAGES, EVENT_CATEGORIES } from "@/lib/constants";
 import type { EventCategory } from "@/lib/constants";
@@ -62,6 +62,17 @@ export function EventFilters({ organizations }: Props) {
     Boolean(searchParams.get("dateFrom")) ||
     Boolean(searchParams.get("dateTo"));
   const [advancedOpen, setAdvancedOpen] = useState(hasAdvancedFilters);
+  const subscribeParams = new URLSearchParams();
+  const primaryCategory = categories[0] ?? searchParams.get("category");
+  const language = searchParams.get("language");
+  const organization = searchParams.get("organization");
+
+  if (primaryCategory) subscribeParams.set("category", primaryCategory);
+  if (language) subscribeParams.set("language", language);
+  if (organization) subscribeParams.set("organization", organization);
+  const subscribeHref = subscribeParams.toString()
+    ? `/alerts?${subscribeParams.toString()}`
+    : "/alerts";
 
   return (
     <div className="rounded-3xl border border-border bg-card/90 p-4 shadow-sm backdrop-blur-sm sm:p-5">
@@ -93,12 +104,12 @@ export function EventFilters({ organizations }: Props) {
           >
             {advancedOpen ? t("events.alertHideCustomize") : t("events.alertFullForm")}
           </button>
-          <a
-            href="#event-alert-signup"
-            className="rounded-full bg-[#111111] px-3 py-1.5 text-xs font-medium text-[#F4C430] transition hover:bg-[#111111]/90 focus:outline-none focus:ring-2 focus:ring-[#111111]/20"
+          <Link
+            href={subscribeHref}
+            className="rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs font-medium text-primary transition hover:border-primary/30 hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/20"
           >
-            {t("alertSubscribe")}
-          </a>
+            {t("events.alertSubscribe")}
+          </Link>
         </div>
       </div>
 
@@ -131,11 +142,11 @@ export function EventFilters({ organizations }: Props) {
                   : "border-border bg-white/70 text-muted hover:border-primary/30 hover:text-foreground"
               }`}
               aria-pressed={active}
-          >
-            {t(`categories.${category}`)}
-          </button>
-        );
-      })}
+              >
+                {t(`categories.${category}`)}
+              </button>
+          );
+        })}
       </div>
 
       <div
