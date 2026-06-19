@@ -93,6 +93,12 @@ export function EventFilters({ organizations }: Props) {
           >
             {advancedOpen ? t("events.alertHideCustomize") : t("events.alertFullForm")}
           </button>
+          <a
+            href="#event-alert-signup"
+            className="rounded-full bg-[#111111] px-3 py-1.5 text-xs font-medium text-[#F4C430] transition hover:bg-[#111111]/90 focus:outline-none focus:ring-2 focus:ring-[#111111]/20"
+          >
+            {t("alertSubscribe")}
+          </a>
         </div>
       </div>
 

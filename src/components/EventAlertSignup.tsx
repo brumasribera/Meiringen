@@ -143,7 +143,7 @@ function EventAlertSignupForm({
   }
 
   return (
-    <details className="mt-4 rounded-2xl border-2 border-[#F4C430] bg-[#F4C430]/10 p-5">
+    <details id="event-alert-signup" className="mt-4 rounded-2xl border-2 border-[#F4C430] bg-[#F4C430]/10 p-5">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
         <div>
           <h2 className="text-lg font-bold text-[#111111]">{t("alertTitle")}</h2>
