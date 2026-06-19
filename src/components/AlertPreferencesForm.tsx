@@ -51,9 +51,7 @@ export function AlertPreferencesForm({
   const [organizationIds, setOrganizationIds] = useState<string[]>(
     initial?.organization_ids ?? []
   );
-  const [languages, setLanguages] = useState<string[]>(
-    initial?.languages ?? [locale]
-  );
+  const [language, setLanguage] = useState<string>(initial?.languages?.[0] ?? locale);
   const [saved, setSaved] = useState(false);
   const [manageUrl, setManageUrl] = useState<string | null>(null);
   const [emailSent, setEmailSent] = useState(false);
@@ -79,7 +77,7 @@ export function AlertPreferencesForm({
             body: JSON.stringify({
               frequency,
               categories,
-              languages,
+              languages: [language],
               locale,
               active: true,
               organization_ids: organizationIds,
@@ -91,14 +89,14 @@ export function AlertPreferencesForm({
         const response = await fetch("/api/alerts/subscribe", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email,
-            frequency,
-            categories,
-            languages,
-            locale,
-            userId,
-            organizationIds,
+            body: JSON.stringify({
+              email,
+              frequency,
+              categories,
+              languages: [language],
+              locale,
+              userId,
+              organizationIds,
           }),
         });
         const data = await response.json();
@@ -198,12 +196,13 @@ export function AlertPreferencesForm({
             <button
               key={l}
               type="button"
-              onClick={() => toggle(languages, l, setLanguages)}
+              onClick={() => setLanguage(l)}
               className={`pill transition ${
-                languages.includes(l)
+                language === l
                   ? "bg-primary text-white"
                   : "bg-primary/10 text-primary"
               }`}
+              aria-pressed={language === l}
             >
               {l.toUpperCase()}
             </button>

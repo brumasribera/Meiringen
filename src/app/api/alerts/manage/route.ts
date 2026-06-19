@@ -28,10 +28,11 @@ function parseCategories(value: unknown): EventCategory[] | undefined {
 }
 
 function parseLanguages(value: unknown): ContentLanguage[] | undefined {
-  if (!Array.isArray(value)) return undefined;
-  return value.filter((item): item is ContentLanguage =>
+  const raw = Array.isArray(value) ? value : typeof value === "string" ? [value] : [];
+  const parsed = raw.filter((item): item is ContentLanguage =>
     CONTENT_LANGUAGES.includes(item as ContentLanguage),
   );
+  return parsed.length > 0 ? parsed.slice(0, 1) : undefined;
 }
 
 function redirectWithLocale(path: string, locale: string): NextResponse {

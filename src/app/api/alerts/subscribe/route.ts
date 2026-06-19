@@ -20,8 +20,8 @@ function parseCategories(value: unknown): EventCategory[] {
 }
 
 function parseLanguages(value: unknown): ContentLanguage[] {
-  if (!Array.isArray(value)) return ["de"];
-  const parsed = value.filter((item): item is ContentLanguage =>
+  const raw = Array.isArray(value) ? value : typeof value === "string" ? [value] : [];
+  const parsed = raw.filter((item): item is ContentLanguage =>
     CONTENT_LANGUAGES.includes(item as ContentLanguage),
   );
   return parsed.length > 0 ? parsed : ["de"];
