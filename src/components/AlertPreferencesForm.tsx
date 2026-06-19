@@ -190,23 +190,19 @@ export function AlertPreferencesForm({
       )}
 
       <fieldset>
-        <legend className="font-semibold">{t("languages")}</legend>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {CONTENT_LANGUAGES.map((l) => (
-            <button
-              key={l}
-              type="button"
-              onClick={() => setLanguage(l)}
-              className={`pill transition ${
-                language === l
-                  ? "bg-primary text-white"
-                  : "bg-primary/10 text-primary"
-              }`}
-              aria-pressed={language === l}
-            >
-              {l.toUpperCase()}
-            </button>
-          ))}
+        <legend className="font-semibold">Email language</legend>
+        <div className="mt-3">
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm"
+          >
+            {CONTENT_LANGUAGES.map((l) => (
+              <option key={l} value={l}>
+                {l.toUpperCase()}
+              </option>
+            ))}
+          </select>
         </div>
       </fieldset>
 
