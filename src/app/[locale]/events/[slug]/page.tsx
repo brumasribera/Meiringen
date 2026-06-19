@@ -66,7 +66,6 @@ export default async function EventDetailPage({ params }: Props) {
         {event.organization && (
           <div className="relative min-h-[14rem] overflow-hidden">
             <OrgCoverArt
-              name={event.organization.name}
               category={event.organization.category}
               coverImageUrl={coverImageUrl}
               className="absolute inset-0 h-full w-full"

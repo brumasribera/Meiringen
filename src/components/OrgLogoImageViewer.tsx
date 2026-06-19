@@ -23,17 +23,7 @@ export function OrgLogoImageViewer({
   shape = "circle",
 }: Props) {
   const [open, setOpen] = useState(false);
-  const [portalNode, setPortalNode] = useState<HTMLElement | null>(null);
   const src = resolveOrgImageUrl(imageUrl ?? null, websiteUrl ?? null, locality);
-
-  useEffect(() => {
-    const node = document.createElement("div");
-    document.body.appendChild(node);
-    setPortalNode(node);
-    return () => {
-      document.body.removeChild(node);
-    };
-  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -52,6 +42,8 @@ export function OrgLogoImageViewer({
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [open]);
+
+  const portalNode = typeof document === "undefined" ? null : document.body;
 
   return (
     <>
@@ -138,8 +130,7 @@ export function OrgLogoImageViewer({
             </div>
           </div>
         </div>,
-        portalNode
-      )}
+        portalNode)}
     </>
   );
 }

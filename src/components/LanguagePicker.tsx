@@ -108,7 +108,7 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
             alt=""
             width={24}
             height={16}
-            loading="eager"
+            loading="lazy"
             className="h-4 w-6"
           />
         ))}
@@ -122,15 +122,16 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
         aria-haspopup="menu"
         aria-expanded={open}
       >
-        <Image
-          src="/globe.svg"
-          alt=""
-          aria-hidden="true"
-          width={16}
-          height={16}
-          className="h-4 w-4 opacity-80"
-        />
-      </button>
+          <Image
+            src="/globe.svg"
+            alt=""
+            aria-hidden="true"
+            width={16}
+            height={16}
+            loading="lazy"
+            className="h-4 w-4 opacity-80"
+          />
+        </button>
 
       {open && (
         <div

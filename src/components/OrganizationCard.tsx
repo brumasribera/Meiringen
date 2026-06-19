@@ -25,7 +25,6 @@ export function OrganizationCard({ organization }: Props) {
     >
       <div className="relative">
         <OrgCoverArt
-          name={organization.name}
           category={organization.category}
           coverImageUrl={coverImageUrl}
           className="h-36"

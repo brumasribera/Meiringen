@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { resolveOrgImageUrl } from "@/lib/org-image";
 
@@ -55,9 +56,12 @@ export function OrgLogo({
       <div
         className={`${s.box} relative shrink-0 overflow-hidden ${radiusClass} border border-border bg-white flex items-center justify-center`}
       >
-        <img
+        <Image
           src={src}
           alt={`${name} logo`}
+          width={s.px}
+          height={s.px}
+          unoptimized={src.startsWith("http")}
           className="h-full w-full object-contain"
           onError={() => setImageFailed(true)}
         />

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { Link } from "@/i18n/routing";
@@ -73,9 +74,12 @@ export function UserAccountMenu({
         aria-label={labels.account}
       >
         {avatarUrl ? (
-          <img
+          <Image
             src={avatarUrl}
             alt=""
+            width={36}
+            height={36}
+            unoptimized={avatarUrl.startsWith("http")}
             referrerPolicy="no-referrer"
             className="h-9 w-9 rounded-full object-cover"
           />

@@ -19,16 +19,6 @@ export function OrgCoverImageViewer({
   className = "",
 }: Props) {
   const [open, setOpen] = useState(false);
-  const [portalNode, setPortalNode] = useState<HTMLElement | null>(null);
-
-  useEffect(() => {
-    const node = document.createElement("div");
-    document.body.appendChild(node);
-    setPortalNode(node);
-    return () => {
-      document.body.removeChild(node);
-    };
-  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -48,6 +38,8 @@ export function OrgCoverImageViewer({
     };
   }, [open]);
 
+  const portalNode = typeof document === "undefined" ? null : document.body;
+
   return (
     <>
       <button
@@ -57,7 +49,6 @@ export function OrgCoverImageViewer({
         aria-label={`Open large image for ${name}`}
       >
         <OrgCoverArt
-          name={name}
           category={category}
           coverImageUrl={coverImageUrl}
           className={className}
@@ -107,7 +98,6 @@ export function OrgCoverImageViewer({
                 />
               ) : (
                 <OrgCoverArt
-                  name={name}
                   category={category}
                   coverImageUrl={coverImageUrl}
                   className="h-auto w-auto max-h-[calc(100vh-44px)] max-w-[calc(100vw-44px)]"
@@ -116,8 +106,7 @@ export function OrgCoverImageViewer({
             </div>
           </div>
         </div>,
-        portalNode
-      )}
+        portalNode)}
     </>
   );
 }

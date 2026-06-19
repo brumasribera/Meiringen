@@ -1,7 +1,7 @@
+import Image from "next/image";
 import type { OrganizationCategory } from "@/lib/constants";
 
 type Props = {
-  name: string;
   category: OrganizationCategory;
   coverImageUrl?: string | null;
   className?: string;
@@ -74,7 +74,6 @@ const coverThemes: Record<
 };
 
 export function OrgCoverArt({
-  name,
   category,
   coverImageUrl,
   className = "",
@@ -87,10 +86,13 @@ export function OrgCoverArt({
       aria-hidden
     >
       {coverImageUrl && (
-        <img
+        <Image
           src={coverImageUrl}
           alt=""
-          className="absolute inset-0 h-full w-full object-cover"
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          unoptimized={coverImageUrl.startsWith("http")}
+          className="absolute inset-0 object-cover"
           referrerPolicy="no-referrer"
         />
       )}

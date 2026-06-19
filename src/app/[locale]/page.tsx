@@ -13,17 +13,17 @@ export default async function HomePage({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations("home");
 
-  const [upcomingEvents, organizations, integrationEvents, festivalEvents, marketEvents] =
-    await Promise.all([
-      getEvents({ limit: 6 }),
-      getOrganizations({ limit: 6 }),
-      getEvents({ category: "integration", limit: 3 }),
-      getEvents({ category: "festival", limit: 3 }),
-      getEvents({ category: "market", limit: 3 }),
-    ]);
+  const [allUpcomingEvents, organizations] = await Promise.all([
+    getEvents({ limit: 20 }),
+    getOrganizations({ limit: 6 }),
+  ]);
 
-  const festivalsAndMarkets = [...festivalEvents, ...marketEvents]
-    .sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime())
+  const upcomingEvents = allUpcomingEvents.slice(0, 6);
+  const integrationEvents = allUpcomingEvents
+    .filter((event) => event.category === "integration")
+    .slice(0, 3);
+  const festivalsAndMarkets = allUpcomingEvents
+    .filter((event) => event.category === "festival" || event.category === "market")
     .slice(0, 3);
 
   return (

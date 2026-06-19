@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import type { SearchResult } from "@/lib/types";
@@ -16,9 +17,12 @@ function SearchThumb({
   return (
     <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-white/70 bg-muted shadow-sm">
       {src ? (
-        <img
+        <Image
           src={src}
           alt=""
+          fill
+          sizes="48px"
+          unoptimized={src.startsWith("http")}
           className="h-full w-full object-cover"
           referrerPolicy="no-referrer"
         />

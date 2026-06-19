@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Link } from "@/i18n/routing";
 
 type Props = {
@@ -16,14 +17,15 @@ const textSizes = {
 
 function LogoMark({ size }: { size: number }) {
   return (
-    <img
-      src="/brand/logo-mark.png"
-      width={size}
-      height={size}
-      alt=""
-      aria-hidden
-      className="shrink-0 rounded-[0.7rem] object-cover"
-    />
+      <Image
+        src="/brand/logo-mark.png"
+        width={size}
+        height={size}
+        alt=""
+        aria-hidden
+        priority
+        className="shrink-0 rounded-[0.7rem] object-cover"
+      />
   );
 }
 
