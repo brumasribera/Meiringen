@@ -1,6 +1,7 @@
 import { slugify } from "@/lib/utils";
 import type { EventCategory } from "@/lib/constants";
 import { isWithinAgendaHorizon } from "@/lib/agenda/constants";
+import { cleanEventTitle } from "@/lib/event-title";
 
 export type ScrapedEvent = {
   title: string;
@@ -62,7 +63,7 @@ function mapJsonLdEvent(
   item: Record<string, unknown>,
   pageUrl: string
 ): ScrapedEvent | null {
-  const title = String(item.name ?? item.title ?? "").trim();
+  const title = cleanEventTitle(String(item.name ?? item.title ?? "").trim());
   const start = String(item.startDate ?? "");
   if (!title || !start) return null;
 

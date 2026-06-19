@@ -3,6 +3,7 @@
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { OrgLogo } from "@/components/OrgLogo";
+import { cleanEventTitle } from "@/lib/event-title";
 import type { Event } from "@/lib/types";
 import { formatDateRange } from "@/lib/utils";
 
@@ -31,7 +32,7 @@ export function EventCard({ event }: Props) {
       </div>
       <div className="mt-4 flex min-h-[7rem] flex-1 flex-col">
         <h3 className="line-clamp-2 text-lg font-semibold leading-snug text-foreground">
-          {event.title}
+          {cleanEventTitle(event.title, event.organization?.name)}
         </h3>
         {event.organization ? (
           <div className="mt-3 flex items-center gap-2 min-w-0">

@@ -19,6 +19,7 @@ import { EventInterestButton } from "@/components/EventInterestButton";
 import { createClient } from "@/lib/supabase/server";
 import { OrgCoverArt } from "@/components/OrgCoverArt";
 import { OrgLogoImageViewer } from "@/components/OrgLogoImageViewer";
+import { cleanEventTitle } from "@/lib/event-title";
 import { resolveOrgCoverImageUrl } from "@/lib/org-content";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -88,7 +89,7 @@ export default async function EventDetailPage({ params }: Props) {
                   )}
                 </div>
                 <h1 className="mt-4 text-3xl font-bold md:text-4xl">
-                  {event.title}
+                  {cleanEventTitle(event.title, event.organization?.name)}
                 </h1>
                 <p className="mt-4 text-lg text-white/85">
                   {formatDateRange(event.start_date, event.end_date, locale)}
@@ -189,7 +190,7 @@ export default async function EventDetailPage({ params }: Props) {
             </a>
           )}
           <ShareButton
-            title={event.title}
+            title={cleanEventTitle(event.title, event.organization?.name)}
             className="rounded-full border border-border px-5 py-2.5 text-sm font-medium transition hover:border-primary hover:text-primary"
           />
         </div>
