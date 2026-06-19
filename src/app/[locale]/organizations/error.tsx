@@ -1,6 +1,5 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 
 type Props = {
@@ -8,8 +7,6 @@ type Props = {
 };
 
 export default function OrganizationsError({ reset }: Props) {
-  const t = useTranslations("common");
-
   return (
     <div className="mx-auto max-w-md px-4 py-16 text-center">
       <h1 className="text-2xl font-bold">Something went wrong</h1>
@@ -26,7 +23,7 @@ export default function OrganizationsError({ reset }: Props) {
           href="/organizations"
           className="rounded-full border border-border px-6 py-2.5 text-sm font-semibold"
         >
-          {t("back")}
+          Back
         </Link>
       </div>
     </div>
