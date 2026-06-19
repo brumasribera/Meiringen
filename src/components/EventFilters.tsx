@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useRouter, usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { CONTENT_LANGUAGES, EVENT_CATEGORIES } from "@/lib/constants";
@@ -56,10 +56,16 @@ export function EventFilters({ organizations }: Props) {
   }
 
   const clearCategories = () => update({ categories: null, category: null });
+  const hasAdvancedFilters =
+    Boolean(searchParams.get("language")) ||
+    Boolean(searchParams.get("organization")) ||
+    Boolean(searchParams.get("dateFrom")) ||
+    Boolean(searchParams.get("dateTo"));
+  const [advancedOpen, setAdvancedOpen] = useState(hasAdvancedFilters);
 
   return (
     <div className="rounded-3xl border border-border bg-card/90 p-4 shadow-sm backdrop-blur-sm sm:p-5">
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(220px,0.8fr)]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_auto] lg:items-end">
         <div className="space-y-2">
           <label className="block text-xs font-medium uppercase tracking-wide text-muted">
             {t("events.search")}
@@ -72,22 +78,21 @@ export function EventFilters({ organizations }: Props) {
             placeholder={t("events.search")}
           />
         </div>
-        <div className="space-y-2">
-          <label className="block text-xs font-medium uppercase tracking-wide text-muted">
-            {t("events.language")}
-          </label>
-          <select
-            value={searchParams.get("language") ?? ""}
-            onChange={(e) => update({ language: e.target.value || null })}
-            className={selectControlClass}
+
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setAdvancedOpen((open) => !open)}
+            className={`rounded-full border px-3 py-1.5 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-primary/20 ${
+              advancedOpen || hasAdvancedFilters
+                ? "border-primary/25 bg-primary/10 text-primary shadow-sm"
+                : "border-border bg-white/70 text-muted hover:border-primary/30 hover:text-foreground"
+            }`}
+            aria-expanded={advancedOpen}
+            aria-controls="event-filters-advanced"
           >
-            <option value="">{t("events.all")}</option>
-            {CONTENT_LANGUAGES.map((l) => (
-              <option key={l} value={l}>
-                {t(`languages.${l}`)}
-              </option>
-            ))}
-          </select>
+            {advancedOpen ? t("events.alertHideCustomize") : t("events.alertFullForm")}
+          </button>
         </div>
       </div>
 
@@ -120,48 +125,76 @@ export function EventFilters({ organizations }: Props) {
                   : "border-border bg-white/70 text-muted hover:border-primary/30 hover:text-foreground"
               }`}
               aria-pressed={active}
-            >
-              {t(`categories.${category}`)}
-            </button>
-          );
-        })}
+          >
+            {t(`categories.${category}`)}
+          </button>
+        );
+      })}
       </div>
 
-      <div className="mt-4 space-y-2">
-        <label className="block text-xs font-medium uppercase tracking-wide text-muted">
-          {t("events.organization")}
-        </label>
-        <OrganizationSearchSelect
-          organizations={organizations}
-          value={searchParams.get("organization") ?? ""}
-          onChange={(organizationId) => update({ organization: organizationId || null })}
-          allLabel={t("events.all")}
-          id="event-org-search"
-        />
-      </div>
+      <div
+        id="event-filters-advanced"
+        className={`grid overflow-hidden transition-all duration-200 ${
+          advancedOpen ? "mt-4 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="min-h-0 space-y-4">
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(220px,0.8fr)]">
+            <div className="space-y-2">
+              <label className="block text-xs font-medium uppercase tracking-wide text-muted">
+                {t("events.language")}
+              </label>
+              <select
+                value={searchParams.get("language") ?? ""}
+                onChange={(e) => update({ language: e.target.value || null })}
+                className={selectControlClass}
+              >
+                <option value="">{t("events.all")}</option>
+                {CONTENT_LANGUAGES.map((l) => (
+                  <option key={l} value={l}>
+                    {t(`languages.${l}`)}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="space-y-2">
+              <label className="block text-xs font-medium uppercase tracking-wide text-muted">
+                {t("events.organization")}
+              </label>
+              <OrganizationSearchSelect
+                organizations={organizations}
+                value={searchParams.get("organization") ?? ""}
+                onChange={(organizationId) => update({ organization: organizationId || null })}
+                allLabel={t("events.all")}
+                id="event-org-search"
+              />
+            </div>
+          </div>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <div>
-          <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-muted">
-            {t("events.dateFrom")}
-          </label>
-          <input
-            type="date"
-            defaultValue={searchParams.get("dateFrom") ?? ""}
-            onChange={(e) => update({ dateFrom: e.target.value || null })}
-            className={selectControlClass}
-          />
-        </div>
-        <div>
-          <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-muted">
-            {t("events.dateTo")}
-          </label>
-          <input
-            type="date"
-            defaultValue={searchParams.get("dateTo") ?? ""}
-            onChange={(e) => update({ dateTo: e.target.value || null })}
-            className={selectControlClass}
-          />
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-muted">
+                {t("events.dateFrom")}
+              </label>
+              <input
+                type="date"
+                defaultValue={searchParams.get("dateFrom") ?? ""}
+                onChange={(e) => update({ dateFrom: e.target.value || null })}
+                className={selectControlClass}
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-muted">
+                {t("events.dateTo")}
+              </label>
+              <input
+                type="date"
+                defaultValue={searchParams.get("dateTo") ?? ""}
+                onChange={(e) => update({ dateTo: e.target.value || null })}
+                className={selectControlClass}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
