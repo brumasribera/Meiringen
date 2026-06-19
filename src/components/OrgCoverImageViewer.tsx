@@ -19,6 +19,16 @@ export function OrgCoverImageViewer({
   className = "",
 }: Props) {
   const [open, setOpen] = useState(false);
+  const [portalNode, setPortalNode] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const node = document.createElement("div");
+    document.body.appendChild(node);
+    setPortalNode(node);
+    return () => {
+      document.body.removeChild(node);
+    };
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -54,7 +64,7 @@ export function OrgCoverImageViewer({
         />
       </button>
 
-      {open && typeof document !== 'undefined' && createPortal(
+      {open && portalNode && createPortal(
         <div
           className="fixed inset-0 z-[70] flex items-center justify-center bg-black/45 p-[22px] backdrop-blur-md"
           role="presentation"
@@ -106,7 +116,7 @@ export function OrgCoverImageViewer({
             </div>
           </div>
         </div>,
-        document.body
+        portalNode
       )}
     </>
   );
