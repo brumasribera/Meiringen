@@ -18,7 +18,6 @@ import { EventCard } from "@/components/EventCard";
 import { EventInterestButton } from "@/components/EventInterestButton";
 import { createClient } from "@/lib/supabase/server";
 import { OrgCoverArt } from "@/components/OrgCoverArt";
-import { OrgLogo } from "@/components/OrgLogo";
 import { OrgLogoImageViewer } from "@/components/OrgLogoImageViewer";
 import { resolveOrgCoverImageUrl } from "@/lib/org-content";
 
@@ -95,16 +94,6 @@ export default async function EventDetailPage({ params }: Props) {
                   {formatDateRange(event.start_date, event.end_date, locale)}
                 </p>
               </div>
-              <div className="hidden shrink-0 md:block">
-                <OrgLogoImageViewer
-                  name={event.organization.name}
-                  imageUrl={event.organization.image_url}
-                  websiteUrl={event.organization.website_url}
-                  locality={event.organization.locality}
-                  size="lg"
-                  shape="square"
-                />
-              </div>
             </div>
           </div>
         )}
@@ -136,12 +125,11 @@ export default async function EventDetailPage({ params }: Props) {
 
         {event.organization && (
           <div className="border-t border-border bg-card p-6">
-            <p className="text-sm uppercase tracking-wide text-muted">Organizer</p>
             <Link
               href={`/organizations/${event.organization.slug}`}
-              className="mt-2 inline-flex items-center gap-3 font-medium text-primary hover:underline"
+              className="inline-flex items-center gap-3 font-medium text-primary hover:underline"
             >
-              <OrgLogo
+              <OrgLogoImageViewer
                 name={event.organization.name}
                 imageUrl={event.organization.image_url}
                 websiteUrl={event.organization.website_url}
@@ -149,7 +137,7 @@ export default async function EventDetailPage({ params }: Props) {
                 size="sm"
                 shape="square"
               />
-              <span>{event.organization.name}</span>
+              <span className="text-base">{event.organization.name}</span>
             </Link>
           </div>
         )}
