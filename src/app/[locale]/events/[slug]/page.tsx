@@ -98,7 +98,7 @@ export default async function EventDetailPage({ params }: Props) {
             className={`absolute inset-0 ${
               event.organization
                 ? "bg-gradient-to-t from-black/70 via-black/30 to-black/10"
-                : "bg-[linear-gradient(180deg,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.04)_36%,rgba(15,23,42,0.12)_100%)]"
+                : "bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.02)_42%,rgba(15,23,42,0.06)_100%)]"
             }`}
           />
           <div
@@ -112,7 +112,7 @@ export default async function EventDetailPage({ params }: Props) {
                   className={`pill ${
                     event.organization
                       ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
-                      : "border border-white/60 bg-white/60 text-primary shadow-sm backdrop-blur-sm"
+                      : "border border-white/50 bg-white/70 text-primary shadow-sm backdrop-blur-sm"
                   }`}
                 >
                   {t(`categories.${event.category}`)}
@@ -122,7 +122,7 @@ export default async function EventDetailPage({ params }: Props) {
                     className={`pill ${
                       event.organization
                         ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
-                        : "border border-white/60 bg-white/60 text-primary shadow-sm backdrop-blur-sm"
+                        : "border border-white/50 bg-white/70 text-primary shadow-sm backdrop-blur-sm"
                     }`}
                   >
                     {t(`languages.${event.language}`)}
@@ -133,7 +133,7 @@ export default async function EventDetailPage({ params }: Props) {
                     className={`pill ${
                       event.organization
                         ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
-                        : "border border-white/60 bg-white/60 text-primary shadow-sm backdrop-blur-sm"
+                        : "border border-white/50 bg-white/70 text-primary shadow-sm backdrop-blur-sm"
                     }`}
                   >
                     {t("events.recurring")}
@@ -142,7 +142,7 @@ export default async function EventDetailPage({ params }: Props) {
               </div>
               <h1
                 className={`mt-4 text-3xl font-bold md:text-4xl ${
-                  event.organization ? "text-white" : "text-foreground"
+                  event.organization ? "text-white" : "text-primary"
                 }`}
               >
                 {cleanEventTitle(event.title, event.organization?.name)}

@@ -1,9 +1,9 @@
 const relaxingGradients = [
-  "bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.85),_transparent_34%),linear-gradient(135deg,#eef2ff_0%,#dbeafe_42%,#d1fae5_100%)]",
-  "bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.8),_transparent_32%),linear-gradient(135deg,#f5f3ff_0%,#e0f2fe_48%,#ecfccb_100%)]",
-  "bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.82),_transparent_30%),linear-gradient(135deg,#ecfeff_0%,#dbeafe_46%,#fef3c7_100%)]",
-  "bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.82),_transparent_34%),linear-gradient(135deg,#f0fdf4_0%,#ccfbf1_46%,#dbeafe_100%)]",
-  "bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.78),_transparent_33%),linear-gradient(135deg,#fff7ed_0%,#e0f2fe_44%,#f8fafc_100%)]",
+  "bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.78),_transparent_30%),linear-gradient(135deg,#ffe4e6_0%,#dbeafe_42%,#ccfbf1_100%)]",
+  "bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.74),_transparent_32%),linear-gradient(135deg,#fef3c7_0%,#e0e7ff_46%,#d1fae5_100%)]",
+  "bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.76),_transparent_30%),linear-gradient(135deg,#f5f3ff_0%,#c7d2fe_46%,#a7f3d0_100%)]",
+  "bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.74),_transparent_34%),linear-gradient(135deg,#ecfeff_0%,#bae6fd_44%,#fde68a_100%)]",
+  "bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.76),_transparent_33%),linear-gradient(135deg,#fff7ed_0%,#fed7aa_42%,#e0f2fe_100%)]",
 ] as const;
 
 function hashString(input: string): number {
