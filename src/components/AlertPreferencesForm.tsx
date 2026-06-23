@@ -4,10 +4,11 @@ import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { actionButtonClass } from "@/lib/button-styles";
-import { CONTENT_LANGUAGES, EVENT_CATEGORIES } from "@/lib/constants";
+import { EVENT_CATEGORIES } from "@/lib/constants";
 import type { AlertFrequency } from "@/lib/constants";
 import type { Organization } from "@/lib/types";
 import { OrganizationPicker } from "@/components/OrganizationPicker";
+import { LanguagePickerField } from "@/components/LanguagePicker";
 
 export type AlertPreferencesState = {
   email: string;
@@ -192,17 +193,7 @@ export function AlertPreferencesForm({
       <fieldset>
         <legend className="font-semibold">Email language</legend>
         <div className="mt-3">
-          <select
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm"
-          >
-            {CONTENT_LANGUAGES.map((l) => (
-              <option key={l} value={l}>
-                {l.toUpperCase()}
-              </option>
-            ))}
-          </select>
+          <LanguagePickerField value={language} onChange={setLanguage} />
         </div>
       </fieldset>
 
