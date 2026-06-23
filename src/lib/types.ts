@@ -5,6 +5,7 @@ import type {
   EventStatus,
   Locality,
   OrganizationCategory,
+  OrganizationStatus,
   ScraperType,
   AlertFrequency,
 } from "./constants";
@@ -29,6 +30,10 @@ export type Organization = {
   cover_image_credit: string | null;
   cover_image_credit_url: string | null;
   source_url: string | null;
+  status: OrganizationStatus;
+  directory_last_seen_at: string | null;
+  directory_missing_since: string | null;
+  directory_source_url: string | null;
   description_en: string | null;
   created_at: string;
   updated_at: string;

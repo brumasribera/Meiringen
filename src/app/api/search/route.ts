@@ -18,6 +18,7 @@ export async function GET(request: Request) {
           .select(
             "id, slug, name, category, description, website_url, image_url, cover_image_url, locality"
           )
+          .eq("status", "published")
           .or(`name.ilike.%${q}%,locality.ilike.%${q}%`)
           .order("name")
           .limit(8)
@@ -26,6 +27,7 @@ export async function GET(request: Request) {
           .select(
             "id, slug, name, category, description, website_url, image_url, cover_image_url, locality"
           )
+          .eq("status", "published")
           .order("name")
           .limit(12),
     q

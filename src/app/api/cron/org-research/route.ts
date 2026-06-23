@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
+import { syncOrganizationDirectories } from "@/lib/organizations/sync-directories";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 function verifyCron(request: Request) {
   if (!process.env.CRON_SECRET) return false;
@@ -16,13 +17,12 @@ export async function GET(request: Request) {
   }
 
   try {
-    const { runHaslitalResearch } = await import("../../../../../scripts/research-haslital-orgs.mjs");
-    const reportPath = await runHaslitalResearch();
-    return NextResponse.json({ ok: true, reportPath });
+    const result = await syncOrganizationDirectories();
+    return NextResponse.json(result);
   } catch (error) {
-    console.error("org research:", error);
+    console.error("org directory sync:", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Research failed" },
+      { error: error instanceof Error ? error.message : "Organization sync failed" },
       { status: 500 }
     );
   }

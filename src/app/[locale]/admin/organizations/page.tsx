@@ -8,7 +8,7 @@ type Props = { params: Promise<{ locale: string }> };
 export default async function AdminOrganizationsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const organizations = await getOrganizations();
+  const organizations = await getOrganizations({ includeHidden: true });
 
   return (
     <div>
@@ -27,6 +27,7 @@ export default async function AdminOrganizationsPage({ params }: Props) {
             <tr>
               <th className="p-4">Name</th>
               <th className="p-4">Category</th>
+              <th className="p-4">Status</th>
               <th className="p-4">Actions</th>
             </tr>
           </thead>
@@ -35,6 +36,7 @@ export default async function AdminOrganizationsPage({ params }: Props) {
               <tr key={org.id} className="border-b border-border last:border-0">
                 <td className="p-4 font-medium">{org.name}</td>
                 <td className="p-4 text-muted">{org.category}</td>
+                <td className="p-4 text-muted">{org.status}</td>
                 <td className="p-4">
                   <Link href={`/admin/organizations/${org.id}/edit`} className="text-primary hover:underline">
                     Edit

@@ -2,6 +2,7 @@ import {
   CONTENT_LANGUAGES,
   LOCALITIES,
   ORGANIZATION_CATEGORIES,
+  ORGANIZATION_STATUSES,
 } from "@/lib/constants";
 import {
   createOrganizationAction,
@@ -53,12 +54,31 @@ export function OrganizationForm({ organization, locale }: Props) {
           </select>
         </div>
         <div>
+          <label className="text-sm font-medium">Status *</label>
+          <select name="status" required defaultValue={organization?.status ?? "published"} className={selectClass}>
+            {ORGANIZATION_STATUSES.map((status) => (
+              <option key={status} value={status}>{status}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
           <label className="text-sm font-medium">Languages (comma-separated)</label>
           <input
             name="languages"
             defaultValue={organization?.languages.join(", ") ?? "de"}
             className={inputClass}
             placeholder={CONTENT_LANGUAGES.join(", ")}
+          />
+        </div>
+        <div>
+          <label className="text-sm font-medium">Directory source URL</label>
+          <input
+            name="directory_source_url"
+            type="url"
+            defaultValue={organization?.directory_source_url ?? ""}
+            className={inputClass}
           />
         </div>
       </div>

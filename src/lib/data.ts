@@ -5,6 +5,7 @@ import type {
   EventCategory,
   Locality,
   OrganizationCategory,
+  OrganizationStatus,
 } from "./constants";
 import type {
   Event,
@@ -30,6 +31,8 @@ export type OrganizationFilters = {
   category?: OrganizationCategory;
   categories?: OrganizationCategory[];
   locality?: Locality;
+  status?: OrganizationStatus;
+  includeHidden?: boolean;
   limit?: number;
 };
 
@@ -40,6 +43,12 @@ export async function getOrganizations(
   if (!supabase) return [];
 
   let query = supabase.from("organizations").select("*").order("name");
+
+  if (filters.status) {
+    query = query.eq("status", filters.status);
+  } else if (!filters.includeHidden) {
+    query = query.eq("status", "published");
+  }
 
   if (filters.categories && filters.categories.length > 0) {
     query = query.in("category", filters.categories);
@@ -78,6 +87,7 @@ export async function getOrganizationBySlug(
     .from("organizations")
     .select("*")
     .eq("slug", slug)
+    .eq("status", "published")
     .single();
 
   if (error) return null;
@@ -383,6 +393,7 @@ export async function getRelatedOrganizationsForOrganization(
   const { data: categoryMatches, error: categoryError } = await supabase
     .from("organizations")
     .select("*")
+    .eq("status", "published")
     .eq("category", organization.category)
     .neq("id", organization.id)
     .order("name")
@@ -398,6 +409,7 @@ export async function getRelatedOrganizationsForOrganization(
     const { data: localityMatches, error: localityError } = await supabase
       .from("organizations")
       .select("*")
+      .eq("status", "published")
       .eq("locality", organization.locality)
       .neq("id", organization.id)
       .order("name")
@@ -474,7 +486,8 @@ export async function getFollowedOrganizations(
   )
     .map((row) => firstRelated(row.organization))
     .filter(
-      (organization): organization is Organization => organization !== null
+      (organization): organization is Organization =>
+        organization !== null && organization.status === "published"
     )
     .slice(0, limit);
 }

@@ -53,6 +53,9 @@ export async function saveOrganization(formData: FormData, id?: string) {
     cover_image_credit_url:
       (formData.get("cover_image_credit_url") as string) || null,
     source_url: (formData.get("source_url") as string) || null,
+    status: (formData.get("status") as string) || "published",
+    directory_source_url:
+      (formData.get("directory_source_url") as string) || null,
   };
 
   if (id) {

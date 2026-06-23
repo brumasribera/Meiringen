@@ -22,6 +22,9 @@ export type EventCategory = (typeof EVENT_CATEGORIES)[number];
 
 export type Category = OrganizationCategory | EventCategory;
 
+export const ORGANIZATION_STATUSES = ["draft", "published", "archived"] as const;
+export type OrganizationStatus = (typeof ORGANIZATION_STATUSES)[number];
+
 export const LOCALITIES = [
   { id: "meiringen", lat: 46.7275, lng: 8.1875 },
   { id: "balm", lat: 46.735, lng: 8.18 },
@@ -54,6 +57,8 @@ export const CONTENT_LANGUAGES = [
   "it",
   "rm",
   "pt",
+  "es",
+  "ca",
 ] as const;
 
 export type ContentLanguage = (typeof CONTENT_LANGUAGES)[number];
