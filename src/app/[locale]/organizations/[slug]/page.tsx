@@ -9,11 +9,7 @@ import {
 } from "@/lib/data";
 import { EventCard } from "@/components/EventCard";
 import { DeferredMapLoader } from "@/components/DeferredMapLoader";
-import {
-  resolveOrgCoverImageUrl,
-  resolveOrgDescription,
-  resolveOrgImageUrl,
-} from "@/lib/org-content";
+import { resolveOrgDescription, resolveOrgImageUrl } from "@/lib/org-content";
 import { OrgLogoImageViewer } from "@/components/OrgLogoImageViewer";
 import { ShareButton } from "@/components/ShareButton";
 import { actionButtonClass } from "@/lib/button-styles";
@@ -44,10 +40,7 @@ export default async function OrganizationDetailPage({ params }: Props) {
   ]);
   const hasCoords = organization.latitude && organization.longitude;
   const description = resolveOrgDescription(organization, locale);
-  const coverImageUrl = resolveOrgCoverImageUrl(
-    organization.cover_image_url,
-    organization.image_url
-  );
+  const coverImageUrl = organization.cover_image_url ?? null;
   const alertHref = buildAlertHref({ organizationId: organization.id });
   const mapsHref = organization.address
     ? buildGoogleMapsUrl({ query: organization.address })
@@ -75,7 +68,7 @@ export default async function OrganizationDetailPage({ params }: Props) {
               {t(`categories.${organization.category}`)}
             </span>
           </div>
-          {coverImageUrl && organization.cover_image_credit && (
+          {organization.cover_image_url && organization.cover_image_credit && (
             <div className="absolute bottom-5 right-5 max-w-[calc(100%-2.5rem)] rounded-2xl bg-black/45 px-3 py-2 text-xs text-white shadow-sm backdrop-blur-sm md:bottom-6 md:right-6 md:max-w-md">
               <span className="font-medium">{t("organizations.photoCredit")}:</span>{" "}
               {organization.cover_image_credit_url ? (

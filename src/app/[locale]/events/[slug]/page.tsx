@@ -20,7 +20,6 @@ import { createClient } from "@/lib/supabase/server";
 import { OrgCoverArt } from "@/components/OrgCoverArt";
 import { OrgLogoImageViewer } from "@/components/OrgLogoImageViewer";
 import { cleanEventTitle } from "@/lib/event-title";
-import { resolveOrgCoverImageUrl } from "@/lib/org-content";
 import { formatEventDescription } from "@/lib/event-description";
 import { getEventHeroGradient } from "@/lib/event-hero";
 
@@ -47,12 +46,7 @@ export default async function EventDetailPage({ params }: Props) {
     latitude: event.latitude,
     longitude: event.longitude,
   });
-  const coverImageUrl = event.organization
-    ? resolveOrgCoverImageUrl(
-        event.organization.cover_image_url,
-        event.organization.image_url
-      )
-    : null;
+  const coverImageUrl = event.organization?.cover_image_url ?? null;
   const heroTheme = getEventHeroGradient({
     seed: `${event.slug}|${event.id}`,
     title: event.title,
@@ -73,34 +67,44 @@ export default async function EventDetailPage({ params }: Props) {
 
       <section className="mt-4 overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm">
         <div
-          className={`relative min-h-[13rem] overflow-hidden ${heroTheme.className}`}
+          className="relative min-h-[13rem] overflow-hidden"
         >
+          {!coverImageUrl && (
+            <div className={`absolute inset-0 ${heroTheme.className}`} aria-hidden />
+          )}
           {event.organization && (
             <OrgCoverArt
               category={event.organization.category}
               coverImageUrl={coverImageUrl}
-              backgroundClassName={heroTheme.className}
               className="absolute inset-0 h-full w-full"
             />
           )}
-          <div
-            className={`absolute inset-0 ${
-              heroTheme.tone === "dark"
-                ? "bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.02)_42%,rgba(15,23,42,0.24)_100%)]"
-                : "bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.00)_42%,rgba(15,23,42,0.06)_100%)]"
-            }`}
-          />
+          {!coverImageUrl && (
+            <div
+              className={`absolute inset-0 ${
+                heroTheme.tone === "dark"
+                  ? "bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.02)_42%,rgba(15,23,42,0.24)_100%)]"
+                  : "bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.00)_42%,rgba(15,23,42,0.06)_100%)]"
+              }`}
+            />
+          )}
           <div
             className={`absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 ${
-              heroTheme.tone === "dark" ? "text-white" : "text-primary"
+              coverImageUrl
+                ? "text-white"
+                : heroTheme.tone === "dark"
+                  ? "text-white"
+                  : "text-primary"
             }`}
           >
             <div className="max-w-2xl">
               <div className="flex flex-wrap gap-2">
                 <span
                   className={`pill ${
-                    heroTheme.tone === "dark"
+                    coverImageUrl
                       ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
+                      : heroTheme.tone === "dark"
+                        ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
                       : "border border-white/55 bg-white/72 text-primary shadow-sm backdrop-blur-sm"
                   }`}
                 >
@@ -109,8 +113,10 @@ export default async function EventDetailPage({ params }: Props) {
                 {event.language && (
                   <span
                     className={`pill ${
-                      heroTheme.tone === "dark"
+                      coverImageUrl
                         ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
+                        : heroTheme.tone === "dark"
+                          ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
                         : "border border-white/55 bg-white/72 text-primary shadow-sm backdrop-blur-sm"
                     }`}
                   >
@@ -120,8 +126,10 @@ export default async function EventDetailPage({ params }: Props) {
                 {event.is_recurring && (
                   <span
                     className={`pill ${
-                      heroTheme.tone === "dark"
+                      coverImageUrl
                         ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
+                        : heroTheme.tone === "dark"
+                          ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
                         : "border border-white/55 bg-white/72 text-primary shadow-sm backdrop-blur-sm"
                     }`}
                   >
@@ -131,14 +139,18 @@ export default async function EventDetailPage({ params }: Props) {
               </div>
               <h1
                 className={`mt-4 text-3xl font-bold md:text-4xl ${
-                  heroTheme.tone === "dark" ? "text-white" : "text-primary"
+                  coverImageUrl || heroTheme.tone === "dark"
+                    ? "text-white"
+                    : "text-primary"
                 }`}
               >
                 {cleanEventTitle(event.title, event.organization?.name)}
               </h1>
               <p
                 className={`mt-4 text-lg ${
-                  heroTheme.tone === "dark" ? "text-white/85" : "text-foreground/75"
+                  coverImageUrl || heroTheme.tone === "dark"
+                    ? "text-white/85"
+                    : "text-foreground/75"
                 }`}
               >
                 {formatDateRange(event.start_date, event.end_date, locale)}
