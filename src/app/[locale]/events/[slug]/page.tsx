@@ -67,67 +67,87 @@ export default async function EventDetailPage({ params }: Props) {
       </Link>
 
       <section className="mt-4 overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm">
-        {event.organization && (
-          <div className="relative min-h-[13rem] overflow-hidden">
+        <div
+          className={`relative overflow-hidden ${
+            event.organization ? "min-h-[13rem]" : `min-h-[11rem] ${fallbackBackgroundClassName}`
+          }`}
+        >
+          {event.organization ? (
             <OrgCoverArt
               category={event.organization.category}
               coverImageUrl={coverImageUrl}
               fallbackBackgroundClassName={fallbackBackgroundClassName}
               className="absolute inset-0 h-full w-full"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
-            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 text-white">
-              <div className="max-w-2xl">
-                <div className="flex flex-wrap gap-2">
-                  <span className="pill border border-white/30 bg-white/15 text-white backdrop-blur-sm">
-                    {t(`categories.${event.category}`)}
+          ) : (
+            <div
+              className={`absolute inset-0 ${fallbackBackgroundClassName}`}
+              aria-hidden
+            />
+          )}
+          <div
+            className={`absolute inset-0 ${
+              event.organization
+                ? "bg-gradient-to-t from-black/70 via-black/30 to-black/10"
+                : "bg-[linear-gradient(180deg,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.04)_36%,rgba(15,23,42,0.12)_100%)]"
+            }`}
+          />
+          <div
+            className={`absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 ${
+              event.organization ? "text-white" : "text-foreground"
+            }`}
+          >
+            <div className="max-w-2xl">
+              <div className="flex flex-wrap gap-2">
+                <span
+                  className={`pill ${
+                    event.organization
+                      ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
+                      : "border border-white/60 bg-white/60 text-primary shadow-sm backdrop-blur-sm"
+                  }`}
+                >
+                  {t(`categories.${event.category}`)}
+                </span>
+                {event.language && (
+                  <span
+                    className={`pill ${
+                      event.organization
+                        ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
+                        : "border border-white/60 bg-white/60 text-primary shadow-sm backdrop-blur-sm"
+                    }`}
+                  >
+                    {t(`languages.${event.language}`)}
                   </span>
-                  {event.language && (
-                    <span className="pill border border-white/30 bg-white/15 text-white backdrop-blur-sm">
-                      {t(`languages.${event.language}`)}
-                    </span>
-                  )}
-                  {event.is_recurring && (
-                    <span className="pill border border-white/30 bg-white/15 text-white backdrop-blur-sm">
-                      {t("events.recurring")}
-                    </span>
-                  )}
-                </div>
-                <h1 className="mt-4 text-3xl font-bold md:text-4xl">
-                  {cleanEventTitle(event.title, event.organization?.name)}
-                </h1>
-                <p className="mt-4 text-lg text-white/85">
-                  {formatDateRange(event.start_date, event.end_date, locale)}
-                </p>
+                )}
+                {event.is_recurring && (
+                  <span
+                    className={`pill ${
+                      event.organization
+                        ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
+                        : "border border-white/60 bg-white/60 text-primary shadow-sm backdrop-blur-sm"
+                    }`}
+                  >
+                    {t("events.recurring")}
+                  </span>
+                )}
               </div>
+              <h1
+                className={`mt-4 text-3xl font-bold md:text-4xl ${
+                  event.organization ? "text-white" : "text-foreground"
+                }`}
+              >
+                {cleanEventTitle(event.title, event.organization?.name)}
+              </h1>
+              <p
+                className={`mt-4 text-lg ${
+                  event.organization ? "text-white/85" : "text-foreground/75"
+                }`}
+              >
+                {formatDateRange(event.start_date, event.end_date, locale)}
+              </p>
             </div>
           </div>
-        )}
-        {!event.organization && (
-          <div className="p-6">
-            <div className="flex flex-wrap gap-2">
-              <span className="pill bg-primary/10 text-primary">
-                {t(`categories.${event.category}`)}
-              </span>
-              {event.language && (
-                <span className="pill bg-accent/20 text-foreground">
-                  {t(`languages.${event.language}`)}
-                </span>
-              )}
-              {event.is_recurring && (
-                <span className="pill bg-accent/20 text-foreground">
-                  {t("events.recurring")}
-                </span>
-              )}
-            </div>
-            <h1 className="mt-4 text-3xl font-bold md:text-4xl">
-              {event.title}
-            </h1>
-            <p className="mt-4 text-lg text-muted">
-              {formatDateRange(event.start_date, event.end_date, locale)}
-            </p>
-          </div>
-        )}
+        </div>
 
         {event.organization && (
           <div className="border-t border-border bg-card p-6">
