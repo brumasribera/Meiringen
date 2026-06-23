@@ -21,6 +21,7 @@ import { OrgCoverArt } from "@/components/OrgCoverArt";
 import { OrgLogoImageViewer } from "@/components/OrgLogoImageViewer";
 import { cleanEventTitle } from "@/lib/event-title";
 import { resolveOrgCoverImageUrl } from "@/lib/org-content";
+import { formatEventDescription } from "@/lib/event-description";
 import { getRelaxingGradientClass } from "@/lib/relaxing-gradient";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -223,7 +224,9 @@ export default async function EventDetailPage({ params }: Props) {
 
       {event.description && (
         <div className="prose mt-8 max-w-none">
-          <p className="whitespace-pre-wrap text-foreground">{event.description}</p>
+          <p className="whitespace-pre-line text-foreground">
+            {formatEventDescription(event.description)}
+          </p>
         </div>
       )}
 
