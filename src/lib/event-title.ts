@@ -31,13 +31,14 @@ function stripTrailingOrganizationSuffix(title: string, organizationName: string
 function stripOrganizationName(title: string, organizationName?: string | null) {
   if (!organizationName) return title;
 
-  const org = normalizeText(organizationName);
-  if (!org) return title;
+  const rawOrg = organizationName.trim();
+  if (!rawOrg) return title;
+  const escapedOrg = rawOrg.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
   const patterns = [
-    new RegExp(`^${org}\\s*(?:[:\\-|–—]\\s*)?`, "i"),
-    new RegExp(`\\s*(?:[:\\-|–—]\\s*)?${org}$`, "i"),
-    new RegExp(`\\s*\\(${org}\\)$`, "i"),
+    new RegExp(`^${escapedOrg}\\s*(?:[:\\-|–—]\\s*)?`, "iu"),
+    new RegExp(`\\s*(?:[:\\-|–—]\\s*)?${escapedOrg}$`, "iu"),
+    new RegExp(`\\s*\\(${escapedOrg}\\)$`, "iu"),
   ];
 
   let next = title;
