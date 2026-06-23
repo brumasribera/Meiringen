@@ -4,6 +4,7 @@ import type { OrganizationCategory } from "@/lib/constants";
 type Props = {
   category: OrganizationCategory;
   coverImageUrl?: string | null;
+  fallbackBackgroundClassName?: string;
   className?: string;
 };
 
@@ -76,13 +77,17 @@ const coverThemes: Record<
 export function OrgCoverArt({
   category,
   coverImageUrl,
+  fallbackBackgroundClassName,
   className = "",
 }: Props) {
   const theme = coverThemes[category];
+  const backgroundClassName = coverImageUrl
+    ? theme.background
+    : fallbackBackgroundClassName ?? theme.background;
 
   return (
     <div
-      className={`relative overflow-hidden ${theme.background} ${className}`}
+      className={`relative overflow-hidden ${backgroundClassName} ${className}`}
       aria-hidden
     >
       {coverImageUrl && (
@@ -100,7 +105,7 @@ export function OrgCoverArt({
         className={`absolute inset-0 ${
           coverImageUrl
             ? "bg-[linear-gradient(180deg,rgba(15,23,42,0.05)_0%,rgba(15,23,42,0.34)_100%)]"
-            : "bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.32),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(15,23,42,0.24))]"
+            : "bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.44),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.06),rgba(15,23,42,0.16))]"
         }`}
       />
       <div

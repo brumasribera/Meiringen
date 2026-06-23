@@ -21,6 +21,7 @@ import { OrgCoverArt } from "@/components/OrgCoverArt";
 import { OrgLogoImageViewer } from "@/components/OrgLogoImageViewer";
 import { cleanEventTitle } from "@/lib/event-title";
 import { resolveOrgCoverImageUrl } from "@/lib/org-content";
+import { getRelaxingGradientClass } from "@/lib/relaxing-gradient";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -51,6 +52,9 @@ export default async function EventDetailPage({ params }: Props) {
         event.organization.image_url
       )
     : null;
+  const fallbackBackgroundClassName = getRelaxingGradientClass(
+    `${event.slug}|${event.id}`
+  );
   const [interestSummary, relatedEvents] = await Promise.all([
     getEventInterestSummary(event.id, user?.id),
     getRelatedEventsForEvent(event, 3),
@@ -62,12 +66,13 @@ export default async function EventDetailPage({ params }: Props) {
         ← {t("common.back")}
       </Link>
 
-      <section className="mt-6 overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm">
+      <section className="mt-4 overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm">
         {event.organization && (
-          <div className="relative min-h-[14rem] overflow-hidden">
+          <div className="relative min-h-[13rem] overflow-hidden">
             <OrgCoverArt
               category={event.organization.category}
               coverImageUrl={coverImageUrl}
+              fallbackBackgroundClassName={fallbackBackgroundClassName}
               className="absolute inset-0 h-full w-full"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
