@@ -23,6 +23,7 @@ import { cleanEventTitle } from "@/lib/event-title";
 import { resolveOrgCoverImageUrl } from "@/lib/org-content";
 import { formatEventDescription } from "@/lib/event-description";
 import { getRelaxingGradientClass } from "@/lib/relaxing-gradient";
+import { getEventHeroGradientClass } from "@/lib/event-hero";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -56,6 +57,13 @@ export default async function EventDetailPage({ params }: Props) {
   const fallbackBackgroundClassName = getRelaxingGradientClass(
     `${event.slug}|${event.id}`
   );
+  const heroBackgroundClassName = getEventHeroGradientClass({
+    seed: fallbackBackgroundClassName,
+    title: event.title,
+    description: event.description,
+    organizationName: event.organization?.name,
+    organizationSlug: event.organization?.slug,
+  });
   const [interestSummary, relatedEvents] = await Promise.all([
     getEventInterestSummary(event.id, user?.id),
     getRelatedEventsForEvent(event, 3),
@@ -77,12 +85,12 @@ export default async function EventDetailPage({ params }: Props) {
             <OrgCoverArt
               category={event.organization.category}
               coverImageUrl={coverImageUrl}
-              fallbackBackgroundClassName={fallbackBackgroundClassName}
+              fallbackBackgroundClassName={heroBackgroundClassName}
               className="absolute inset-0 h-full w-full"
             />
           ) : (
             <div
-              className={`absolute inset-0 ${fallbackBackgroundClassName}`}
+              className={`absolute inset-0 ${heroBackgroundClassName}`}
               aria-hidden
             />
           )}
@@ -173,7 +181,24 @@ export default async function EventDetailPage({ params }: Props) {
       {event.location_name && (
         <p className="mt-4 text-muted">
           <strong>{event.location_name}</strong>
-          {event.address && <> — {event.address}</>}
+          {event.address && (
+            <>
+              {" "}
+              —{" "}
+              {mapsHref ? (
+                <a
+                  href={mapsHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  {event.address}
+                </a>
+              ) : (
+                event.address
+              )}
+            </>
+          )}
         </p>
       )}
 

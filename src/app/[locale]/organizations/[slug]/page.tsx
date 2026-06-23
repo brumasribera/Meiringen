@@ -17,7 +17,7 @@ import {
 import { OrgLogoImageViewer } from "@/components/OrgLogoImageViewer";
 import { ShareButton } from "@/components/ShareButton";
 import { actionButtonClass } from "@/lib/button-styles";
-import { buildAlertHref } from "@/lib/utils";
+import { buildAlertHref, buildGoogleMapsUrl } from "@/lib/utils";
 import { OrganizationCard } from "@/components/OrganizationCard";
 import { OrganizationFollowButton } from "@/components/OrganizationFollowButton";
 import { createClient } from "@/lib/supabase/server";
@@ -49,6 +49,9 @@ export default async function OrganizationDetailPage({ params }: Props) {
     organization.image_url
   );
   const alertHref = buildAlertHref({ organizationId: organization.id });
+  const mapsHref = organization.address
+    ? buildGoogleMapsUrl({ query: organization.address })
+    : null;
   const phoneHref = organization.phone
     ? `tel:${organization.phone.replace(/\s+/g, "")}`
     : null;
@@ -162,7 +165,20 @@ export default async function OrganizationDetailPage({ params }: Props) {
           {organization.address && (
             <div>
               <dt className="text-muted">{t("common.address")}</dt>
-              <dd>{organization.address}</dd>
+              <dd>
+                {mapsHref ? (
+                  <a
+                    href={mapsHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    {organization.address}
+                  </a>
+                ) : (
+                  organization.address
+                )}
+              </dd>
             </div>
           )}
           {organization.email && (
