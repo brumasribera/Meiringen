@@ -15,7 +15,7 @@ const languageOptions = {
   de: { flag: "/flags/de.svg" },
   gsw: { flag: "/flags/hasli-flag.png" },
   en: { flag: "/flags/en.svg" },
-  es: { flag: "/flags/spain-flag.png" },
+  es: { flag: "/flags/spain-new-flag.png" },
   ca: { flag: "/flags/catalan-flag.png" },
   fr: { flag: "/flags/fr.svg" },
   it: { flag: "/flags/it.svg" },

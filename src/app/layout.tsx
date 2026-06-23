@@ -6,7 +6,7 @@ const flagPreloads = [
   "/flags/de.svg",
   "/flags/hasli-flag.png",
   "/flags/en.svg",
-  "/flags/spain-flag.png",
+  "/flags/spain-new-flag.png",
   "/flags/catalan-flag.png",
   "/flags/fr.svg",
   "/flags/it.svg",
