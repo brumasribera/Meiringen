@@ -6,7 +6,7 @@ import {
   matchEventsForUser,
   shouldSendAlertToday,
 } from "@/lib/alerts/newsletter-utils";
-import { buildAlertDigestEmailHtml } from "@/lib/email/alert-template";
+import { buildAlertDigestEmailHtml, getAlertEmailSubject } from "@/lib/email/alert-template";
 import { getFromEmail } from "@/lib/email/config";
 import { markAlertSent } from "@/lib/alerts/service";
 import type { Event, NewsletterPreferences } from "@/lib/types";
@@ -85,10 +85,7 @@ export async function GET(request: Request) {
       await resend.emails.send({
         from: getFromEmail(),
         to: subscription.email,
-        subject:
-          locale === "de"
-            ? `Meiringen.life — ${matched.length} Veranstaltungen für dich`
-            : `Meiringen.life — ${matched.length} events for you`,
+        subject: getAlertEmailSubject(locale, matched.length),
         html,
       });
 

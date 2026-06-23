@@ -22,6 +22,11 @@ type EmailCopy = {
   footer: string;
   disclaimer: string;
   frequencyLabel: string;
+  welcomeTitle: string;
+  welcomeBodyWeekly: string;
+  welcomeBodyMonthly: string;
+  welcomeSubject: string;
+  digestSubject: string;
 };
 
 const COPY: Record<string, EmailCopy> = {
@@ -37,6 +42,13 @@ const COPY: Record<string, EmailCopy> = {
     disclaimer:
       "Organisations- und Veranstaltungsangaben können fehlerhaft oder veraltet sein. Bitte vor Ort oder direkt beim Veranstalter nachfragen.",
     frequencyLabel: "Digest",
+    welcomeTitle: "Du bist dabei!",
+    welcomeBodyWeekly:
+      "Ab sofort erhältst du wöchentliche E-Mail-Updates zu Veranstaltungen, die zu deinen Interessen passen.",
+    welcomeBodyMonthly:
+      "Ab sofort erhältst du monatliche E-Mail-Updates zu Veranstaltungen, die zu deinen Interessen passen.",
+    welcomeSubject: "Meiringen.life — Event-Alerts aktiviert",
+    digestSubject: "Meiringen.life — Veranstaltungen für dich",
   },
   en: {
     preheader: "Your matching events in Haslital",
@@ -50,6 +62,153 @@ const COPY: Record<string, EmailCopy> = {
     disclaimer:
       "Organization and event information may be inaccurate or outdated. Please verify details with the organizer before attending.",
     frequencyLabel: "Digest",
+    welcomeTitle: "You're subscribed!",
+    welcomeBodyWeekly:
+      "You'll receive weekly email updates for events that match your interests.",
+    welcomeBodyMonthly:
+      "You'll receive monthly email updates for events that match your interests.",
+    welcomeSubject: "Meiringen.life — event alerts activated",
+    digestSubject: "Meiringen.life — events for you",
+  },
+  fr: {
+    preheader: "Vos événements correspondants dans le Haslital",
+    title: "Votre actualité du Haslital",
+    intro: "Ces événements correspondent à vos centres d'intérêt :",
+    empty: "Aucun événement correspondant pour cette période.",
+    cta: "Voir tous les événements",
+    manage: "Modifier les paramètres",
+    unsubscribe: "Se désabonner",
+    footer: "Meiringen.life — gratuit, multilingue, pensé pour la région.",
+    disclaimer:
+      "Les informations sur les organisations et les événements peuvent être inexactes ou obsolètes. Veuillez vérifier les détails auprès de l'organisateur avant de participer.",
+    frequencyLabel: "Résumé",
+    welcomeTitle: "Vous êtes inscrit·e !",
+    welcomeBodyWeekly:
+      "Vous recevrez désormais des mises à jour hebdomadaires par e-mail sur les événements correspondant à vos centres d'intérêt.",
+    welcomeBodyMonthly:
+      "Vous recevrez désormais des mises à jour mensuelles par e-mail sur les événements correspondant à vos centres d'intérêt.",
+    welcomeSubject: "Meiringen.life — alertes d'événements activées",
+    digestSubject: "Meiringen.life — événements pour vous",
+  },
+  it: {
+    preheader: "I tuoi eventi corrispondenti nell'Haslital",
+    title: "Il tuo aggiornamento dall'Haslital",
+    intro: "Questi eventi corrispondono ai tuoi interessi:",
+    empty: "In questo periodo non ci sono ancora eventi corrispondenti.",
+    cta: "Vedi tutti gli eventi",
+    manage: "Cambia impostazioni",
+    unsubscribe: "Annulla iscrizione",
+    footer: "Meiringen.life — gratuito, multilingue, pensato per la regione.",
+    disclaimer:
+      "Le informazioni su organizzazioni ed eventi possono essere imprecise o non aggiornate. Verifica i dettagli con l'organizzatore prima di partecipare.",
+    frequencyLabel: "Riepilogo",
+    welcomeTitle: "Sei iscritto!",
+    welcomeBodyWeekly:
+      "Riceverai aggiornamenti via e-mail ogni settimana sugli eventi che corrispondono ai tuoi interessi.",
+    welcomeBodyMonthly:
+      "Riceverai aggiornamenti via e-mail ogni mese sugli eventi che corrispondono ai tuoi interessi.",
+    welcomeSubject: "Meiringen.life — avvisi eventi attivati",
+    digestSubject: "Meiringen.life — eventi per te",
+  },
+  es: {
+    preheader: "Tus eventos coincidentes en Haslital",
+    title: "Tu actualización de Haslital",
+    intro: "Estos eventos coinciden con tus intereses:",
+    empty: "Aún no hay eventos coincidentes en este periodo.",
+    cta: "Ver todos los eventos",
+    manage: "Cambiar ajustes",
+    unsubscribe: "Darse de baja",
+    footer: "Meiringen.life — gratis, multilingüe y pensado para la región.",
+    disclaimer:
+      "La información sobre organizaciones y eventos puede ser incorrecta o estar desactualizada. Verifica los detalles con la organización antes de asistir.",
+    frequencyLabel: "Resumen",
+    welcomeTitle: "¡Ya estás suscrito!",
+    welcomeBodyWeekly:
+      "Recibirás actualizaciones semanales por correo sobre eventos que coincidan con tus intereses.",
+    welcomeBodyMonthly:
+      "Recibirás actualizaciones mensuales por correo sobre eventos que coincidan con tus intereses.",
+    welcomeSubject: "Meiringen.life — alertas de eventos activadas",
+    digestSubject: "Meiringen.life — eventos para ti",
+  },
+  ca: {
+    preheader: "Els teus esdeveniments coincidents a Haslital",
+    title: "La teva actualització d'Haslital",
+    intro: "Aquests esdeveniments coincideixen amb els teus interessos:",
+    empty: "Encara no hi ha esdeveniments coincidents en aquest període.",
+    cta: "Veure tots els esdeveniments",
+    manage: "Canviar la configuració",
+    unsubscribe: "Donar-se de baixa",
+    footer: "Meiringen.life — gratuït, multilingüe i pensat per a la regió.",
+    disclaimer:
+      "La informació sobre organitzacions i esdeveniments pot ser incorrecta o no estar actualitzada. Verifica els detalls amb l'organització abans d'assistir-hi.",
+    frequencyLabel: "Resum",
+    welcomeTitle: "Ja t'has subscrit!",
+    welcomeBodyWeekly:
+      "Rebràs actualitzacions setmanals per correu sobre esdeveniments que coincideixin amb els teus interessos.",
+    welcomeBodyMonthly:
+      "Rebràs actualitzacions mensuals per correu sobre esdeveniments que coincideixin amb els teus interessos.",
+    welcomeSubject: "Meiringen.life — alertes d'esdeveniments activades",
+    digestSubject: "Meiringen.life — esdeveniments per a tu",
+  },
+  gsw: {
+    preheader: "Din passendi Events im Haslital",
+    title: "Din Haslital-Update",
+    intro: "Die Events passe zu dine Interesse:",
+    empty: "Für dä Zeitraum hets no kei passendi Events.",
+    cta: "Alli Events aluege",
+    manage: "Istellige ändere",
+    unsubscribe: "Abmelde",
+    footer: "Meiringen.life - gratis, mehrsprachig, für d Region.",
+    disclaimer:
+      "Organisations- und Veranstaltungsangabe chönd falsch oder veraltet sii. Bitte vor Ort oder direkt bi de Veranstalter nofröge.",
+    frequencyLabel: "Digest",
+    welcomeTitle: "Du bisch debi!",
+    welcomeBodyWeekly:
+      "Ab jetzt bechunsch wöchentli E-Mail-Updates zu Events, wo zu dine Interesse passe.",
+    welcomeBodyMonthly:
+      "Ab jetzt bechunsch monatli E-Mail-Updates zu Events, wo zu dine Interesse passe.",
+    welcomeSubject: "Meiringen.life - Event-Alerts aktiviert",
+    digestSubject: "Meiringen.life - Events für di",
+  },
+  rm: {
+    preheader: "Tes novitads adattadas en il Haslital",
+    title: "Tes novitads dal Haslital",
+    intro: "Quests eveniments correspundan a tes interess:",
+    empty: "En quest interval n'ei anc nagins eveniments adattads.",
+    cta: "Guardar tut ils eveniments",
+    manage: "Midar configuraziun",
+    unsubscribe: "S'annullar",
+    footer: "Meiringen.life — gratuit, pluriling e concepì per la regiun.",
+    disclaimer:
+      "Las novitads davart novitads ed organisaziuns pon esser nuncorrectas u antiquadas. Priesa controlla las novitads cun l'organisatur avant da prender part.",
+    frequencyLabel: "Resumaziun",
+    welcomeTitle: "Ti es s'inscrit!",
+    welcomeBodyWeekly:
+      "Ti retschaivas novitads per e-mail mintga emna davart eveniments che correspundan a tes interess.",
+    welcomeBodyMonthly:
+      "Ti retschaivas novitads per e-mail mintga mais davart eveniments che correspundan a tes interess.",
+    welcomeSubject: "Meiringen.life — novitads d'eveniments activadas",
+    digestSubject: "Meiringen.life — novitads per tai",
+  },
+  pt: {
+    preheader: "Os eventos correspondentes no Haslital",
+    title: "A sua atualização do Haslital",
+    intro: "Estes eventos correspondem aos seus interesses:",
+    empty: "Ainda não há eventos correspondentes neste período.",
+    cta: "Ver todos os eventos",
+    manage: "Alterar definições",
+    unsubscribe: "Cancelar subscrição",
+    footer: "Meiringen.life — gratuito, multilingue e feito para a região.",
+    disclaimer:
+      "As informações sobre organizações e eventos podem estar incorretas ou desatualizadas. Verifique os detalhes com a organização antes de participar.",
+    frequencyLabel: "Resumo",
+    welcomeTitle: "Está inscrito!",
+    welcomeBodyWeekly:
+      "Passará a receber atualizações semanais por e-mail sobre eventos que correspondem aos seus interesses.",
+    welcomeBodyMonthly:
+      "Passará a receber atualizações mensais por e-mail sobre eventos que correspondem aos seus interesses.",
+    welcomeSubject: "Meiringen.life — alertas de eventos ativados",
+    digestSubject: "Meiringen.life — eventos para si",
   },
 };
 
@@ -89,18 +248,16 @@ export function buildWelcomeEmailHtml(options: {
   const manageUrl = buildManageUrl(options.manageToken, options.locale);
   const siteUrl = getSiteUrl();
 
-  const title =
-    options.locale === "de" ? "Du bist dabei!" : "You're subscribed!";
   const body =
-    options.locale === "de"
-      ? `Ab sofort erhältst du ${options.frequency === "weekly" ? "wöchentliche" : "monatliche"} E-Mail-Updates zu Veranstaltungen, die zu deinen Interessen passen.`
-      : `You'll receive ${options.frequency === "weekly" ? "weekly" : "monthly"} email updates for events that match your interests.`;
+    options.frequency === "weekly"
+      ? copy.welcomeBodyWeekly
+      : copy.welcomeBodyMonthly;
 
   return wrapEmail({
     locale: options.locale,
     preheader: copy.preheader,
     body: `
-      <h2 style="margin:0 0 12px;font-size:24px;line-height:1.25;color:#111111;">${title}</h2>
+      <h2 style="margin:0 0 12px;font-size:24px;line-height:1.25;color:#111111;">${copy.welcomeTitle}</h2>
       <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#57534e;">${body}</p>
       <a href="${manageUrl}" style="display:inline-block;background:#111111;color:#ffffff;text-decoration:none;font-weight:600;font-size:15px;padding:14px 24px;border-radius:999px;">${copy.manage}</a>
       <p style="margin:24px 0 0;font-size:14px;line-height:1.6;color:#78716c;">
@@ -119,10 +276,34 @@ export function buildAlertDigestEmailHtml(options: BuildEmailOptions): string {
     options.frequency === "weekly"
       ? options.locale === "de"
         ? "Wöchentlich"
-        : "Weekly"
+        : options.locale === "fr"
+          ? "Hebdomadaire"
+          : options.locale === "it"
+            ? "Settimanale"
+            : options.locale === "es"
+              ? "Semanal"
+              : options.locale === "ca"
+                ? "Setmanal"
+                : options.locale === "rm"
+                  ? "Emna"
+                  : options.locale === "pt"
+                    ? "Semanal"
+                    : "Weekly"
       : options.locale === "de"
         ? "Monatlich"
-        : "Monthly";
+        : options.locale === "fr"
+          ? "Mensuel"
+          : options.locale === "it"
+            ? "Mensile"
+            : options.locale === "es"
+              ? "Mensual"
+              : options.locale === "ca"
+                ? "Mensual"
+                : options.locale === "rm"
+                  ? "Mintga mais"
+                  : options.locale === "pt"
+                    ? "Mensal"
+                    : "Monthly";
 
   const eventCards =
     options.events.length === 0
@@ -233,4 +414,12 @@ function wrapEmail(options: {
   </table>
 </body>
 </html>`;
+}
+
+export function getAlertEmailSubject(locale: string, count?: number): string {
+  const copy = getCopy(locale);
+  if (typeof count === "number") {
+    return copy.digestSubject.replace("{count}", String(count));
+  }
+  return copy.welcomeSubject;
 }

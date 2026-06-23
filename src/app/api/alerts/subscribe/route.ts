@@ -9,7 +9,7 @@ import type {
 } from "@/lib/constants";
 import { isValidEmail, upsertAlertSubscription } from "@/lib/alerts/service";
 import { buildManageUrl } from "@/lib/alerts/newsletter-utils";
-import { buildWelcomeEmailHtml } from "@/lib/email/alert-template";
+import { buildWelcomeEmailHtml, getAlertEmailSubject } from "@/lib/email/alert-template";
 import { getFromEmail } from "@/lib/email/config";
 
 function parseCategories(value: unknown): EventCategory[] {
@@ -68,10 +68,7 @@ export async function POST(request: Request) {
       const { error } = await resend.emails.send({
         from: getFromEmail(),
         to: subscription.email,
-        subject:
-          locale === "de"
-            ? "Meiringen.life — Event-Alerts aktiviert"
-            : "Meiringen.life — event alerts activated",
+        subject: getAlertEmailSubject(subscription.locale),
         html,
       });
 
