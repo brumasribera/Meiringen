@@ -4,7 +4,7 @@ import type { OrganizationCategory } from "@/lib/constants";
 type Props = {
   category: OrganizationCategory;
   coverImageUrl?: string | null;
-  fallbackBackgroundClassName?: string;
+  backgroundClassName?: string;
   className?: string;
 };
 
@@ -77,17 +77,15 @@ const coverThemes: Record<
 export function OrgCoverArt({
   category,
   coverImageUrl,
-  fallbackBackgroundClassName,
+  backgroundClassName,
   className = "",
 }: Props) {
   const theme = coverThemes[category];
-  const backgroundClassName = coverImageUrl
-    ? theme.background
-    : fallbackBackgroundClassName ?? theme.background;
+  const resolvedBackgroundClassName = backgroundClassName ?? theme.background;
 
   return (
     <div
-      className={`relative overflow-hidden ${backgroundClassName} ${className}`}
+      className={`relative overflow-hidden ${resolvedBackgroundClassName} ${className}`}
       aria-hidden
     >
       {coverImageUrl && (
@@ -97,15 +95,15 @@ export function OrgCoverArt({
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
           unoptimized={coverImageUrl.startsWith("http")}
-          className="absolute inset-0 object-cover"
+          className="absolute inset-0 object-cover opacity-80"
           referrerPolicy="no-referrer"
         />
       )}
       <div
         className={`absolute inset-0 ${
           coverImageUrl
-            ? "bg-[linear-gradient(180deg,rgba(15,23,42,0.05)_0%,rgba(15,23,42,0.34)_100%)]"
-            : "bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.44),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.06),rgba(15,23,42,0.16))]"
+            ? "bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(15,23,42,0.18)_100%)]"
+            : "bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.40),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.06),rgba(15,23,42,0.10))]"
         }`}
       />
       <div

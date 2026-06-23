@@ -22,7 +22,6 @@ import { OrgLogoImageViewer } from "@/components/OrgLogoImageViewer";
 import { cleanEventTitle } from "@/lib/event-title";
 import { resolveOrgCoverImageUrl } from "@/lib/org-content";
 import { formatEventDescription } from "@/lib/event-description";
-import { getRelaxingGradientClass } from "@/lib/relaxing-gradient";
 import { getEventHeroGradientClass } from "@/lib/event-hero";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -54,11 +53,8 @@ export default async function EventDetailPage({ params }: Props) {
         event.organization.image_url
       )
     : null;
-  const fallbackBackgroundClassName = getRelaxingGradientClass(
-    `${event.slug}|${event.id}`
-  );
   const heroBackgroundClassName = getEventHeroGradientClass({
-    seed: fallbackBackgroundClassName,
+    seed: `${event.slug}|${event.id}`,
     title: event.title,
     description: event.description,
     organizationName: event.organization?.name,
@@ -77,33 +73,20 @@ export default async function EventDetailPage({ params }: Props) {
 
       <section className="mt-4 overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm">
         <div
-          className={`relative overflow-hidden ${
-            event.organization ? "min-h-[13rem]" : `min-h-[11rem] ${fallbackBackgroundClassName}`
-          }`}
+          className={`relative min-h-[13rem] overflow-hidden ${heroBackgroundClassName}`}
         >
-          {event.organization ? (
+          {event.organization && (
             <OrgCoverArt
               category={event.organization.category}
               coverImageUrl={coverImageUrl}
-              fallbackBackgroundClassName={heroBackgroundClassName}
+              backgroundClassName={heroBackgroundClassName}
               className="absolute inset-0 h-full w-full"
             />
-          ) : (
-            <div
-              className={`absolute inset-0 ${heroBackgroundClassName}`}
-              aria-hidden
-            />
           )}
-          <div
-            className={`absolute inset-0 ${
-              event.organization
-                ? "bg-gradient-to-t from-black/70 via-black/30 to-black/10"
-                : "bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.02)_42%,rgba(15,23,42,0.06)_100%)]"
-            }`}
-          />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.02)_42%,rgba(15,23,42,0.10)_100%)]" />
           <div
             className={`absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 ${
-              event.organization ? "text-white" : "text-foreground"
+              event.organization ? "text-white" : "text-primary"
             }`}
           >
             <div className="max-w-2xl">
@@ -112,7 +95,7 @@ export default async function EventDetailPage({ params }: Props) {
                   className={`pill ${
                     event.organization
                       ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
-                      : "border border-white/50 bg-white/70 text-primary shadow-sm backdrop-blur-sm"
+                      : "border border-white/55 bg-white/72 text-primary shadow-sm backdrop-blur-sm"
                   }`}
                 >
                   {t(`categories.${event.category}`)}
@@ -122,7 +105,7 @@ export default async function EventDetailPage({ params }: Props) {
                     className={`pill ${
                       event.organization
                         ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
-                        : "border border-white/50 bg-white/70 text-primary shadow-sm backdrop-blur-sm"
+                        : "border border-white/55 bg-white/72 text-primary shadow-sm backdrop-blur-sm"
                     }`}
                   >
                     {t(`languages.${event.language}`)}
@@ -133,7 +116,7 @@ export default async function EventDetailPage({ params }: Props) {
                     className={`pill ${
                       event.organization
                         ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
-                        : "border border-white/50 bg-white/70 text-primary shadow-sm backdrop-blur-sm"
+                        : "border border-white/55 bg-white/72 text-primary shadow-sm backdrop-blur-sm"
                     }`}
                   >
                     {t("events.recurring")}
