@@ -3,9 +3,10 @@ import { syncAgenda } from "@/lib/agenda/scrape-events";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 function verifyCron(request: Request) {
+  if (!process.env.CRON_SECRET) return false;
   const auth = request.headers.get("authorization");
   return auth === `Bearer ${process.env.CRON_SECRET}`;
 }
