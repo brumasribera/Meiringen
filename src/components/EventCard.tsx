@@ -12,30 +12,34 @@ type Props = { event: Event };
 export function EventCard({ event }: Props) {
   const t = useTranslations();
   const locale = useLocale();
+  const eventTitle = cleanEventTitle(event.title, event.organization?.name);
+  const isFree = event.price?.trim().toLowerCase() === "gratis";
 
   return (
     <Link
       href={`/events/${event.slug}`}
-      className="card-hover flex h-full flex-col rounded-2xl border border-border bg-card p-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5"
+      className="card-hover group flex h-full flex-col rounded-2xl border border-border bg-card p-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5"
     >
       <div className="flex items-start justify-between gap-3">
         <span className="pill bg-primary/10 text-primary">
           {t(`categories.${event.category}`)}
         </span>
         <div className="flex flex-wrap justify-end gap-2">
-          {event.is_recurring && (
+          {isFree && (
             <span className="pill bg-accent/20 text-foreground">
+              {t("events.free")}
+            </span>
+          )}
+          {event.is_recurring && (
+            <span className="pill bg-muted/70 text-muted-foreground">
               {t("events.recurring")}
             </span>
           )}
         </div>
       </div>
-      <div className="mt-4 flex min-h-[7rem] flex-1 flex-col">
-        <h3 className="line-clamp-2 text-lg font-semibold leading-snug text-foreground">
-          {cleanEventTitle(event.title, event.organization?.name)}
-        </h3>
+      <div className="mt-4 flex flex-1 flex-col">
         {event.organization ? (
-          <div className="mt-3 flex items-center gap-2 min-w-0">
+          <div className="flex min-w-0 items-center gap-2">
             <OrgLogo
               name={event.organization.name}
               imageUrl={event.organization.image_url}
@@ -49,20 +53,29 @@ export function EventCard({ event }: Props) {
             </p>
           </div>
         ) : null}
-        <p className="mt-2 text-sm text-muted" suppressHydrationWarning>
-          {formatDateRange(event.start_date, event.end_date, locale)}
-        </p>
-        {event.location_name && (
-          <p className="mt-1 line-clamp-2 text-sm text-muted">
-            {event.location_name}
+        <h3 className="mt-3 line-clamp-2 text-lg font-semibold leading-snug text-foreground">
+          {eventTitle}
+        </h3>
+        <div className="mt-3 space-y-1.5 text-sm text-muted">
+          <p suppressHydrationWarning>{formatDateRange(event.start_date, event.end_date, locale)}</p>
+          {event.location_name && (
+            <p className="line-clamp-2">{event.location_name}</p>
+          )}
+          {event.address && !event.location_name && (
+            <p className="line-clamp-2">{event.address}</p>
+          )}
+        </div>
+        {event.price && !isFree && (
+          <p className="mt-3 text-sm font-medium text-accent">
+            {event.price}
           </p>
         )}
       </div>
-      {event.price && (
-        <p className="mt-4 text-sm text-accent">
-          {event.price === "Gratis" ? t("events.free") : event.price}
-        </p>
-      )}
+      <div className="mt-5 pt-4">
+        <span className="text-sm font-medium text-primary transition-colors group-hover:underline">
+          Learn more
+        </span>
+      </div>
     </Link>
   );
 }

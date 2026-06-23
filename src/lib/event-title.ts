@@ -9,6 +9,25 @@ function normalizeText(value: string) {
     .trim();
 }
 
+function stripTrailingOrganizationSuffix(title: string, organizationName: string) {
+  const normalizedTitle = normalizeText(title);
+  const normalizedOrg = normalizeText(organizationName);
+  if (!normalizedTitle || !normalizedOrg) return title;
+
+  const separators = [" - ", " – ", " — ", " -", "- ", " –", "– ", " —", "— "];
+  for (const separator of separators) {
+    const separatorIndex = title.lastIndexOf(separator);
+    if (separatorIndex === -1) continue;
+
+    const suffix = title.slice(separatorIndex + separator.length).trim();
+    if (normalizeText(suffix) === normalizedOrg) {
+      return title.slice(0, separatorIndex).trim();
+    }
+  }
+
+  return title;
+}
+
 function stripOrganizationName(title: string, organizationName?: string | null) {
   if (!organizationName) return title;
 
@@ -29,7 +48,11 @@ function stripOrganizationName(title: string, organizationName?: string | null) 
 }
 
 export function cleanEventTitle(title: string, organizationName?: string | null) {
-  const cleaned = stripOrganizationName(title.trim(), organizationName?.trim() ?? null);
+  const trimmed = title.trim();
+  const withRemovedOrg = stripOrganizationName(trimmed, organizationName?.trim() ?? null);
+  const cleaned = organizationName
+    ? stripTrailingOrganizationSuffix(withRemovedOrg, organizationName.trim())
+    : withRemovedOrg;
   return cleaned.replace(/\s*[–—-]\s*(training|probe|kurs|event|veranstaltung)\s*$/i, (match) =>
     match.replace(/^\s*[–—-]\s*/i, " - ")
   );
