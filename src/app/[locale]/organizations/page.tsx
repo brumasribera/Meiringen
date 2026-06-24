@@ -1,11 +1,10 @@
 import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getOrganizations } from "@/lib/data";
-import { resolveOrgImageUrl } from "@/lib/org-content";
 import { OrganizationCard } from "@/components/OrganizationCard";
 import { OrganizationFilters } from "@/components/OrganizationFilters";
-import { DeferredMapLoader } from "@/components/DeferredMapLoader";
-import { ORGANIZATION_CATEGORIES, getLocalityCenter } from "@/lib/constants";
+import { ORGANIZATION_CATEGORIES } from "@/lib/constants";
+import { resolveOrgImageUrl } from "@/lib/org-content";
 import type { Locality, OrganizationCategory } from "@/lib/constants";
 
 type Props = {
@@ -36,23 +35,23 @@ export default async function OrganizationsPage({ params, searchParams }: Props)
     locality: filters.locality as Locality | undefined,
   });
 
-  const markers = organizations
-    .filter((o) => o.latitude && o.longitude)
-    .map((o) => ({
-      id: o.id,
-      name: o.name,
-      latitude: o.latitude!,
-      longitude: o.longitude!,
-      href: `/${locale}/organizations/${o.slug}`,
-      imageUrl: resolveOrgImageUrl(o.image_url, o.website_url, o.locality),
-    }));
+  const sortedOrganizations = [...organizations].sort((a, b) => {
+    const aHasCover = Boolean(a.cover_image_url);
+    const bHasCover = Boolean(b.cover_image_url);
+    const aHasLogo = Boolean(resolveOrgImageUrl(a.image_url, a.website_url, a.locality));
+    const bHasLogo = Boolean(resolveOrgImageUrl(b.image_url, b.website_url, b.locality));
 
-  const mapCenter = filters.locality
-    ? (() => {
-        const { lat, lng } = getLocalityCenter(filters.locality as Locality);
-        return [lat, lng] as [number, number];
-      })()
-    : undefined;
+    const rank = (hasCover: boolean, hasLogo: boolean) => {
+      if (hasCover && hasLogo) return 0;
+      if (hasLogo) return 1;
+      return 2;
+    };
+
+    const diff = rank(aHasCover, aHasLogo) - rank(bHasCover, bHasLogo);
+    if (diff !== 0) return diff;
+
+    return a.name.localeCompare(b.name);
+  });
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
@@ -65,14 +64,8 @@ export default async function OrganizationsPage({ params, searchParams }: Props)
         </Suspense>
       </div>
 
-      {markers.length > 0 && (
-        <div className="mt-8">
-          <DeferredMapLoader markers={markers} center={mapCenter} className="h-96" preferLeaflet />
-        </div>
-      )}
-
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {organizations.map((org) => (
+        {sortedOrganizations.map((org) => (
           <OrganizationCard key={org.id} organization={org} />
         ))}
       </div>
