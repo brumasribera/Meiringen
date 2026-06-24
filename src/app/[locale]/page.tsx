@@ -104,60 +104,85 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <h2 className="mb-8 text-2xl font-bold md:text-3xl">{t("upcomingEvents")}</h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {upcomingEvents.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
-        </div>
-        {upcomingEvents.length === 0 && (
-          <p className="text-muted">No events yet. Run the database seed.</p>
-        )}
-        <Link href="/events" className="mt-6 inline-flex text-sm font-medium text-primary hover:underline">
-          {t("viewAll")} →
-        </Link>
-      </section>
-
-      <section className="bg-card py-16">
-        <div className="mx-auto max-w-6xl px-4">
-          <h2 className="mb-8 text-2xl font-bold md:text-3xl">{t("exploreOrganizations")}</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {sortedOrganizations.map((org) => (
-              <OrganizationCard key={org.id} organization={org} />
-            ))}
+      {upcomingEvents.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 py-16">
+          <div className="mb-8 flex items-center justify-between gap-4">
+            <h2 className="text-2xl font-bold md:text-3xl">{t("upcomingEvents")}</h2>
+            <Link href="/events" className="text-sm font-medium text-primary hover:underline">
+              {t("viewAll")} →
+            </Link>
           </div>
-          <Link href="/organizations" className="mt-6 inline-flex text-sm font-medium text-primary hover:underline">
-            {t("viewAll")} →
-          </Link>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <h2 className="mb-8 text-2xl font-bold md:text-3xl">{t("integrationCourses")}</h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {integrationEvents.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
-        </div>
-        <Link href="/events" className="mt-6 inline-flex text-sm font-medium text-primary hover:underline">
-          {t("viewAll")} →
-        </Link>
-      </section>
-
-      <section className="bg-primary/5 py-16">
-        <div className="mx-auto max-w-6xl px-4">
-          <h2 className="mb-8 text-2xl font-bold md:text-3xl">{t("festivalsMarkets")}</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {festivalsAndMarkets.map((event) => (
+            {upcomingEvents.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
           </div>
           <Link href="/events" className="mt-6 inline-flex text-sm font-medium text-primary hover:underline">
             {t("viewAll")} →
           </Link>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {sortedOrganizations.length > 0 && (
+        <section className="bg-card py-16">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="mb-8 flex items-center justify-between gap-4">
+              <h2 className="text-2xl font-bold md:text-3xl">{t("exploreOrganizations")}</h2>
+              <Link href="/organizations" className="text-sm font-medium text-primary hover:underline">
+                {t("viewAll")} →
+              </Link>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {sortedOrganizations.map((org) => (
+                <OrganizationCard key={org.id} organization={org} />
+              ))}
+            </div>
+            <Link href="/organizations" className="mt-6 inline-flex text-sm font-medium text-primary hover:underline">
+              {t("viewAll")} →
+            </Link>
+          </div>
+        </section>
+      )}
+
+      {integrationEvents.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 py-16">
+          <div className="mb-8 flex items-center justify-between gap-4">
+            <h2 className="text-2xl font-bold md:text-3xl">{t("integrationCourses")}</h2>
+            <Link href="/events" className="text-sm font-medium text-primary hover:underline">
+              {t("viewAll")} →
+            </Link>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {integrationEvents.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
+          </div>
+          <Link href="/events" className="mt-6 inline-flex text-sm font-medium text-primary hover:underline">
+            {t("viewAll")} →
+          </Link>
+        </section>
+      )}
+
+      {festivalsAndMarkets.length > 0 && (
+        <section className="bg-primary/5 py-16">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="mb-8 flex items-center justify-between gap-4">
+              <h2 className="text-2xl font-bold md:text-3xl">{t("festivalsMarkets")}</h2>
+              <Link href="/events" className="text-sm font-medium text-primary hover:underline">
+                {t("viewAll")} →
+              </Link>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {festivalsAndMarkets.map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+            <Link href="/events" className="mt-6 inline-flex text-sm font-medium text-primary hover:underline">
+              {t("viewAll")} →
+            </Link>
+          </div>
+        </section>
+      )}
 
       <section className="mx-auto max-w-6xl px-4 py-16">
         <div className="rounded-2xl border border-border bg-card p-8 text-center shadow-sm md:p-12">
