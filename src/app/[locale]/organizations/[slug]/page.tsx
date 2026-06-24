@@ -8,8 +8,7 @@ import {
   getRelatedOrganizationsForOrganization,
 } from "@/lib/data";
 import { EventCard } from "@/components/EventCard";
-import { DeferredMapLoader } from "@/components/DeferredMapLoader";
-import { resolveOrgDescription, resolveOrgImageUrl } from "@/lib/org-content";
+import { resolveOrgDescription } from "@/lib/org-content";
 import { OrgLogoImageViewer } from "@/components/OrgLogoImageViewer";
 import { ShareButton } from "@/components/ShareButton";
 import { actionButtonClass } from "@/lib/button-styles";
@@ -38,7 +37,6 @@ export default async function OrganizationDetailPage({ params }: Props) {
     getOrganizationFollowSummary(organization.id, user?.id),
     getRelatedOrganizationsForOrganization(organization, 3),
   ]);
-  const hasCoords = organization.latitude && organization.longitude;
   const description = resolveOrgDescription(organization, locale);
   const coverImageUrl = organization.cover_image_url ?? null;
   const alertHref = buildAlertHref({ organizationId: organization.id });
@@ -219,28 +217,6 @@ export default async function OrganizationDetailPage({ params }: Props) {
           )}
         </dl>
       </div>
-
-      {hasCoords && (
-        <div className="mt-8">
-          <DeferredMapLoader
-            preferLeaflet
-            markers={[
-              {
-                id: organization.id,
-                name: organization.name,
-                latitude: organization.latitude!,
-                longitude: organization.longitude!,
-                imageUrl: resolveOrgImageUrl(
-                  organization.image_url,
-                  organization.website_url,
-                  organization.locality
-                ),
-              },
-            ]}
-            center={[organization.latitude!, organization.longitude!]}
-          />
-        </div>
-      )}
 
       {events.length > 0 && (
         <section className="mt-12">
