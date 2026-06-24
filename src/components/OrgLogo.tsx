@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { resolveOrgImageUrl } from "@/lib/org-image";
+import { isGradientOnlyOrgLogoAsset, resolveOrgImageUrl } from "@/lib/org-image";
 import { getRelaxingGradient } from "@/lib/relaxing-gradient";
 
 type Props = {
@@ -19,10 +19,6 @@ const sizes = {
   md: { box: "h-14 w-14", px: 56, text: "text-lg" },
   lg: { box: "h-20 w-20", px: 80, text: "text-2xl" },
 };
-
-const REPEATED_ORG_LOGO_ASSETS = new Set([
-  "/brand/org-logos/haslital-brienz-ch.png",
-]);
 
 function getFallbackLetter(name: string): string {
   const letter = name.trim().match(/[A-Za-z0-9ÄÖÜäöüß]/)?.[0];
@@ -42,7 +38,7 @@ export function OrgLogo({
   const s = sizes[size];
   const fallbackLetter = getFallbackLetter(name);
   const gradientStyle = getRelaxingGradient(name);
-  const shouldUseImage = Boolean(src && !imageFailed && !REPEATED_ORG_LOGO_ASSETS.has(src));
+  const shouldUseImage = Boolean(src && !imageFailed && !isGradientOnlyOrgLogoAsset(src));
 
   const getRadiusClass = () => {
     if (shape === "circle") return "rounded-full";

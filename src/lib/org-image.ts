@@ -1,5 +1,6 @@
 export {
   isGenericPortalFavicon,
+  isGradientOnlyOrgLogoAsset,
   isLikelyOrgIconImage,
   resolveOrgCoverImageUrl,
   resolveOrgDescription,

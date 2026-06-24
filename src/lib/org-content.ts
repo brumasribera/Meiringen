@@ -4,6 +4,24 @@ const GENERIC_PORTAL_DOMAINS = [
   "localcities.ch",
 ];
 
+export const GRADIENT_ONLY_ORG_LOGO_ASSETS = new Set([
+  "/brand/org-logos/brienzwiler.ch.svg",
+  "/brand/org-logos/ccoberhasli.ch.svg",
+  "/brand/org-logos/fcht.ch.svg",
+  "/brand/org-logos/gadmen.ch.svg",
+  "/brand/org-logos/glinggige.ch.svg",
+  "/brand/org-logos/haslimuseum.ch.svg",
+  "/brand/org-logos/hasliprodukt.ch.svg",
+  "/brand/org-logos/jkmeiringen.ch.png",
+  "/brand/org-logos/kvmeiringen.jimdoweb.com.svg",
+  "/brand/org-logos/laufgruppe-willigen.instagram.jpg",
+  "/brand/org-logos/mgbrienzwiler.ch.svg",
+  "/brand/org-logos/sc-hofstetten.ch.svg",
+  "/brand/org-logos/trachtengruppe-oberhasli.ch.svg",
+  "/brand/org-logos/volkstheaterfestival.ch.svg",
+  "/brand/org-logos/haslital-brienz-ch.png",
+]);
+
 const LOCAL_LOGO_ASSETS: Record<string, string> = {
   "mgmeiringen.ch": "/brand/org-logos/mgmeiringen.ch.png",
   "meiringen.ch": "/brand/org-logos/meiringen-ch.png",
@@ -51,6 +69,10 @@ export function isLikelyOrgIconImage(imageUrl: string): boolean {
     normalized.includes("apple-touch-icon") ||
     normalized.endsWith(".ico")
   );
+}
+
+export function isGradientOnlyOrgLogoAsset(imageUrl: string | null | undefined): boolean {
+  return !!imageUrl && GRADIENT_ONLY_ORG_LOGO_ASSETS.has(imageUrl);
 }
 
 const LOCALITY_LOGO_DOMAINS: Record<string, string> = {

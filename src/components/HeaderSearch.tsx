@@ -5,18 +5,28 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { isGradientOnlyOrgLogoAsset } from "@/lib/org-content";
+import { getRelaxingGradient } from "@/lib/relaxing-gradient";
 import type { SearchResult } from "@/lib/types";
 
 function SearchThumb({
   src,
   category,
+  title,
+  type,
 }: {
   src: string | null;
   category: string;
+  title: string;
+  type: SearchResult["type"];
 }) {
+  const fallbackLetter = title.trim().match(/[A-Za-z0-9ÄÖÜäöüß]/)?.[0]?.toUpperCase() ?? "?";
+  const gradientStyle = getRelaxingGradient(title);
+  const shouldUseImage = Boolean(src && !(type === "organization" && isGradientOnlyOrgLogoAsset(src)));
+
   return (
     <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-white/70 bg-muted shadow-sm">
-      {src ? (
+      {shouldUseImage ? (
         <Image
           src={src}
           alt=""
@@ -26,6 +36,13 @@ function SearchThumb({
           className="h-full w-full object-cover"
           referrerPolicy="no-referrer"
         />
+      ) : type === "organization" ? (
+        <div
+          className="flex h-full w-full items-center justify-center text-sm font-bold text-white shadow-sm ring-1 ring-white/45"
+          style={gradientStyle}
+        >
+          {fallbackLetter}
+        </div>
       ) : (
         <div className="flex h-full w-full items-center justify-center bg-primary/10 text-[10px] font-semibold uppercase tracking-wide text-primary">
           {category.slice(0, 2)}
@@ -145,6 +162,8 @@ export function HeaderSearch() {
                               <SearchThumb
                                 src={result.image_url}
                                 category={result.category}
+                                title={result.title}
+                                type={result.type}
                               />
                               <div className="min-w-0">
                                 <div className="truncate text-sm font-semibold">
@@ -175,6 +194,8 @@ export function HeaderSearch() {
                               <SearchThumb
                                 src={result.image_url}
                                 category={result.category}
+                                title={result.title}
+                                type={result.type}
                               />
                               <div className="min-w-0">
                                 <div className="truncate text-sm font-semibold">
