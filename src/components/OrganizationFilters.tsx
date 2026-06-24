@@ -96,7 +96,7 @@ export function OrganizationFilters() {
           onClick={clearAll}
           className={`rounded-full border px-3 py-1.5 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-primary/20 ${
             categories.length === 0
-              ? "border-primary/25 bg-primary text-white shadow-sm"
+              ? "border-primary bg-primary text-white shadow-md shadow-primary/20 ring-1 ring-primary/20"
               : "border-border bg-white/70 text-muted hover:border-primary/30 hover:text-foreground"
           }`}
           aria-pressed={categories.length === 0}
@@ -112,7 +112,7 @@ export function OrganizationFilters() {
               onClick={() => toggleCategory(category)}
               className={`rounded-full border px-3 py-1.5 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-primary/20 ${
                 active
-                  ? "border-primary/25 bg-primary/10 text-primary shadow-sm"
+                  ? "border-primary bg-primary text-white shadow-md shadow-primary/20 ring-1 ring-primary/20"
                   : "border-border bg-white/70 text-muted hover:border-primary/30 hover:text-foreground"
               }`}
               aria-pressed={active}
