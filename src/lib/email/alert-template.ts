@@ -257,11 +257,18 @@ export function buildWelcomeEmailHtml(options: {
     locale: options.locale,
     preheader: copy.preheader,
     body: `
-      <h2 style="margin:0 0 12px;font-size:24px;line-height:1.25;color:#111111;">${copy.welcomeTitle}</h2>
-      <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#57534e;">${body}</p>
-      <a href="${manageUrl}" style="display:inline-block;background:#111111;color:#ffffff;text-decoration:none;font-weight:600;font-size:15px;padding:14px 24px;border-radius:999px;">${copy.manage}</a>
-      <p style="margin:24px 0 0;font-size:14px;line-height:1.6;color:#78716c;">
-        <a href="${siteUrl}/events" style="color:#111111;">${copy.cta}</a>
+      <div style="display:inline-block;margin-bottom:14px;padding:6px 12px;border-radius:999px;background:#F4C430;color:#111111;font-size:12px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;">${copy.frequencyLabel}</div>
+      <h2 style="margin:0 0 12px;font-size:26px;line-height:1.2;color:#111111;letter-spacing:-0.03em;">${copy.welcomeTitle}</h2>
+      <p style="margin:0 0 24px;font-size:16px;line-height:1.7;color:#57534e;">${body}</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 18px;">
+        <tr>
+          <td>
+            <a href="${manageUrl}" style="display:inline-block;background:#111111;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 22px;border-radius:999px;">${copy.manage}</a>
+          </td>
+        </tr>
+      </table>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:#78716c;">
+        <a href="${siteUrl}/events" style="color:#111111;font-weight:600;text-decoration:none;">${copy.cta}</a>
       </p>
     `,
   });
@@ -340,20 +347,20 @@ export function buildAlertDigestEmailHtml(options: BuildEmailOptions): string {
     locale: options.locale,
     preheader: copy.preheader,
     body: `
-      <p style="margin:0 0 8px;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#B8860B;">${copy.frequencyLabel} · ${freq}</p>
-      <h2 style="margin:0 0 12px;font-size:28px;line-height:1.2;color:#111111;">${copy.title}</h2>
-      <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#57534e;">${copy.intro}</p>
+      <p style="margin:0 0 8px;font-size:13px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#B8860B;">${copy.frequencyLabel} · ${freq}</p>
+      <h2 style="margin:0 0 12px;font-size:28px;line-height:1.15;color:#111111;letter-spacing:-0.03em;">${copy.title}</h2>
+      <p style="margin:0 0 24px;font-size:16px;line-height:1.7;color:#57534e;">${copy.intro}</p>
       ${eventCards}
       <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:28px;">
         <tr>
           <td>
-            <a href="${siteUrl}/events" style="display:inline-block;background:#F4C430;color:#111111;text-decoration:none;font-weight:700;font-size:15px;padding:14px 22px;border-radius:999px;">${copy.cta}</a>
+            <a href="${siteUrl}/events" style="display:inline-block;background:#F4C430;color:#111111;text-decoration:none;font-weight:800;font-size:15px;padding:14px 22px;border-radius:999px;box-shadow:0 6px 18px rgba(244,196,48,0.25);">${copy.cta}</a>
           </td>
         </tr>
       </table>
       <hr style="border:none;border-top:1px solid #ece7df;margin:32px 0;" />
       <p style="margin:0;font-size:14px;line-height:1.7;color:#78716c;">
-        <a href="${manageUrl}" style="color:#111111;font-weight:600;">${copy.manage}</a>
+        <a href="${manageUrl}" style="color:#111111;font-weight:700;text-decoration:none;">${copy.manage}</a>
         &nbsp;·&nbsp;
         <a href="${unsubscribeUrl}" style="color:#78716c;">${copy.unsubscribe}</a>
       </p>
@@ -376,7 +383,7 @@ function wrapEmail(options: {
   <meta name="color-scheme" content="light" />
   <title>Meiringen.life</title>
 </head>
-<body style="margin:0;padding:0;background:#f3efe7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <body style="margin:0;padding:0;background:#f3efe7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
   <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(options.preheader)}</div>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(180deg,#f3efe7 0%,#faf8f5 100%);padding:32px 16px;">
     <tr>
