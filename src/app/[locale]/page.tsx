@@ -15,7 +15,7 @@ export default async function HomePage({ params }: Props) {
 
   const [allUpcomingEvents, organizations] = await Promise.all([
     getEvents({ limit: 20 }),
-    getOrganizations({ limit: 6 }),
+    getOrganizations(),
   ]);
 
   const upcomingEvents = allUpcomingEvents.slice(0, 6);
@@ -41,7 +41,7 @@ export default async function HomePage({ params }: Props) {
     if (diff !== 0) return diff;
 
     return a.name.localeCompare(b.name);
-  });
+  }).slice(0, 6);
 
   return (
     <div>
