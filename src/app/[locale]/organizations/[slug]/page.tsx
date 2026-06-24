@@ -17,6 +17,7 @@ import { OrganizationCard } from "@/components/OrganizationCard";
 import { OrganizationFollowButton } from "@/components/OrganizationFollowButton";
 import { createClient } from "@/lib/supabase/server";
 import { OrgCoverImageViewer } from "@/components/OrgCoverImageViewer";
+import { ADMIN_EMAIL } from "@/lib/admin";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -46,6 +47,7 @@ export default async function OrganizationDetailPage({ params }: Props) {
   const phoneHref = organization.phone
     ? `tel:${organization.phone.replace(/\s+/g, "")}`
     : null;
+  const canEditLogo = user?.email?.trim().toLowerCase() === ADMIN_EMAIL;
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
@@ -92,6 +94,8 @@ export default async function OrganizationDetailPage({ params }: Props) {
                 locality={organization.locality}
                 size="lg"
                 shape="square"
+                editable={canEditLogo}
+                uploadUrl={`/api/admin/organizations/${organization.id}/logo`}
               />
             </div>
           </div>

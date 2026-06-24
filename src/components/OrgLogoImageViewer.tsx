@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { createPortal } from "react-dom";
+import { useRouter } from "next/navigation";
 import { OrgLogo } from "@/components/OrgLogo";
 import { resolveOrgImageUrl } from "@/lib/org-image";
 
@@ -12,6 +13,8 @@ type Props = {
   locality?: string | null;
   size?: "sm" | "md" | "lg";
   shape?: "circle" | "square";
+  editable?: boolean;
+  uploadUrl?: string;
 };
 
 export function OrgLogoImageViewer({
@@ -21,8 +24,14 @@ export function OrgLogoImageViewer({
   locality,
   size = "md",
   shape = "circle",
+  editable = false,
+  uploadUrl,
 }: Props) {
   const [open, setOpen] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const router = useRouter();
   const src = resolveOrgImageUrl(imageUrl ?? null, websiteUrl ?? null, locality);
 
   useEffect(() => {
@@ -43,30 +52,108 @@ export function OrgLogoImageViewer({
     };
   }, [open]);
 
+  async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+
+    if (!file || !uploadUrl) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    setUploading(true);
+    setUploadError(null);
+
+    try {
+      const response = await fetch(uploadUrl, {
+        method: "POST",
+        body: formData,
+      });
+      const payload = (await response.json().catch(() => null)) as
+        | { error?: string }
+        | null;
+
+      if (!response.ok) {
+        throw new Error(payload?.error ?? "Failed to update logo");
+      }
+
+      router.refresh();
+    } catch (error) {
+      setUploadError(error instanceof Error ? error.message : "Failed to update logo");
+    } finally {
+      setUploading(false);
+    }
+  }
+
   const portalNode = typeof document === "undefined" ? null : document.body;
 
   return (
     <>
-      <button
-        type="button"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setOpen(true);
-        }}
-        className="block outline-none focus:ring-2 focus:ring-primary/50"
-        style={{ borderRadius: shape === "square" ? "inherit" : "9999px" }}
-        aria-label={`Open large logo for ${name}`}
-      >
-        <OrgLogo
-          name={name}
-          imageUrl={imageUrl}
-          websiteUrl={websiteUrl}
-          locality={locality}
-          size={size}
-          shape={shape}
-        />
-      </button>
+      <div className="group relative inline-block">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setOpen(true);
+          }}
+          className="block outline-none focus:ring-2 focus:ring-primary/50"
+          style={{ borderRadius: shape === "square" ? "inherit" : "9999px" }}
+          aria-label={`Open large logo for ${name}`}
+        >
+          <OrgLogo
+            name={name}
+            imageUrl={imageUrl}
+            websiteUrl={websiteUrl}
+            locality={locality}
+            size={size}
+            shape={shape}
+          />
+        </button>
+
+        {editable && (
+          <>
+            <input
+              ref={inputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                inputRef.current?.click();
+              }}
+              className="absolute right-1 top-1 inline-flex items-center gap-1 rounded-full border border-white/20 bg-black/55 px-3 py-1.5 text-[11px] font-medium text-white opacity-0 shadow-sm backdrop-blur-md transition hover:bg-black/75 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-white/40 group-hover:opacity-100 group-focus-within:opacity-100"
+              aria-label={`Change logo for ${name}`}
+              disabled={uploading}
+            >
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" aria-hidden="true" fill="none">
+                <path
+                  d="M12 20h9"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="m16.5 3.5 4 4L8 20H4v-4L16.5 3.5Z"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span>{uploading ? "Saving" : "Edit"}</span>
+            </button>
+          </>
+        )}
+      </div>
+
+      {editable && uploadError && (
+        <p className="mt-2 text-xs text-red-600">{uploadError}</p>
+      )}
 
       {open && portalNode && createPortal(
         <div

@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "@/i18n/routing";
+import { isAdminEmail } from "@/lib/admin";
 
 export async function requireAdmin(locale: string) {
   const supabase = await createClient();
@@ -16,13 +17,7 @@ export async function requireAdmin(locale: string) {
     redirect({ href: "/login", locale });
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user!.id)
-    .single();
-
-  if (profile?.role !== "admin") {
+  if (!user || !isAdminEmail(user.email)) {
     redirect({ href: "/", locale });
   }
 
