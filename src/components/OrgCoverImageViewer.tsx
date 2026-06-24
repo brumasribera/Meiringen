@@ -50,7 +50,7 @@ export function OrgCoverImageViewer({
       >
         <OrgCoverArt
           category={category}
-          coverImageUrl={coverImageUrl}
+          coverImageUrl={null}
           className={className}
         />
       </button>
