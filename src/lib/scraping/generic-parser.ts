@@ -308,6 +308,9 @@ function dedupeEvents(events: ScrapedEvent[]): ScrapedEvent[] {
 
 function inferCategory(title: string, description: string): EventCategory {
   const text = `${title} ${description}`.toLowerCase();
+  if (/(kino\s*\+?|kino-meiringen|kinomeiringen|cinema)/.test(text)) {
+    return "cinema";
+  }
   if (/(ubersitz|altjahrswoche|trychel|trychler|brauch|brauchtum|warenmarkt)/.test(text)) {
     return "tradition";
   }

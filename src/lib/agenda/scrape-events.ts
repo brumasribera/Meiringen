@@ -174,6 +174,11 @@ function isBroadHost(url: string): boolean {
   return Boolean(host && BROAD_HOSTS_REQUIRING_REGIONAL_MATCH.has(host));
 }
 
+function isKinoMeiringenSource(url: string): boolean {
+  const host = hostnameFromUrl(url);
+  return host === "kino-meiringen.ch";
+}
+
 function isRegionallyRelevant(
   event: ScrapedEvent,
   sourceUrl: string,
@@ -204,6 +209,12 @@ async function saveScrapedEvent(
   if (!sourceUrl || !isWithinAgendaHorizon(event.start_date)) return "skipped";
   if (!isRegionallyRelevant(event, sourceUrl, source.url)) return "skipped";
 
+  const kinoMeiringenEvent =
+    isKinoMeiringenSource(sourceUrl) ||
+    /kino\s*\+?|kino-meiringen|cinema/i.test(
+      [event.title, event.description, source.name, source.url].filter(Boolean).join(" ")
+    );
+
   const organizationId =
     source.organizationId ?? resolveOrganizationId({ ...event, source_url: sourceUrl }, source.url, hosts);
   const slug = buildOccurrenceSlug(event.title, event.start_date);
@@ -211,7 +222,7 @@ async function saveScrapedEvent(
     organization_id: organizationId,
     title: event.title,
     description: event.description,
-    category: event.category,
+    category: kinoMeiringenEvent ? "cinema" : event.category,
     start_date: event.start_date,
     end_date: event.end_date,
     location_name: event.location_name,
