@@ -5,6 +5,7 @@ import { getEvents, getOrganizations } from "@/lib/data";
 import { actionButtonClass } from "@/lib/button-styles";
 import { EventCard } from "@/components/EventCard";
 import { OrganizationCard } from "@/components/OrganizationCard";
+import { getOrganizationDisplayRank } from "@/lib/org-content";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -26,18 +27,7 @@ export default async function HomePage({ params }: Props) {
     .filter((event) => event.category === "festival" || event.category === "market")
     .slice(0, 3);
   const sortedOrganizations = [...organizations].sort((a, b) => {
-    const aHasCover = Boolean(a.cover_image_url);
-    const bHasCover = Boolean(b.cover_image_url);
-    const aHasProfilePic = Boolean(a.image_url);
-    const bHasProfilePic = Boolean(b.image_url);
-
-    const rank = (hasCover: boolean, hasProfilePic: boolean) => {
-      if (hasCover && hasProfilePic) return 0;
-      if (hasProfilePic) return 1;
-      return 2;
-    };
-
-    const diff = rank(aHasCover, aHasProfilePic) - rank(bHasCover, bHasProfilePic);
+    const diff = getOrganizationDisplayRank(a) - getOrganizationDisplayRank(b);
     if (diff !== 0) return diff;
 
     return a.name.localeCompare(b.name);

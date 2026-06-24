@@ -192,3 +192,26 @@ export function resolveOrgDescription(
   }
   return organization.description;
 }
+
+export function getOrganizationDisplayRank(organization: {
+  cover_image_url: string | null;
+  image_url: string | null;
+  website_url: string | null;
+  locality: string | null;
+}): number {
+  const hasCover = Boolean(
+    resolveOrgCoverImageUrl(organization.cover_image_url, organization.image_url)
+  );
+  const hasLogo = Boolean(
+    resolveOrgImageUrl(
+      organization.image_url,
+      organization.website_url,
+      organization.locality
+    )
+  );
+
+  if (hasCover && hasLogo) return 0;
+  if (hasCover) return 1;
+  if (hasLogo) return 2;
+  return 3;
+}
