@@ -105,12 +105,7 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="mb-8 flex items-center justify-between">
-          <h2 className="text-2xl font-bold md:text-3xl">{t("upcomingEvents")}</h2>
-          <Link href="/events" className="text-sm font-medium text-primary hover:underline">
-            {t("viewAll")} →
-          </Link>
-        </div>
+        <h2 className="mb-8 text-2xl font-bold md:text-3xl">{t("upcomingEvents")}</h2>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {upcomingEvents.map((event) => (
             <EventCard key={event.id} event={event} />
@@ -119,21 +114,22 @@ export default async function HomePage({ params }: Props) {
         {upcomingEvents.length === 0 && (
           <p className="text-muted">No events yet. Run the database seed.</p>
         )}
+        <Link href="/events" className="mt-6 inline-flex text-sm font-medium text-primary hover:underline">
+          {t("viewAll")} →
+        </Link>
       </section>
 
       <section className="bg-card py-16">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-8 flex items-center justify-between">
-            <h2 className="text-2xl font-bold md:text-3xl">{t("exploreOrganizations")}</h2>
-            <Link href="/organizations" className="text-sm font-medium text-primary hover:underline">
-              {t("viewAll")} →
-            </Link>
-          </div>
+          <h2 className="mb-8 text-2xl font-bold md:text-3xl">{t("exploreOrganizations")}</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {sortedOrganizations.map((org) => (
               <OrganizationCard key={org.id} organization={org} />
             ))}
           </div>
+          <Link href="/organizations" className="mt-6 inline-flex text-sm font-medium text-primary hover:underline">
+            {t("viewAll")} →
+          </Link>
         </div>
       </section>
 
@@ -144,6 +140,9 @@ export default async function HomePage({ params }: Props) {
             <EventCard key={event.id} event={event} />
           ))}
         </div>
+        <Link href="/events" className="mt-6 inline-flex text-sm font-medium text-primary hover:underline">
+          {t("viewAll")} →
+        </Link>
       </section>
 
       <section className="bg-primary/5 py-16">
@@ -154,6 +153,9 @@ export default async function HomePage({ params }: Props) {
               <EventCard key={event.id} event={event} />
             ))}
           </div>
+          <Link href="/events" className="mt-6 inline-flex text-sm font-medium text-primary hover:underline">
+            {t("viewAll")} →
+          </Link>
         </div>
       </section>
 
