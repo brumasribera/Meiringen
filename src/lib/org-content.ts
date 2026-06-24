@@ -199,9 +199,7 @@ export function getOrganizationDisplayRank(organization: {
   website_url: string | null;
   locality: string | null;
 }): number {
-  const hasCover = Boolean(
-    resolveOrgCoverImageUrl(organization.cover_image_url, organization.image_url)
-  );
+  const hasCover = Boolean(resolveOrgCoverImageUrl(organization.cover_image_url, null));
   const hasLogo = Boolean(
     resolveOrgImageUrl(
       organization.image_url,
