@@ -4,7 +4,6 @@ import { getOrganizations } from "@/lib/data";
 import { OrganizationCard } from "@/components/OrganizationCard";
 import { OrganizationFilters } from "@/components/OrganizationFilters";
 import { ORGANIZATION_CATEGORIES } from "@/lib/constants";
-import { resolveOrgImageUrl } from "@/lib/org-content";
 import type { Locality, OrganizationCategory } from "@/lib/constants";
 
 type Props = {
@@ -38,16 +37,16 @@ export default async function OrganizationsPage({ params, searchParams }: Props)
   const sortedOrganizations = [...organizations].sort((a, b) => {
     const aHasCover = Boolean(a.cover_image_url);
     const bHasCover = Boolean(b.cover_image_url);
-    const aHasLogo = Boolean(resolveOrgImageUrl(a.image_url, a.website_url, a.locality));
-    const bHasLogo = Boolean(resolveOrgImageUrl(b.image_url, b.website_url, b.locality));
+    const aHasProfilePic = Boolean(a.image_url);
+    const bHasProfilePic = Boolean(b.image_url);
 
-    const rank = (hasCover: boolean, hasLogo: boolean) => {
-      if (hasCover && hasLogo) return 0;
-      if (hasLogo) return 1;
+    const rank = (hasCover: boolean, hasProfilePic: boolean) => {
+      if (hasCover && hasProfilePic) return 0;
+      if (hasProfilePic) return 1;
       return 2;
     };
 
-    const diff = rank(aHasCover, aHasLogo) - rank(bHasCover, bHasLogo);
+    const diff = rank(aHasCover, aHasProfilePic) - rank(bHasCover, bHasProfilePic);
     if (diff !== 0) return diff;
 
     return a.name.localeCompare(b.name);
