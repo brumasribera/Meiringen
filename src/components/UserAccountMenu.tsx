@@ -5,6 +5,10 @@ import { useEffect, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { Link } from "@/i18n/routing";
 import { actionButtonClass } from "@/lib/button-styles";
+import {
+  getRelaxingGradientClass,
+  getRelaxingGradientTextClass,
+} from "@/lib/relaxing-gradient";
 
 type UserAccountMenuProps = {
   user: User;
@@ -49,6 +53,8 @@ export function UserAccountMenu({
   const rootRef = useRef<HTMLDivElement>(null);
   const avatarUrl = getAvatarUrl(user);
   const initials = getInitials(user);
+  const gradientClass = getRelaxingGradientClass(user.id || user.email || initials);
+  const textClass = getRelaxingGradientTextClass(user.id || user.email || initials);
 
   useEffect(() => {
     if (!open) return;
@@ -84,7 +90,9 @@ export function UserAccountMenu({
             className="h-9 w-9 rounded-full object-cover"
           />
         ) : (
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#F4C430] text-sm font-bold text-[#111111]">
+          <span
+            className={`flex h-9 w-9 items-center justify-center rounded-full ${gradientClass} ${textClass} text-sm font-bold shadow-sm ring-1 ring-white/50`}
+          >
             {initials}
           </span>
         )}

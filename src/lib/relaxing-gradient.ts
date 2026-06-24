@@ -1,9 +1,44 @@
 const relaxingGradients = [
-  "bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.78),_transparent_30%),linear-gradient(135deg,#ffe4e6_0%,#dbeafe_42%,#ccfbf1_100%)]",
-  "bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.74),_transparent_32%),linear-gradient(135deg,#fef3c7_0%,#e0e7ff_46%,#d1fae5_100%)]",
-  "bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.76),_transparent_30%),linear-gradient(135deg,#f5f3ff_0%,#c7d2fe_46%,#a7f3d0_100%)]",
-  "bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.74),_transparent_34%),linear-gradient(135deg,#ecfeff_0%,#bae6fd_44%,#fde68a_100%)]",
-  "bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.76),_transparent_33%),linear-gradient(135deg,#fff7ed_0%,#fed7aa_42%,#e0f2fe_100%)]",
+  {
+    className:
+      "bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.78),_transparent_28%),linear-gradient(135deg,#f97316_0%,#fb7185_45%,#38bdf8_100%)]",
+    textClass: "text-white",
+  },
+  {
+    className:
+      "bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.76),_transparent_30%),linear-gradient(135deg,#1d4ed8_0%,#7c3aed_46%,#f59e0b_100%)]",
+    textClass: "text-white",
+  },
+  {
+    className:
+      "bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.80),_transparent_30%),linear-gradient(135deg,#0f766e_0%,#14b8a6_44%,#fde047_100%)]",
+    textClass: "text-slate-950",
+  },
+  {
+    className:
+      "bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.74),_transparent_32%),linear-gradient(135deg,#111827_0%,#334155_42%,#94a3b8_100%)]",
+    textClass: "text-white",
+  },
+  {
+    className:
+      "bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.76),_transparent_30%),linear-gradient(135deg,#be123c_0%,#ec4899_42%,#facc15_100%)]",
+    textClass: "text-white",
+  },
+  {
+    className:
+      "bg-[radial-gradient(circle_at_bottom_right,_rgba(255,255,255,0.74),_transparent_28%),linear-gradient(135deg,#0ea5e9_0%,#22c55e_46%,#eab308_100%)]",
+    textClass: "text-slate-950",
+  },
+  {
+    className:
+      "bg-[radial-gradient(circle_at_bottom_left,_rgba(255,255,255,0.76),_transparent_30%),linear-gradient(135deg,#8b5cf6_0%,#06b6d4_44%,#f97316_100%)]",
+    textClass: "text-white",
+  },
+  {
+    className:
+      "bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.78),_transparent_31%),linear-gradient(135deg,#14532d_0%,#16a34a_43%,#bef264_100%)]",
+    textClass: "text-white",
+  },
 ] as const;
 
 function hashString(input: string): number {
@@ -16,8 +51,16 @@ function hashString(input: string): number {
   return hash;
 }
 
-export function getRelaxingGradientClass(seed: string): string {
+export function getRelaxingGradient(seed: string) {
   if (!seed) return relaxingGradients[0];
 
   return relaxingGradients[hashString(seed) % relaxingGradients.length];
+}
+
+export function getRelaxingGradientClass(seed: string): string {
+  return getRelaxingGradient(seed).className;
+}
+
+export function getRelaxingGradientTextClass(seed: string): string {
+  return getRelaxingGradient(seed).textClass;
 }
