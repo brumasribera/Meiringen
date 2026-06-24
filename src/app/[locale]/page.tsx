@@ -25,6 +25,23 @@ export default async function HomePage({ params }: Props) {
   const festivalsAndMarkets = allUpcomingEvents
     .filter((event) => event.category === "festival" || event.category === "market")
     .slice(0, 3);
+  const sortedOrganizations = [...organizations].sort((a, b) => {
+    const aHasCover = Boolean(a.cover_image_url);
+    const bHasCover = Boolean(b.cover_image_url);
+    const aHasProfilePic = Boolean(a.image_url);
+    const bHasProfilePic = Boolean(b.image_url);
+
+    const rank = (hasCover: boolean, hasProfilePic: boolean) => {
+      if (hasCover && hasProfilePic) return 0;
+      if (hasProfilePic) return 1;
+      return 2;
+    };
+
+    const diff = rank(aHasCover, aHasProfilePic) - rank(bHasCover, bHasProfilePic);
+    if (diff !== 0) return diff;
+
+    return a.name.localeCompare(b.name);
+  });
 
   return (
     <div>
@@ -113,7 +130,7 @@ export default async function HomePage({ params }: Props) {
             </Link>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {organizations.map((org) => (
+            {sortedOrganizations.map((org) => (
               <OrganizationCard key={org.id} organization={org} />
             ))}
           </div>
