@@ -200,9 +200,6 @@ export default async function HomePage({ params }: Props) {
       <section className="mx-auto max-w-6xl px-4 pb-20">
         <h2 className="text-2xl font-bold md:text-3xl">{t("aboutTitle")}</h2>
         <p className="mt-4 max-w-2xl text-lg text-muted">{t("aboutText")}</p>
-        <Link href="/about" className="mt-4 inline-block text-primary hover:underline">
-          {t("viewAll")} →
-        </Link>
       </section>
     </div>
   );
