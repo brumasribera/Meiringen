@@ -7,10 +7,9 @@ import { createClient } from "@/lib/supabase/client";
 import {
   type Locale,
   isLocale,
-  localeCookieMaxAge,
-  localeCookieName,
   locales,
 } from "@/i18n/constants";
+import { usePathname, useRouter } from "@/i18n/routing";
 
 const languageOptions = {
   de: { flag: "/flags/de.svg" },
@@ -23,12 +22,6 @@ const languageOptions = {
   rm: { flag: "/flags/romansch-flag.png" },
   pt: { flag: "/flags/pt.svg" },
 } satisfies Record<(typeof locales)[number], { flag: string }>;
-
-function persistLocaleCookie(value: string) {
-  document.cookie = `${localeCookieName}=${encodeURIComponent(
-    value,
-  )}; path=/; max-age=${localeCookieMaxAge}; SameSite=Lax`;
-}
 
 export function LanguagePicker({ className = "" }: { className?: string }) {
   return <LanguagePickerBase className={className} />;
@@ -64,6 +57,8 @@ function LanguagePickerBase({
   onChange,
 }: PickerProps) {
   const locale = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
   const tLanguages = useTranslations("languages");
   const tCommon = useTranslations("common");
   const [selectedLocale, setSelectedLocale] = useState(locale);
@@ -108,31 +103,32 @@ function LanguagePickerBase({
     }
 
     setSaving(true);
-    persistLocaleCookie(nextLocale);
 
-    const supabase = createClient();
-    if (supabase) {
-      try {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
+    void Promise.resolve().then(async () => {
+      const supabase = createClient();
+      if (supabase) {
+        try {
+          const {
+            data: { user },
+          } = await supabase.auth.getUser();
 
-        if (user) {
-          const { error } = await supabase
-            .from("profiles")
-            .update({ preferred_locale: nextLocale })
-            .eq("id", user.id);
+          if (user) {
+            const { error } = await supabase
+              .from("profiles")
+              .update({ preferred_locale: nextLocale })
+              .eq("id", user.id);
 
-          if (error) {
-            console.error("Failed to save preferred locale:", error.message);
+            if (error) {
+              console.error("Failed to save preferred locale:", error.message);
+            }
           }
+        } catch (error) {
+          console.error("Failed to sync preferred locale:", error);
         }
-      } catch (error) {
-        console.error("Failed to sync preferred locale:", error);
       }
-    }
+    });
 
-    window.location.reload();
+    router.replace(pathname, { locale: nextLocale });
   }
 
   const currentLocale =
