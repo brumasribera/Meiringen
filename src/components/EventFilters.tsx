@@ -66,6 +66,10 @@ export function EventFilters({ organizations }: Props) {
   const primaryCategory = categories[0] ?? searchParams.get("category");
   const language = searchParams.get("language");
   const organization = searchParams.get("organization");
+  const visibleCategories = [
+    ...EVENT_CATEGORIES.filter((category) => category !== "other"),
+    "other" as const,
+  ];
 
   if (primaryCategory) subscribeParams.set("category", primaryCategory);
   if (language) subscribeParams.set("language", language);
@@ -129,7 +133,7 @@ export function EventFilters({ organizations }: Props) {
         >
           {t("events.all")}
         </button>
-        {EVENT_CATEGORIES.map((category) => {
+        {visibleCategories.map((category) => {
           const active = categories.includes(category);
           return (
             <button
@@ -142,9 +146,9 @@ export function EventFilters({ organizations }: Props) {
                   : "border-border bg-white/70 text-muted hover:border-primary/30 hover:text-foreground"
               }`}
               aria-pressed={active}
-              >
-                {t(`categories.${category}`)}
-              </button>
+            >
+              {t(`categories.${category}`)}
+            </button>
           );
         })}
       </div>
