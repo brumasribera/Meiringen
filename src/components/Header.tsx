@@ -25,6 +25,7 @@ async function loadIsAdmin(
 
 export function Header() {
   const t = useTranslations("nav");
+  const tc = useTranslations("common");
   const pathname = usePathname();
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -121,7 +122,7 @@ export function Header() {
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Menu"
+            aria-label={tc("menu")}
             aria-expanded={menuOpen}
             aria-haspopup="menu"
             className="inline-flex h-10 w-10 items-center justify-center rounded-full text-foreground transition hover:text-primary focus:outline-none focus:ring-2 focus:ring-[#F4C430]/25"

@@ -101,7 +101,7 @@ export function AlertPreferencesForm({
           }),
         });
         const data = await response.json();
-        if (!response.ok) throw new Error(data.error ?? "Save failed");
+        if (!response.ok) throw new Error(data.error ?? t("error"));
         setManageUrl(data.manageUrl ?? null);
         setEmailSent(Boolean(data.emailSent));
       }
@@ -191,7 +191,7 @@ export function AlertPreferencesForm({
       )}
 
       <fieldset>
-        <legend className="font-semibold">Email language</legend>
+        <legend className="font-semibold">{t("emailLanguage")}</legend>
         <div className="mt-3">
           <LanguagePickerField value={language} onChange={setLanguage} />
         </div>

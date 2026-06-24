@@ -109,7 +109,8 @@
     "or": "oppure",
     "noAccount": "Non hai ancora un account?",
     "hasAccount": "Hai già un account?",
-    "error": "Accesso fallito. Riprova."
+    "error": "Accesso fallito. Riprova.",
+    "notConfigured": "L'autenticazione non è ancora configurata."
   },
   "newsletter": {
     "title": "Preferenze newsletter",
@@ -155,7 +156,8 @@
     "accountLink": "Gestisci avvisi nel tuo account",
     "loginHint": "Hai già un account?",
     "loginLink": "Accedi per gestire gli avvisi",
-    "publicSubscribeLink": "Iscriviti senza account"
+    "publicSubscribeLink": "Iscriviti senza account",
+    "emailLanguage": "Lingua dell'e-mail"
   },
   "account": {
     "title": "Il tuo account",
@@ -194,7 +196,36 @@
       "events": "Eventi",
       "drafts": "Bozze",
       "sources": "Fonti"
-    }
+    },
+    "titleLabel": "Titolo *",
+    "slug": "Slug",
+    "description": "Descrizione",
+    "category": "Categoria *",
+    "organization": "Organizzazione",
+    "status": "Stato",
+    "startDate": "Data di inizio *",
+    "endDate": "Data di fine",
+    "locationName": "Luogo",
+    "address": "Indirizzo",
+    "price": "Prezzo",
+    "language": "Lingua",
+    "recurring": "Ricorrente",
+    "recurrenceDescription": "Descrizione della ricorrenza",
+    "languagesLabel": "Lingue (separate da virgole)",
+    "directorySourceUrl": "URL sorgente della directory",
+    "email": "E-mail",
+    "phone": "Telefono",
+    "locality": "Località",
+    "latitude": "Latitudine",
+    "longitude": "Longitudine",
+    "websiteUrl": "URL del sito web",
+    "logoImageUrl": "URL immagine logo",
+    "coverImageUrl": "URL immagine di copertina",
+    "coverImageCredit": "Credito immagine di copertina",
+    "coverCreditLink": "Link credito",
+    "sourceUrl": "URL sorgente",
+    "descriptionDe": "Descrizione (DE)",
+    "descriptionEn": "Descrizione (EN)"
   },
   "localities": {
     "meiringen": "Meiringen",
@@ -252,6 +283,8 @@
     "website": "Sito web",
     "share": "Condividi",
     "copied": "Link copiato",
-    "search": "Cerca"
+    "search": "Cerca",
+    "menu": "Menu",
+    "language": "Lingua"
   }
 }

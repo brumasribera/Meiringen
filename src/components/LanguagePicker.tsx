@@ -65,6 +65,7 @@ function LanguagePickerBase({
 }: PickerProps) {
   const locale = useLocale();
   const tLanguages = useTranslations("languages");
+  const tCommon = useTranslations("common");
   const [selectedLocale, setSelectedLocale] = useState(locale);
   const [saving, setSaving] = useState(false);
   const [open, setOpen] = useState(false);
@@ -148,7 +149,7 @@ function LanguagePickerBase({
         onClick={() => setOpen((value) => !value)}
         disabled={saving}
         className={buttonClass}
-        aria-label="Language"
+        aria-label={tCommon("language")}
         aria-haspopup="menu"
         aria-expanded={open}
       >

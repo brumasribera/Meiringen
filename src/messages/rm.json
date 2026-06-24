@@ -109,7 +109,8 @@
     "or": "u",
     "noAccount": "Anc nagin conto?",
     "hasAccount": "Gia in conto?",
-    "error": "S'annunziar n'è betg reussì. Emprova anc ina giada."
+    "error": "S'annunziar n'è betg reussì. Emprova anc ina giada.",
+    "notConfigured": "L'autentificaziun n'è anc betg configurada."
   },
   "newsletter": {
     "title": "Preferenzas da newsletter",
@@ -155,7 +156,8 @@
     "accountLink": "Administrar alerts en tes conto",
     "loginHint": "Gia in conto?",
     "loginLink": "S'annunziar per administrar alerts",
-    "publicSubscribeLink": "Abonnar senza conto"
+    "publicSubscribeLink": "Abonnar senza conto",
+    "emailLanguage": "Lingua da l'e-mail"
   },
   "account": {
     "title": "Tes conto",
@@ -194,7 +196,36 @@
       "events": "Occurrenzas",
       "drafts": "Bozs",
       "sources": "Funtaunas"
-    }
+    },
+    "titleLabel": "Titel *",
+    "slug": "Slug",
+    "description": "Descripziun",
+    "category": "Categoria *",
+    "organization": "Organisaziun",
+    "status": "Status",
+    "startDate": "Data da cumenzament *",
+    "endDate": "Data da fin",
+    "locationName": "Lieu",
+    "address": "Adressa",
+    "price": "Pretsch",
+    "language": "Lingua",
+    "recurring": "Recurrent",
+    "recurrenceDescription": "Descripziun da la recurrenza",
+    "languagesLabel": "Lenguas (separadas cun cumas)",
+    "directorySourceUrl": "URL da funtauna dal directori",
+    "email": "E-mail",
+    "phone": "Telefon",
+    "locality": "Localitad",
+    "latitude": "Latituda",
+    "longitude": "Longituda",
+    "websiteUrl": "URL dal website",
+    "logoImageUrl": "URL dal logo",
+    "coverImageUrl": "URL da la chascha",
+    "coverImageCredit": "Credit da la chascha",
+    "coverCreditLink": "Colliaziun dal credit",
+    "sourceUrl": "URL da funtauna",
+    "descriptionDe": "Descripziun (DE)",
+    "descriptionEn": "Descripziun (EN)"
   },
   "localities": {
     "meiringen": "Meiringen",
@@ -252,6 +283,8 @@
     "website": "Website",
     "share": "Parter",
     "copied": "Link copià",
-    "search": "Tschertgar"
+    "search": "Tschertgar",
+    "menu": "Menu",
+    "language": "Lingua"
   }
 }

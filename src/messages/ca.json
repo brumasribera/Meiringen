@@ -109,7 +109,8 @@
     "or": "o",
     "noAccount": "Encara no tens compte?",
     "hasAccount": "Ja tens un compte?",
-    "error": "No s'ha pogut iniciar la sessió. Torna-ho a provar."
+    "error": "No s'ha pogut iniciar la sessió. Torna-ho a provar.",
+    "notConfigured": "L'autenticació encara no està configurada."
   },
   "newsletter": {
     "title": "Preferències del butlletí",
@@ -155,7 +156,8 @@
     "accountLink": "Gestiona les alertes al teu compte",
     "loginHint": "Ja tens un compte?",
     "loginLink": "Inicia sessió per gestionar les alertes",
-    "publicSubscribeLink": "Subscriu-te sense compte"
+    "publicSubscribeLink": "Subscriu-te sense compte",
+    "emailLanguage": "Llengua del correu"
   },
   "account": {
     "title": "El teu compte",
@@ -194,7 +196,36 @@
       "events": "Esdeveniments",
       "drafts": "Esborranys",
       "sources": "Fonts"
-    }
+    },
+    "titleLabel": "Títol *",
+    "slug": "Slug",
+    "description": "Descripció",
+    "category": "Categoria *",
+    "organization": "Organització",
+    "status": "Estat",
+    "startDate": "Data d’inici *",
+    "endDate": "Data de fi",
+    "locationName": "Lloc",
+    "address": "Adreça",
+    "price": "Preu",
+    "language": "Llengua",
+    "recurring": "Recurrent",
+    "recurrenceDescription": "Descripció de la recurrència",
+    "languagesLabel": "Llengües (separades per comes)",
+    "directorySourceUrl": "URL d’origen del directori",
+    "email": "Correu electrònic",
+    "phone": "Telèfon",
+    "locality": "Localitat",
+    "latitude": "Latitud",
+    "longitude": "Longitud",
+    "websiteUrl": "URL del lloc web",
+    "logoImageUrl": "URL del logotip",
+    "coverImageUrl": "URL de la imatge de portada",
+    "coverImageCredit": "Crèdit de la imatge de portada",
+    "coverCreditLink": "Enllaç del crèdit",
+    "sourceUrl": "URL d’origen",
+    "descriptionDe": "Descripció (DE)",
+    "descriptionEn": "Descripció (EN)"
   },
   "localities": {
     "meiringen": "Meiringen",
@@ -252,6 +283,8 @@
     "website": "Web",
     "share": "Compartir",
     "copied": "Enllaç copiat",
-    "search": "Cercar"
+    "search": "Cercar",
+    "menu": "Menú",
+    "language": "Llengua"
   }
 }

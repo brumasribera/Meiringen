@@ -9,6 +9,7 @@ import {
   updateOrganizationAction,
 } from "@/lib/actions/admin";
 import type { Organization } from "@/lib/types";
+import { useTranslations } from "next-intl";
 import { selectControlClass, textControlClass } from "@/lib/form-styles";
 
 type Props = {
@@ -17,6 +18,7 @@ type Props = {
 };
 
 export function OrganizationForm({ organization, locale }: Props) {
+  const t = useTranslations("admin");
   const action = organization
     ? updateOrganizationAction.bind(null, organization.id)
     : createOrganizationAction;
@@ -36,14 +38,14 @@ export function OrganizationForm({ organization, locale }: Props) {
           <input name="slug" defaultValue={organization?.slug} className={inputClass} />
         </div>
       </div>
-      <div>
-        <label className="text-sm font-medium">Description (DE)</label>
-        <textarea name="description" rows={4} defaultValue={organization?.description ?? ""} className={inputClass} />
-      </div>
-      <div>
-        <label className="text-sm font-medium">Description (EN)</label>
-        <textarea name="description_en" rows={4} defaultValue={organization?.description_en ?? ""} className={inputClass} />
-      </div>
+        <div>
+          <label className="text-sm font-medium">{t("descriptionDe")}</label>
+          <textarea name="description" rows={4} defaultValue={organization?.description ?? ""} className={inputClass} />
+        </div>
+        <div>
+          <label className="text-sm font-medium">{t("descriptionEn")}</label>
+          <textarea name="description_en" rows={4} defaultValue={organization?.description_en ?? ""} className={inputClass} />
+        </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label className="text-sm font-medium">Category *</label>
@@ -64,7 +66,7 @@ export function OrganizationForm({ organization, locale }: Props) {
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="text-sm font-medium">Languages (comma-separated)</label>
+          <label className="text-sm font-medium">{t("languagesLabel")}</label>
           <input
             name="languages"
             defaultValue={organization?.languages.join(", ") ?? "de"}
@@ -73,7 +75,7 @@ export function OrganizationForm({ organization, locale }: Props) {
           />
         </div>
         <div>
-          <label className="text-sm font-medium">Directory source URL</label>
+          <label className="text-sm font-medium">{t("directorySourceUrl")}</label>
           <input
             name="directory_source_url"
             type="url"
@@ -84,20 +86,20 @@ export function OrganizationForm({ organization, locale }: Props) {
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="text-sm font-medium">Email</label>
+          <label className="text-sm font-medium">{t("email")}</label>
           <input name="email" type="email" defaultValue={organization?.email ?? ""} className={inputClass} />
         </div>
         <div>
-          <label className="text-sm font-medium">Phone</label>
+          <label className="text-sm font-medium">{t("phone")}</label>
           <input name="phone" defaultValue={organization?.phone ?? ""} className={inputClass} />
         </div>
       </div>
       <div>
-        <label className="text-sm font-medium">Address</label>
+        <label className="text-sm font-medium">{t("address")}</label>
         <input name="address" defaultValue={organization?.address ?? ""} className={inputClass} />
       </div>
       <div>
-        <label className="text-sm font-medium">Locality</label>
+        <label className="text-sm font-medium">{t("locality")}</label>
         <select name="locality" defaultValue={organization?.locality ?? "meiringen"} className={selectClass}>
           {LOCALITIES.map((locality) => (
             <option key={locality.id} value={locality.id}>
@@ -108,47 +110,47 @@ export function OrganizationForm({ organization, locale }: Props) {
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="text-sm font-medium">Latitude</label>
+          <label className="text-sm font-medium">{t("latitude")}</label>
           <input name="latitude" type="number" step="any" defaultValue={organization?.latitude ?? ""} className={inputClass} />
         </div>
         <div>
-          <label className="text-sm font-medium">Longitude</label>
+          <label className="text-sm font-medium">{t("longitude")}</label>
           <input name="longitude" type="number" step="any" defaultValue={organization?.longitude ?? ""} className={inputClass} />
         </div>
       </div>
       <div>
-        <label className="text-sm font-medium">Website URL</label>
+        <label className="text-sm font-medium">{t("websiteUrl")}</label>
         <input name="website_url" type="url" defaultValue={organization?.website_url ?? ""} className={inputClass} />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="text-sm font-medium">Logo Image URL</label>
+          <label className="text-sm font-medium">{t("logoImageUrl")}</label>
           <input name="image_url" type="url" defaultValue={organization?.image_url ?? ""} className={inputClass} />
         </div>
         <div>
-          <label className="text-sm font-medium">Cover Image URL</label>
+          <label className="text-sm font-medium">{t("coverImageUrl")}</label>
           <input name="cover_image_url" type="url" defaultValue={organization?.cover_image_url ?? ""} className={inputClass} />
         </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="text-sm font-medium">Cover Image Credit</label>
+          <label className="text-sm font-medium">{t("coverImageCredit")}</label>
           <input name="cover_image_credit" defaultValue={organization?.cover_image_credit ?? ""} className={inputClass} />
         </div>
         <div>
-          <label className="text-sm font-medium">Cover Credit Link</label>
+          <label className="text-sm font-medium">{t("coverCreditLink")}</label>
           <input name="cover_image_credit_url" type="url" defaultValue={organization?.cover_image_credit_url ?? ""} className={inputClass} />
         </div>
       </div>
       <div>
-        <label className="text-sm font-medium">Source URL</label>
+        <label className="text-sm font-medium">{t("sourceUrl")}</label>
         <input name="source_url" type="url" defaultValue={organization?.source_url ?? ""} className={inputClass} />
       </div>
       <button type="submit" className="rounded-full bg-primary px-6 py-2 text-sm font-semibold text-white">
-        Save
+        {t("save")}
       </button>
       <a href={`/${locale}/admin/organizations`} className="ml-4 text-sm text-muted hover:underline">
-        Cancel
+        {t("cancel")}
       </a>
     </form>
   );

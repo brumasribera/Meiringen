@@ -88,6 +88,7 @@ export function LoginForm({
   const [loading, setLoading] = useState(false);
 
   const displayError = error || authError;
+  const tStatus = useTranslations("auth");
 
   async function handleEmailAuth(e: React.FormEvent) {
     e.preventDefault();
@@ -95,7 +96,7 @@ export function LoginForm({
     setError("");
     const supabase = createClient();
     if (!supabase) {
-      setError("Authentication is not configured yet.");
+      setError(tStatus("notConfigured"));
       setLoading(false);
       return;
     }
@@ -134,7 +135,7 @@ export function LoginForm({
 
     const supabase = createClient();
     if (!supabase) {
-      setError("Authentication is not configured yet.");
+      setError(tStatus("notConfigured"));
       return;
     }
     await supabase.auth.signInWithOAuth({

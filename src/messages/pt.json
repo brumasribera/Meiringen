@@ -109,7 +109,8 @@
     "or": "ou",
     "noAccount": "Ainda não tem conta?",
     "hasAccount": "Já tem conta?",
-    "error": "Falha no login. Tente novamente."
+    "error": "Falha no login. Tente novamente.",
+    "notConfigured": "A autenticação ainda não está configurada."
   },
   "newsletter": {
     "title": "Preferências de newsletter",
@@ -155,7 +156,8 @@
     "accountLink": "Gerir alertas na sua conta",
     "loginHint": "Já tem conta?",
     "loginLink": "Iniciar sessão para gerir alertas",
-    "publicSubscribeLink": "Subscrever sem conta"
+    "publicSubscribeLink": "Subscrever sem conta",
+    "emailLanguage": "Idioma do e-mail"
   },
   "account": {
     "title": "A sua conta",
@@ -194,7 +196,36 @@
       "events": "Eventos",
       "drafts": "Rascunhos",
       "sources": "Fontes"
-    }
+    },
+    "titleLabel": "Título *",
+    "slug": "Slug",
+    "description": "Descrição",
+    "category": "Categoria *",
+    "organization": "Organização",
+    "status": "Estado",
+    "startDate": "Data de início *",
+    "endDate": "Data de fim",
+    "locationName": "Local",
+    "address": "Endereço",
+    "price": "Preço",
+    "language": "Idioma",
+    "recurring": "Recorrente",
+    "recurrenceDescription": "Descrição da recorrência",
+    "languagesLabel": "Idiomas (separados por vírgulas)",
+    "directorySourceUrl": "URL da fonte do diretório",
+    "email": "E-mail",
+    "phone": "Telefone",
+    "locality": "Localidade",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "websiteUrl": "URL do site",
+    "logoImageUrl": "URL da imagem do logotipo",
+    "coverImageUrl": "URL da imagem de capa",
+    "coverImageCredit": "Crédito da imagem de capa",
+    "coverCreditLink": "Link do crédito",
+    "sourceUrl": "URL da fonte",
+    "descriptionDe": "Descrição (DE)",
+    "descriptionEn": "Descrição (EN)"
   },
   "localities": {
     "meiringen": "Meiringen",
@@ -252,6 +283,8 @@
     "website": "Site",
     "share": "Partilhar",
     "copied": "Link copiado",
-    "search": "Pesquisar"
+    "search": "Pesquisar",
+    "menu": "Menu",
+    "language": "Idioma"
   }
 }

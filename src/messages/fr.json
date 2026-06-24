@@ -109,7 +109,8 @@
     "or": "ou",
     "noAccount": "Pas encore de compte ?",
     "hasAccount": "Déjà un compte ?",
-    "error": "Échec de la connexion. Veuillez réessayer."
+    "error": "Échec de la connexion. Veuillez réessayer.",
+    "notConfigured": "L'authentification n'est pas encore configurée."
   },
   "newsletter": {
     "title": "Préférences newsletter",
@@ -155,7 +156,8 @@
     "accountLink": "Gérer les alertes dans votre compte",
     "loginHint": "Vous avez déjà un compte ?",
     "loginLink": "Connectez-vous pour gérer les alertes",
-    "publicSubscribeLink": "S'abonner sans compte"
+    "publicSubscribeLink": "S'abonner sans compte",
+    "emailLanguage": "Langue de l'e-mail"
   },
   "account": {
     "title": "Votre compte",
@@ -194,7 +196,36 @@
       "events": "Événements",
       "drafts": "Brouillons",
       "sources": "Sources"
-    }
+    },
+    "titleLabel": "Titre *",
+    "slug": "Slug",
+    "description": "Description",
+    "category": "Catégorie *",
+    "organization": "Organisation",
+    "status": "Statut",
+    "startDate": "Date de début *",
+    "endDate": "Date de fin",
+    "locationName": "Lieu",
+    "address": "Adresse",
+    "price": "Prix",
+    "language": "Langue",
+    "recurring": "Récurrent",
+    "recurrenceDescription": "Description de la récurrence",
+    "languagesLabel": "Langues (séparées par des virgules)",
+    "directorySourceUrl": "URL source du répertoire",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "locality": "Localité",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "websiteUrl": "URL du site web",
+    "logoImageUrl": "URL du logo",
+    "coverImageUrl": "URL de l’image de couverture",
+    "coverImageCredit": "Crédit de l’image de couverture",
+    "coverCreditLink": "Lien du crédit",
+    "sourceUrl": "URL source",
+    "descriptionDe": "Description (DE)",
+    "descriptionEn": "Description (EN)"
   },
   "localities": {
     "meiringen": "Meiringen",
@@ -252,6 +283,8 @@
     "website": "Site web",
     "share": "Partager",
     "copied": "Lien copié",
-    "search": "Rechercher"
+    "search": "Rechercher",
+    "menu": "Menu",
+    "language": "Langue"
   }
 }

@@ -109,7 +109,8 @@
     "or": "oder",
     "noAccount": "Noch kein Konto?",
     "hasAccount": "Bereits ein Konto?",
-    "error": "Anmeldung fehlgeschlagen. Bitte versuche es erneut."
+    "error": "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+    "notConfigured": "Authentifizierung ist noch nicht eingerichtet."
   },
   "newsletter": {
     "title": "Newsletter-Einstellungen",
@@ -155,7 +156,8 @@
     "accountLink": "Alerts im Konto verwalten",
     "loginHint": "Schon ein Konto?",
     "loginLink": "Anmelden und Alerts verwalten",
-    "publicSubscribeLink": "Ohne Konto abonnieren"
+    "publicSubscribeLink": "Ohne Konto abonnieren",
+    "emailLanguage": "E-Mail-Sprache"
   },
   "account": {
     "title": "Dein Konto",
@@ -194,7 +196,36 @@
       "events": "Veranstaltungen",
       "drafts": "Entwürfe",
       "sources": "Quellen"
-    }
+    },
+    "titleLabel": "Titel *",
+    "slug": "Slug",
+    "description": "Beschreibung",
+    "category": "Kategorie *",
+    "organization": "Organisation",
+    "status": "Status",
+    "startDate": "Startdatum *",
+    "endDate": "Enddatum",
+    "locationName": "Ort",
+    "address": "Adresse",
+    "price": "Preis",
+    "language": "Sprache",
+    "recurring": "Wiederkehrend",
+    "recurrenceDescription": "Wiederholungsbeschreibung",
+    "languagesLabel": "Sprachen (durch Kommas getrennt)",
+    "directorySourceUrl": "Verzeichnis-Quell-URL",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "locality": "Ort",
+    "latitude": "Breitengrad",
+    "longitude": "Längengrad",
+    "websiteUrl": "Website-URL",
+    "logoImageUrl": "Logo-Bild-URL",
+    "coverImageUrl": "Titelbild-URL",
+    "coverImageCredit": "Titelbild-Credit",
+    "coverCreditLink": "Credit-Link",
+    "sourceUrl": "Quell-URL",
+    "descriptionDe": "Beschreibung (DE)",
+    "descriptionEn": "Beschreibung (EN)"
   },
   "localities": {
     "meiringen": "Meiringen",
@@ -252,6 +283,8 @@
     "website": "Website",
     "share": "Teilen",
     "copied": "Link kopiert",
-    "search": "Suchen"
+    "search": "Suchen",
+    "menu": "Menü",
+    "language": "Sprache"
   }
 }

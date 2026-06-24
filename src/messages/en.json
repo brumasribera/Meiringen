@@ -109,7 +109,8 @@
     "or": "or",
     "noAccount": "No account yet?",
     "hasAccount": "Already have an account?",
-    "error": "Sign in failed. Please try again."
+    "error": "Sign in failed. Please try again.",
+    "notConfigured": "Authentication is not configured yet."
   },
   "newsletter": {
     "title": "Newsletter preferences",
@@ -155,7 +156,8 @@
     "accountLink": "Manage alerts in your account",
     "loginHint": "Already have an account?",
     "loginLink": "Sign in to manage alerts",
-    "publicSubscribeLink": "Subscribe without an account"
+    "publicSubscribeLink": "Subscribe without an account",
+    "emailLanguage": "Email language"
   },
   "account": {
     "title": "Your account",
@@ -194,7 +196,36 @@
       "events": "Events",
       "drafts": "Drafts",
       "sources": "Sources"
-    }
+    },
+    "titleLabel": "Title *",
+    "slug": "Slug",
+    "description": "Description",
+    "category": "Category *",
+    "organization": "Organization",
+    "status": "Status",
+    "startDate": "Start date *",
+    "endDate": "End date",
+    "locationName": "Location name",
+    "address": "Address",
+    "price": "Price",
+    "language": "Language",
+    "recurring": "Recurring",
+    "recurrenceDescription": "Recurrence description",
+    "languagesLabel": "Languages (comma-separated)",
+    "directorySourceUrl": "Directory source URL",
+    "email": "Email",
+    "phone": "Phone",
+    "locality": "Locality",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "websiteUrl": "Website URL",
+    "logoImageUrl": "Logo Image URL",
+    "coverImageUrl": "Cover Image URL",
+    "coverImageCredit": "Cover Image Credit",
+    "coverCreditLink": "Cover Credit Link",
+    "sourceUrl": "Source URL",
+    "descriptionDe": "Description (DE)",
+    "descriptionEn": "Description (EN)"
   },
   "localities": {
     "meiringen": "Meiringen",
@@ -252,6 +283,8 @@
     "website": "Website",
     "share": "Share",
     "copied": "Link copied",
-    "search": "Search"
+    "search": "Search",
+    "menu": "Menu",
+    "language": "Language"
   }
 }

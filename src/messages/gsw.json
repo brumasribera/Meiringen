@@ -109,7 +109,8 @@
     "or": "oder",
     "noAccount": "No kei Konto?",
     "hasAccount": "Scho es Konto?",
-    "error": "Aamäldig fehlgschlage. Bitte nomol probiere."
+    "error": "Aamäldig fehlgschlage. Bitte nomol probiere.",
+    "notConfigured": "D Authentifiziereig isch no nöd iigrichtet."
   },
   "newsletter": {
     "title": "Newsletter-Istellige",
@@ -155,7 +156,8 @@
     "accountLink": "Alerts im Konto verwalte",
     "loginHint": "Schon es Konto?",
     "loginLink": "Aamälde zum Alerts verwalte",
-    "publicSubscribeLink": "Ohni Konto abonnere"
+    "publicSubscribeLink": "Ohni Konto abonnere",
+    "emailLanguage": "E-Mail-Sproch"
   },
   "account": {
     "title": "Dis Konto",
@@ -194,7 +196,36 @@
       "events": "Veranstaltige",
       "drafts": "Entwürf",
       "sources": "Quelle"
-    }
+    },
+    "titleLabel": "Titel *",
+    "slug": "Slug",
+    "description": "Beschriibig",
+    "category": "Kategori *",
+    "organization": "Organisation",
+    "status": "Status",
+    "startDate": "Startdatum *",
+    "endDate": "Enddatum",
+    "locationName": "Ort",
+    "address": "Adresse",
+    "price": "Priis",
+    "language": "Sprach",
+    "recurring": "Wiederkehrend",
+    "recurrenceDescription": "Wiederholigsbeschriibig",
+    "languagesLabel": "Spraache (mit Kommas trennt)",
+    "directorySourceUrl": "Verzeichnis-Quell-URL",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "locality": "Ort",
+    "latitude": "Breitengrad",
+    "longitude": "Längengrad",
+    "websiteUrl": "Website-URL",
+    "logoImageUrl": "Logo-Bild-URL",
+    "coverImageUrl": "Titelbild-URL",
+    "coverImageCredit": "Titelbild-Credit",
+    "coverCreditLink": "Credit-Link",
+    "sourceUrl": "Quell-URL",
+    "descriptionDe": "Beschriibig (DE)",
+    "descriptionEn": "Beschriibig (EN)"
   },
   "localities": {
     "meiringen": "Meiringe",
@@ -252,6 +283,8 @@
     "website": "Website",
     "share": "Teile",
     "copied": "Link kopiert",
-    "search": "Sueche"
+    "search": "Sueche",
+    "menu": "Menü",
+    "language": "Sprach"
   }
 }
