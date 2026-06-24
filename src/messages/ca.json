@@ -225,7 +225,21 @@
     "coverCreditLink": "Enllaç del crèdit",
     "sourceUrl": "URL d’origen",
     "descriptionDe": "Descripció (DE)",
-    "descriptionEn": "Descripció (EN)"
+    "descriptionEn": "Descripció (EN)",
+    "importSources": "Fonts d’importació",
+    "supabaseNotConfigured": "Supabase no està configurat.",
+    "name": "Nom",
+    "url": "URL",
+    "active": "Actiu",
+    "addSource": "Afegir font",
+    "type": "Tipus",
+    "yes": "Sí",
+    "no": "No",
+    "eventTitle": "Títol de l'esdeveniment",
+    "date": "Data",
+    "actions": "Accions",
+    "lastChecked": "Última comprovació",
+    "never": "Mai"
   },
   "localities": {
     "meiringen": "Meiringen",
@@ -285,6 +299,7 @@
     "copied": "Enllaç copiat",
     "search": "Cercar",
     "menu": "Menú",
-    "language": "Llengua"
+    "language": "Llengua",
+    "noResults": "Cap resultat."
   }
 }

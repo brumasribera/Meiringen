@@ -225,7 +225,21 @@
     "coverCreditLink": "Credit-Link",
     "sourceUrl": "Quell-URL",
     "descriptionDe": "Beschreibung (DE)",
-    "descriptionEn": "Beschreibung (EN)"
+    "descriptionEn": "Beschreibung (EN)",
+    "importSources": "Import-Quellen",
+    "supabaseNotConfigured": "Supabase ist nicht konfiguriert.",
+    "name": "Name",
+    "url": "URL",
+    "active": "Aktiv",
+    "addSource": "Quelle hinzufügen",
+    "type": "Typ",
+    "yes": "Ja",
+    "no": "Nein",
+    "eventTitle": "Veranstaltungstitel",
+    "date": "Datum",
+    "actions": "Aktionen",
+    "lastChecked": "Zuletzt geprüft",
+    "never": "Nie"
   },
   "localities": {
     "meiringen": "Meiringen",
@@ -285,6 +299,7 @@
     "copied": "Link kopiert",
     "search": "Suchen",
     "menu": "Menü",
-    "language": "Sprache"
+    "language": "Sprache",
+    "noResults": "Keine Ergebnisse."
   }
 }

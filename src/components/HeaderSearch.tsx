@@ -37,6 +37,7 @@ function SearchThumb({
 
 export function HeaderSearch() {
   const t = useTranslations();
+  const tc = useTranslations("common");
   const locale = useLocale();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -189,7 +190,7 @@ export function HeaderSearch() {
                       </section>
                     )}
                     {grouped.orgs.length === 0 && grouped.events.length === 0 && (
-                      <p className="text-sm text-muted">No results.</p>
+                      <p className="text-sm text-muted">{tc("noResults")}</p>
                     )}
                   </div>
                 )}

@@ -225,7 +225,21 @@
     "coverCreditLink": "Credit-Link",
     "sourceUrl": "Quell-URL",
     "descriptionDe": "Beschriibig (DE)",
-    "descriptionEn": "Beschriibig (EN)"
+    "descriptionEn": "Beschriibig (EN)",
+    "importSources": "Import-Quälle",
+    "supabaseNotConfigured": "Supabase isch nöd konfiguriert.",
+    "name": "Name",
+    "url": "URL",
+    "active": "Aktiv",
+    "addSource": "Quell hinzuefüege",
+    "type": "Typ",
+    "yes": "Ja",
+    "no": "Nei",
+    "eventTitle": "Veranstaltigs-Titel",
+    "date": "Datum",
+    "actions": "Aktione",
+    "lastChecked": "Letzt kontrolliert",
+    "never": "Niemals"
   },
   "localities": {
     "meiringen": "Meiringe",
@@ -285,6 +299,7 @@
     "copied": "Link kopiert",
     "search": "Sueche",
     "menu": "Menü",
-    "language": "Sprach"
+    "language": "Sprach",
+    "noResults": "Kei Resultat."
   }
 }

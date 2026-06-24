@@ -225,7 +225,21 @@
     "coverCreditLink": "Link do crédito",
     "sourceUrl": "URL da fonte",
     "descriptionDe": "Descrição (DE)",
-    "descriptionEn": "Descrição (EN)"
+    "descriptionEn": "Descrição (EN)",
+    "importSources": "Fontes de importação",
+    "supabaseNotConfigured": "O Supabase não está configurado.",
+    "name": "Nome",
+    "url": "URL",
+    "active": "Ativo",
+    "addSource": "Adicionar fonte",
+    "type": "Tipo",
+    "yes": "Sim",
+    "no": "Não",
+    "eventTitle": "Título do evento",
+    "date": "Data",
+    "actions": "Ações",
+    "lastChecked": "Última verificação",
+    "never": "Nunca"
   },
   "localities": {
     "meiringen": "Meiringen",
@@ -285,6 +299,7 @@
     "copied": "Link copiado",
     "search": "Pesquisar",
     "menu": "Menu",
-    "language": "Idioma"
+    "language": "Idioma",
+    "noResults": "Sem resultados."
   }
 }

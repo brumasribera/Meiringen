@@ -225,7 +225,21 @@
     "coverCreditLink": "Colliaziun dal credit",
     "sourceUrl": "URL da funtauna",
     "descriptionDe": "Descripziun (DE)",
-    "descriptionEn": "Descripziun (EN)"
+    "descriptionEn": "Descripziun (EN)",
+    "importSources": "Funtaunas d’importaziun",
+    "supabaseNotConfigured": "Supabase n’è betg configurà.",
+    "name": "Num",
+    "url": "URL",
+    "active": "Activa",
+    "addSource": "Agiuntar funtauna",
+    "type": "Tip",
+    "yes": "Gì",
+    "no": "Na",
+    "eventTitle": "Titel da l’eveniment",
+    "date": "Data",
+    "actions": "Acziuns",
+    "lastChecked": "Ultim controll",
+    "never": "Mai"
   },
   "localities": {
     "meiringen": "Meiringen",
@@ -285,6 +299,7 @@
     "copied": "Link copià",
     "search": "Tschertgar",
     "menu": "Menu",
-    "language": "Lingua"
+    "language": "Lingua",
+    "noResults": "Nagins resultats."
   }
 }
