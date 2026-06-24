@@ -3,10 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { resolveOrgImageUrl } from "@/lib/org-image";
-import {
-  getRelaxingGradientClass,
-  getRelaxingGradientTextClass,
-} from "@/lib/relaxing-gradient";
+import { getRelaxingGradient } from "@/lib/relaxing-gradient";
 
 type Props = {
   name: string;
@@ -44,8 +41,7 @@ export function OrgLogo({
   const [imageFailed, setImageFailed] = useState(false);
   const s = sizes[size];
   const fallbackLetter = getFallbackLetter(name);
-  const gradientClass = getRelaxingGradientClass(name);
-  const textClass = getRelaxingGradientTextClass(name);
+  const gradientStyle = getRelaxingGradient(name);
   const shouldUseImage = Boolean(src && !imageFailed && !REPEATED_ORG_LOGO_ASSETS.has(src));
 
   const getRadiusClass = () => {
@@ -82,10 +78,11 @@ export function OrgLogo({
 
   return (
     <div
-      className={`${s.box} flex shrink-0 items-center justify-center ${radiusClass} ${gradientClass} ${textClass} font-semibold shadow-sm ring-1 ring-white/55 ${s.text}`}
+      className={`${s.box} flex shrink-0 items-center justify-center ${radiusClass} font-semibold text-white shadow-sm ring-1 ring-white/45 ${s.text}`}
+      style={gradientStyle}
       aria-hidden
     >
-      <span className="drop-shadow-[0_1px_1px_rgba(255,255,255,0.45)]">
+      <span className="drop-shadow-[0_1px_1px_rgba(0,0,0,0.22)]">
         {fallbackLetter}
       </span>
     </div>

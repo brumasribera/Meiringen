@@ -1,45 +1,6 @@
-const relaxingGradients = [
-  {
-    className:
-      "bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.78),_transparent_28%),linear-gradient(135deg,#f97316_0%,#fb7185_45%,#38bdf8_100%)]",
-    textClass: "text-white",
-  },
-  {
-    className:
-      "bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.76),_transparent_30%),linear-gradient(135deg,#1d4ed8_0%,#7c3aed_46%,#f59e0b_100%)]",
-    textClass: "text-white",
-  },
-  {
-    className:
-      "bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.80),_transparent_30%),linear-gradient(135deg,#0f766e_0%,#14b8a6_44%,#fde047_100%)]",
-    textClass: "text-slate-950",
-  },
-  {
-    className:
-      "bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.74),_transparent_32%),linear-gradient(135deg,#111827_0%,#334155_42%,#94a3b8_100%)]",
-    textClass: "text-white",
-  },
-  {
-    className:
-      "bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.76),_transparent_30%),linear-gradient(135deg,#be123c_0%,#ec4899_42%,#facc15_100%)]",
-    textClass: "text-white",
-  },
-  {
-    className:
-      "bg-[radial-gradient(circle_at_bottom_right,_rgba(255,255,255,0.74),_transparent_28%),linear-gradient(135deg,#0ea5e9_0%,#22c55e_46%,#eab308_100%)]",
-    textClass: "text-slate-950",
-  },
-  {
-    className:
-      "bg-[radial-gradient(circle_at_bottom_left,_rgba(255,255,255,0.76),_transparent_30%),linear-gradient(135deg,#8b5cf6_0%,#06b6d4_44%,#f97316_100%)]",
-    textClass: "text-white",
-  },
-  {
-    className:
-      "bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.78),_transparent_31%),linear-gradient(135deg,#14532d_0%,#16a34a_43%,#bef264_100%)]",
-    textClass: "text-white",
-  },
-] as const;
+type GradientStyle = {
+  backgroundImage: string;
+};
 
 function hashString(input: string): number {
   let hash = 0;
@@ -51,16 +12,43 @@ function hashString(input: string): number {
   return hash;
 }
 
-export function getRelaxingGradient(seed: string) {
-  if (!seed) return relaxingGradients[0];
-
-  return relaxingGradients[hashString(seed) % relaxingGradients.length];
+function hueFromSeed(seed: string, offset: number): number {
+  return (hashString(`${seed}:${offset}`) % 360 + offset * 17) % 360;
 }
 
-export function getRelaxingGradientClass(seed: string): string {
-  return getRelaxingGradient(seed).className;
+function hsl(h: number, s: number, l: number): string {
+  return `hsl(${h} ${s}% ${l}%)`;
 }
 
-export function getRelaxingGradientTextClass(seed: string): string {
-  return getRelaxingGradient(seed).textClass;
+function buildGradient(seed: string): GradientStyle {
+  const baseHue = hueFromSeed(seed, 0);
+  const accentHue = hueFromSeed(seed, 1);
+  const depthHue = hueFromSeed(seed, 2);
+  const glowHue = hueFromSeed(seed, 3);
+
+  const saturation = 68;
+  const lowLightness = 28;
+  const midLightness = 45;
+  const highLightness = 62;
+
+  return {
+    backgroundImage: [
+      `radial-gradient(circle at top left, rgba(255,255,255,0.34), transparent 28%)`,
+      `radial-gradient(circle at bottom right, rgba(255,255,255,0.16), transparent 30%)`,
+      `linear-gradient(135deg, ${hsl(baseHue, saturation, lowLightness)} 0%, ${hsl(
+        accentHue,
+        saturation,
+        midLightness
+      )} 46%, ${hsl(glowHue, 72, highLightness)} 100%)`,
+      `linear-gradient(220deg, transparent 0%, ${hsl(depthHue, 55, 18)} 100%)`,
+    ].join(", "),
+  };
+}
+
+export function getRelaxingGradient(seed: string): GradientStyle {
+  if (!seed) {
+    return buildGradient("default");
+  }
+
+  return buildGradient(seed);
 }
