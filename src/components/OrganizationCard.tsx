@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { OrgCoverArt } from "@/components/OrgCoverArt";
 import { OrgLogo } from "@/components/OrgLogo";
-import { resolveOrgCoverImageUrl, resolveOrgDescription } from "@/lib/org-content";
+import { resolveOrgDescription } from "@/lib/org-content";
 import type { Organization } from "@/lib/types";
 
 type Props = { organization: Organization };
@@ -13,10 +13,7 @@ export function OrganizationCard({ organization }: Props) {
   const t = useTranslations();
   const locale = useLocale();
   const description = resolveOrgDescription(organization, locale);
-  const coverImageUrl = resolveOrgCoverImageUrl(
-    organization.cover_image_url,
-    organization.image_url
-  );
+  const coverImageUrl = organization.cover_image_url ?? null;
 
   return (
     <Link

@@ -81,7 +81,9 @@ export function OrgCoverArt({
   className = "",
 }: Props) {
   const theme = coverThemes[category];
-  const resolvedBackgroundClassName = backgroundClassName ?? theme.background;
+  const resolvedBackgroundClassName = coverImageUrl
+    ? backgroundClassName ?? "bg-transparent"
+    : backgroundClassName ?? theme.background;
 
   return (
     <div
