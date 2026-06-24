@@ -21,6 +21,7 @@
     "upcomingEvents": "Proximas occurrenzas",
     "exploreOrganizations": "Scuvrir organisaziuns",
     "integrationCourses": "Integraziun & curs da lingua",
+    "otherEvents": "Autras novitads",
     "festivalsMarkets": "Festa & martgads",
     "newsletterTitle": "Alerts d'occurrenzas per e-mail",
     "newsletterSubtitle": "Emna mintga emna u mintga mais — mo temas che t'interessan.",
@@ -267,6 +268,7 @@
     "nature": "Natura",
     "festival": "Festa",
     "market": "Martgà",
+    "cinema": "Cinema",
     "tradition": "Tradiziun",
     "other": "Auter"
   },

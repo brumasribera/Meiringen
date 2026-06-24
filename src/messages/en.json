@@ -21,6 +21,7 @@
     "upcomingEvents": "Upcoming events",
     "exploreOrganizations": "Explore organizations",
     "integrationCourses": "Integration & language courses",
+    "otherEvents": "Other events",
     "festivalsMarkets": "Festivals & markets",
     "newsletterTitle": "Event alerts by email",
     "newsletterSubtitle": "Weekly or monthly digests for the topics you care about.",
@@ -267,6 +268,7 @@
     "nature": "Nature",
     "festival": "Festival",
     "market": "Market",
+    "cinema": "Cinema",
     "tradition": "Tradition",
     "other": "Other"
   },

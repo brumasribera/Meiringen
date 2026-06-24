@@ -14,7 +14,16 @@ export const ORGANIZATION_CATEGORIES = [
 export type OrganizationCategory = (typeof ORGANIZATION_CATEGORIES)[number];
 
 export const EVENT_CATEGORIES = [
-  ...ORGANIZATION_CATEGORIES,
+  "culture",
+  "sport",
+  "social",
+  "education",
+  "music",
+  "nature",
+  "festival",
+  "market",
+  "cinema",
+  "other",
   "tradition",
 ] as const;
 

@@ -20,8 +20,8 @@ export default async function HomePage({ params }: Props) {
   ]);
 
   const upcomingEvents = allUpcomingEvents.slice(0, 6);
-  const integrationEvents = allUpcomingEvents
-    .filter((event) => event.category === "integration")
+  const otherEvents = allUpcomingEvents
+    .filter((event) => event.category === "other")
     .slice(0, 3);
   const festivalsAndMarkets = allUpcomingEvents
     .filter((event) => event.category === "festival" || event.category === "market")
@@ -134,16 +134,16 @@ export default async function HomePage({ params }: Props) {
         </section>
       )}
 
-      {integrationEvents.length > 0 && (
+      {otherEvents.length > 0 && (
         <section className="mx-auto max-w-6xl px-4 py-16">
           <div className="mb-8 flex items-center justify-between gap-4">
-            <h2 className="text-2xl font-bold md:text-3xl">{t("integrationCourses")}</h2>
+            <h2 className="text-2xl font-bold md:text-3xl">{t("otherEvents")}</h2>
             <Link href="/events" className="text-sm font-medium text-primary hover:underline">
               {t("viewAll")} →
             </Link>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {integrationEvents.map((event) => (
+            {otherEvents.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
           </div>

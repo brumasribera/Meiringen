@@ -318,7 +318,7 @@ function inferCategory(title: string, description: string): EventCategory {
   if (/(konzert|musik|jodel|probe|chor)/.test(text)) return "music";
   if (/(wanderung|natur|berg|sac )/.test(text)) return "nature";
   if (/(fest|festival|festlich)/.test(text)) return "festival";
-  if (/(kurs|schule|integration|sprach)/.test(text)) return "integration";
+  if (/(kurs|schule|integration|sprach)/.test(text)) return "other";
   if (/(kino|theater|kultur)/.test(text)) return "culture";
   return "other";
 }

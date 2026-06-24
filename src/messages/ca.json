@@ -21,6 +21,7 @@
     "upcomingEvents": "Propers esdeveniments",
     "exploreOrganizations": "Explorar organitzacions",
     "integrationCourses": "Cursos d'integració i llengua",
+    "otherEvents": "Altres esdeveniments",
     "festivalsMarkets": "Festes i mercats",
     "newsletterTitle": "Alertes d'esdeveniments per correu electrònic",
     "newsletterSubtitle": "Resums setmanals o mensuals dels temes que t'interessen.",
@@ -267,6 +268,7 @@
     "nature": "Natura",
     "festival": "Festival",
     "market": "Mercat",
+    "cinema": "Cinema",
     "tradition": "Tradició",
     "other": "Altres"
   },
