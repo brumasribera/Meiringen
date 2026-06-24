@@ -60,11 +60,11 @@ export function OrgLogo({
         className={`${s.box} relative shrink-0 overflow-hidden ${radiusClass} border border-border bg-white flex items-center justify-center`}
       >
         <Image
-          src={src}
+          src={src ?? ""}
           alt={`${name} logo`}
           width={s.px}
           height={s.px}
-          unoptimized={src.startsWith("http")}
+          unoptimized={(src ?? "").startsWith("http")}
           className="h-full w-full object-contain"
           onError={() => setImageFailed(true)}
         />

@@ -9,6 +9,7 @@ import type { AlertFrequency } from "@/lib/constants";
 import type { Organization } from "@/lib/types";
 import { OrganizationPicker } from "@/components/OrganizationPicker";
 import { LanguagePickerField } from "@/components/LanguagePicker";
+import { defaultLocale, isLocale, type Locale } from "@/i18n/constants";
 
 export type AlertPreferencesState = {
   email: string;
@@ -52,7 +53,13 @@ export function AlertPreferencesForm({
   const [organizationIds, setOrganizationIds] = useState<string[]>(
     initial?.organization_ids ?? []
   );
-  const [language, setLanguage] = useState<string>(initial?.languages?.[0] ?? locale);
+  const [language, setLanguage] = useState<Locale>(() => {
+    const initialLanguage = initial?.languages?.[0];
+    if (initialLanguage && isLocale(initialLanguage)) {
+      return initialLanguage;
+    }
+    return isLocale(locale) ? locale : defaultLocale;
+  });
   const [saved, setSaved] = useState(false);
   const [manageUrl, setManageUrl] = useState<string | null>(null);
   const [emailSent, setEmailSent] = useState(false);
@@ -90,14 +97,14 @@ export function AlertPreferencesForm({
         const response = await fetch("/api/alerts/subscribe", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email,
-              frequency,
-              categories,
-              languages: [language],
-              locale,
-              userId,
-              organizationIds,
+          body: JSON.stringify({
+            email,
+            frequency,
+            categories,
+            languages: [language],
+            locale,
+            userId,
+            organizationIds,
           }),
         });
         const data = await response.json();

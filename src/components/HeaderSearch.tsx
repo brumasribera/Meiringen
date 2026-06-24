@@ -28,11 +28,11 @@ function SearchThumb({
     <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-white/70 bg-muted shadow-sm">
       {shouldUseImage ? (
         <Image
-          src={src}
+          src={src ?? ""}
           alt=""
           fill
           sizes="48px"
-          unoptimized={src.startsWith("http")}
+          unoptimized={(src ?? "").startsWith("http")}
           className="h-full w-full object-cover"
           referrerPolicy="no-referrer"
         />
