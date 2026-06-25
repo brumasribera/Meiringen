@@ -88,18 +88,16 @@ export default async function OrganizationDetailPage({ params }: Props) {
             </div>
           )}
           <div className="absolute left-6 top-full -translate-y-1/2 md:left-8">
-            <div className="rounded-[1.75rem] shadow-[0_22px_44px_-24px_rgba(15,23,42,0.65)] ring-1 ring-black/5">
-              <OrgLogoImageViewer
-                name={organization.name}
-                imageUrl={organization.image_url}
-                websiteUrl={organization.website_url}
-                locality={organization.locality}
-                size="lg"
-                shape="square"
-                editable={canEditLogo}
-                uploadUrl={`/api/admin/organizations/${organization.id}/logo`}
-              />
-            </div>
+            <OrgLogoImageViewer
+              name={organization.name}
+              imageUrl={organization.image_url}
+              websiteUrl={organization.website_url}
+              locality={organization.locality}
+              size="lg"
+              shape="square"
+              editable={canEditLogo}
+              uploadUrl={`/api/admin/organizations/${organization.id}/logo`}
+            />
           </div>
         </div>
         <div className="px-6 pb-8 pt-14 md:px-8 md:pt-16">
