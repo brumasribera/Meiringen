@@ -67,10 +67,10 @@ export function EventNavigationArrows({ previous, next, prefetchHrefs = [] }: Pr
   if (!previous && !next) return null;
 
   const baseClass =
-    "pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-border/80 bg-card/95 text-foreground shadow-lg shadow-black/10 backdrop-blur-sm transition duration-200 hover:border-primary hover:text-primary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/30";
+    "pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-border/70 bg-card/95 text-foreground shadow-[0_4px_18px_rgba(15,23,42,0.08)] backdrop-blur-sm transition duration-200 hover:border-primary hover:text-primary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/30";
 
   return (
-    <div className="pointer-events-none fixed left-0 top-1/2 z-50 flex w-full -translate-y-1/2 justify-between px-2 sm:px-4 lg:px-6">
+    <div className="pointer-events-none fixed inset-y-0 left-0 right-0 z-50 flex items-center justify-between px-2 sm:px-4 lg:px-6">
       {previous ? (
         <Link
           href={previous.href}
