@@ -57,7 +57,7 @@ export function OrgLogo({
   if (shouldUseImage) {
     return (
       <div
-        className={`${s.box} relative shrink-0 overflow-hidden ${radiusClass} flex items-center justify-center bg-transparent`}
+        className={`${s.box} relative shrink-0 overflow-hidden ${radiusClass} border border-border bg-white flex items-center justify-center`}
       >
         <Image
           src={src ?? ""}
