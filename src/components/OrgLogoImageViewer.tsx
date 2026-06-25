@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { OrgLogo } from "@/components/OrgLogo";
 import { createClient } from "@/lib/supabase/client";
 import { isAdminEmail } from "@/lib/admin";
-import { resolveOrgImageUrl } from "@/lib/org-image";
 
 type Props = {
   name: string;
@@ -35,7 +34,6 @@ export function OrgLogoImageViewer({
   const [canEdit, setCanEdit] = useState(() => editable);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
-  const src = resolveOrgImageUrl(imageUrl ?? null, websiteUrl ?? null, locality);
 
   useEffect(() => {
     if (!open) return;
@@ -213,25 +211,14 @@ export function OrgLogoImageViewer({
             className="relative inline-flex max-h-[calc(100vh-44px)] max-w-[calc(100vw-44px)] items-center justify-center"
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="relative inline-flex items-center justify-center">
-              {src ? (
-                <img
-                  src={src}
-                  alt={`${name} logo`}
-                  referrerPolicy="no-referrer"
-                  className="max-h-[calc(100vh-44px)] max-w-[calc(100vw-44px)] object-scale-down shadow-[0_24px_60px_-24px_rgba(0,0,0,0.45)]"
-                />
-              ) : (
-                <OrgLogo
-                  name={name}
-                  imageUrl={imageUrl}
-                  websiteUrl={websiteUrl}
-                  locality={locality}
-                  size="lg"
-                  shape={shape}
-                />
-              )}
-            </div>
+            <OrgLogo
+              name={name}
+              imageUrl={imageUrl}
+              websiteUrl={websiteUrl}
+              locality={locality}
+              size="lg"
+              shape={shape}
+            />
           </div>
         </div>,
         portalNode)}
