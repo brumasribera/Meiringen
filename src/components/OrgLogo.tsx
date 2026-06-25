@@ -44,12 +44,12 @@ export function OrgLogo({
     if (shape === "circle") return "rounded-full";
     switch (size) {
       case "sm":
-        return "rounded-md";
-      case "md":
         return "rounded-lg";
+      case "md":
+        return "rounded-xl";
       case "lg":
       default:
-        return "rounded-xl";
+        return "rounded-2xl";
     }
   };
   const radiusClass = getRadiusClass();
