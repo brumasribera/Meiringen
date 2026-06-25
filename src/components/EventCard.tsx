@@ -40,7 +40,7 @@ export function EventCard({ event }: Props) {
       <div className="mt-4 flex flex-1 flex-col">
         {event.organization ? (
           <div className="flex min-w-0 items-center gap-2">
-            <div className="rounded-md bg-white shadow-[0_10px_22px_-16px_rgba(15,23,42,0.45)] ring-1 ring-black/5">
+            <div className="rounded-lg bg-white shadow-[0_10px_22px_-16px_rgba(15,23,42,0.45)] ring-1 ring-black/5">
               <OrgLogo
                 name={event.organization.name}
                 imageUrl={event.organization.image_url}
