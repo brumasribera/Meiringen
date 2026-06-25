@@ -32,14 +32,16 @@ export function OrganizationCard({ organization }: Props) {
           </span>
         </div>
         <div className="absolute left-5 top-full -translate-y-1/2">
-          <OrgLogo
-            name={organization.name}
-            imageUrl={organization.image_url}
-            websiteUrl={organization.website_url}
-            locality={organization.locality}
-            size="md"
-            shape="square"
-          />
+          <div className="rounded-lg bg-white shadow-[0_12px_28px_-16px_rgba(15,23,42,0.45)] ring-1 ring-black/5">
+            <OrgLogo
+              name={organization.name}
+              imageUrl={organization.image_url}
+              websiteUrl={organization.website_url}
+              locality={organization.locality}
+              size="md"
+              shape="square"
+            />
+          </div>
         </div>
       </div>
       <div className="flex flex-1 flex-col px-5 pb-5 pt-10">
