@@ -75,24 +75,26 @@ export function UserAccountMenu({
         aria-haspopup="menu"
         aria-label={labels.account}
       >
-        {avatarUrl ? (
-          <Image
-            src={avatarUrl}
-            alt=""
-            width={36}
-            height={36}
-            unoptimized={avatarUrl.startsWith("http")}
-            referrerPolicy="no-referrer"
-            className="h-9 w-9 rounded-full object-cover"
-          />
-        ) : (
-          <span
-            className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm ring-1 ring-white/45"
-            style={gradientStyle}
-          >
-            {initials}
-          </span>
-        )}
+        <span className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-border bg-white shadow-[0_10px_20px_-14px_rgba(15,23,42,0.35)]">
+          {avatarUrl ? (
+            <Image
+              src={avatarUrl}
+              alt=""
+              width={36}
+              height={36}
+              unoptimized={avatarUrl.startsWith("http")}
+              referrerPolicy="no-referrer"
+              className="h-full w-full rounded-[inherit] object-cover"
+            />
+          ) : (
+            <span
+              className="flex h-full w-full items-center justify-center rounded-[inherit] text-sm font-bold text-white"
+              style={gradientStyle}
+            >
+              {initials}
+            </span>
+          )}
+        </span>
       </button>
 
       {open && (
