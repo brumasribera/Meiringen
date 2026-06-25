@@ -62,6 +62,8 @@ export default async function OrganizationDetailPage({ params }: Props) {
             category={organization.category}
             coverImageUrl={coverImageUrl}
             className="h-52 md:h-64"
+            editable={canEditLogo}
+            uploadUrl={`/api/admin/organizations/${organization.id}/cover`}
           />
           <div className="absolute inset-x-0 top-0 flex justify-end px-6 pt-6 md:px-8">
             <span className="inline-block pill border border-white/45 bg-white/88 text-primary shadow-sm backdrop-blur-sm">
