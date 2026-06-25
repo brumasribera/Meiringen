@@ -43,23 +43,49 @@ export function EventNavigationArrows({ previous, next }: Props) {
   if (!previous && !next) return null;
 
   const baseClass =
-    "inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-lg font-semibold shadow-sm transition hover:border-primary hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/30";
+    "pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-border/80 bg-card/95 text-foreground shadow-lg shadow-black/10 backdrop-blur-sm transition duration-200 hover:border-primary hover:text-primary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/30";
 
   return (
-    <div className="absolute right-4 top-4 z-10 flex gap-2">
+    <div className="pointer-events-none fixed left-0 top-1/2 z-50 flex w-full -translate-y-1/2 justify-between px-2 sm:px-4 lg:px-6">
       {previous ? (
-        <Link href={previous.href} aria-label={previous.ariaLabel} title={previous.label} className={baseClass}>
-          <span aria-hidden>←</span>
+        <Link
+          href={previous.href}
+          aria-label={previous.ariaLabel}
+          title={previous.label}
+          className={baseClass}
+        >
+          <span aria-hidden className="flex items-center justify-center">
+            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 5l-7 7 7 7" />
+            </svg>
+          </span>
         </Link>
       ) : (
-        <span aria-hidden className={`${baseClass} opacity-40`}>←</span>
+        <span aria-hidden className={`${baseClass} opacity-35`}>
+          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 5l-7 7 7 7" />
+          </svg>
+        </span>
       )}
       {next ? (
-        <Link href={next.href} aria-label={next.ariaLabel} title={next.label} className={baseClass}>
-          <span aria-hidden>→</span>
+        <Link
+          href={next.href}
+          aria-label={next.ariaLabel}
+          title={next.label}
+          className={baseClass}
+        >
+          <span aria-hidden className="flex items-center justify-center">
+            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 5l7 7-7 7" />
+            </svg>
+          </span>
         </Link>
       ) : (
-        <span aria-hidden className={`${baseClass} opacity-40`}>→</span>
+        <span aria-hidden className={`${baseClass} opacity-35`}>
+          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 5l7 7-7 7" />
+          </svg>
+        </span>
       )}
     </div>
   );
