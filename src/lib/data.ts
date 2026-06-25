@@ -386,9 +386,13 @@ export async function getRelatedEventsForEvent(
 export async function getAdjacentEventsForEvent(event: Event): Promise<{
   previous: Event | null;
   next: Event | null;
+  previousEvents: Event[];
+  nextEvents: Event[];
 }> {
   const supabase = await createClient();
-  if (!supabase) return { previous: null, next: null };
+  if (!supabase) {
+    return { previous: null, next: null, previousEvents: [], nextEvents: [] };
+  }
 
   const { data, error } = await supabase
     .from("events")
@@ -400,15 +404,19 @@ export async function getAdjacentEventsForEvent(event: Event): Promise<{
 
   if (error) {
     console.error("getAdjacentEventsForEvent:", error.message);
-    return { previous: null, next: null };
+    return { previous: null, next: null, previousEvents: [], nextEvents: [] };
   }
 
   const events = (data ?? []) as Event[];
   const index = events.findIndex((item) => item.id === event.id);
+  const previousEvents = index > 0 ? events.slice(Math.max(0, index - 4), index) : [];
+  const nextEvents = index >= 0 ? events.slice(index + 1, index + 5) : [];
 
   return {
     previous: index > 0 ? events[index - 1] : null,
     next: index >= 0 && index < events.length - 1 ? events[index + 1] : null,
+    previousEvents,
+    nextEvents,
   };
 }
 

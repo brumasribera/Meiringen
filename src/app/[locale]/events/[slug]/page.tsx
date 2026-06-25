@@ -60,7 +60,7 @@ export default async function EventDetailPage({ params }: Props) {
     getEventInterestSummary(event.id, user?.id),
     getRelatedEventsForEvent(event, 3),
   ]);
-  const { previous, next } = await getAdjacentEventsForEvent(event);
+  const { previous, next, previousEvents, nextEvents } = await getAdjacentEventsForEvent(event);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
@@ -71,6 +71,10 @@ export default async function EventDetailPage({ params }: Props) {
       <section className="mt-4 overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm">
         <div className="relative min-h-[13rem] overflow-hidden">
           <EventNavigationArrows
+            prefetchHrefs={[
+              ...previousEvents.map((item) => `/events/${item.slug}`),
+              ...nextEvents.map((item) => `/events/${item.slug}`),
+            ]}
             previous={
               previous
                 ? {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Link } from "@/i18n/routing";
 
 type NavItem = {
@@ -12,6 +13,7 @@ type NavItem = {
 type Props = {
   previous: NavItem | null;
   next: NavItem | null;
+  prefetchHrefs?: string[];
 };
 
 function isInteractiveTarget(target: EventTarget | null) {
@@ -20,7 +22,9 @@ function isInteractiveTarget(target: EventTarget | null) {
   return Boolean(target.closest("input, textarea, select, button, a, [contenteditable='true']"));
 }
 
-export function EventNavigationArrows({ previous, next }: Props) {
+export function EventNavigationArrows({ previous, next, prefetchHrefs = [] }: Props) {
+  const router = useRouter();
+
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (isInteractiveTarget(event.target)) return;
@@ -39,6 +43,26 @@ export function EventNavigationArrows({ previous, next }: Props) {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [next, previous]);
+
+  useEffect(() => {
+    const hrefs = Array.from(new Set(prefetchHrefs)).filter(Boolean);
+    if (hrefs.length === 0) return;
+
+    const schedule =
+      window.requestIdleCallback ??
+      ((callback: IdleRequestCallback) =>
+        window.setTimeout(() => callback({ didTimeout: false, timeRemaining: () => 0 }), 300));
+
+    const cancel = window.cancelIdleCallback ?? window.clearTimeout;
+
+    const handle = schedule(() => {
+      for (const href of hrefs) {
+        router.prefetch(href);
+      }
+    });
+
+    return () => cancel(handle);
+  }, [prefetchHrefs, router]);
 
   if (!previous && !next) return null;
 
