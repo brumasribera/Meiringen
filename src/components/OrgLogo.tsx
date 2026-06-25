@@ -44,12 +44,12 @@ export function OrgLogo({
     if (shape === "circle") return "rounded-full";
     switch (size) {
       case "sm":
-        return "rounded-lg";
+        return "rounded-md";
       case "md":
-        return "rounded-xl";
+        return "rounded-lg";
       case "lg":
       default:
-        return "rounded-2xl";
+        return "rounded-xl";
     }
   };
   const radiusClass = getRadiusClass();
@@ -65,7 +65,7 @@ export function OrgLogo({
           width={s.px}
           height={s.px}
           unoptimized={(src ?? "").startsWith("http")}
-          className="h-full w-full object-contain"
+          className="h-full w-full rounded-[inherit] object-contain"
           onError={() => setImageFailed(true)}
         />
       </div>
