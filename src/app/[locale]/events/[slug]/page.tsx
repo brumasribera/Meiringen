@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import {
+  getAdjacentEventsForEvent,
   getEventBySlug,
   getEventInterestSummary,
   getRelatedEventsForEvent,
@@ -22,6 +23,7 @@ import { OrgLogoImageViewer } from "@/components/OrgLogoImageViewer";
 import { cleanEventTitle } from "@/lib/event-title";
 import { formatEventDescription } from "@/lib/event-description";
 import { getEventHeroGradient } from "@/lib/event-hero";
+import { EventNavigationArrows } from "@/components/EventNavigationArrows";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -58,6 +60,7 @@ export default async function EventDetailPage({ params }: Props) {
     getEventInterestSummary(event.id, user?.id),
     getRelatedEventsForEvent(event, 3),
   ]);
+  const { previous, next } = await getAdjacentEventsForEvent(event);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
@@ -66,9 +69,27 @@ export default async function EventDetailPage({ params }: Props) {
       </Link>
 
       <section className="mt-4 overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm">
-        <div
-          className="relative min-h-[13rem] overflow-hidden"
-        >
+        <div className="relative min-h-[13rem] overflow-hidden">
+          <EventNavigationArrows
+            previous={
+              previous
+                ? {
+                    href: `/events/${previous.slug}`,
+                    label: `Previous event: ${cleanEventTitle(previous.title, previous.organization?.name)}`,
+                    ariaLabel: "Go to previous event",
+                  }
+                : null
+            }
+            next={
+              next
+                ? {
+                    href: `/events/${next.slug}`,
+                    label: `Next event: ${cleanEventTitle(next.title, next.organization?.name)}`,
+                    ariaLabel: "Go to next event",
+                  }
+                : null
+            }
+          />
           {!coverImageUrl && (
             <div className={`absolute inset-0 ${heroTheme.className}`} aria-hidden />
           )}

@@ -383,6 +383,35 @@ export async function getRelatedEventsForEvent(
   return dedupeById(related).slice(0, limit);
 }
 
+export async function getAdjacentEventsForEvent(event: Event): Promise<{
+  previous: Event | null;
+  next: Event | null;
+}> {
+  const supabase = await createClient();
+  if (!supabase) return { previous: null, next: null };
+
+  const { data, error } = await supabase
+    .from("events")
+    .select("*, organization:organizations(*)")
+    .eq("status", "published")
+    .eq("is_recurring_template", false)
+    .order("start_date")
+    .order("id");
+
+  if (error) {
+    console.error("getAdjacentEventsForEvent:", error.message);
+    return { previous: null, next: null };
+  }
+
+  const events = (data ?? []) as Event[];
+  const index = events.findIndex((item) => item.id === event.id);
+
+  return {
+    previous: index > 0 ? events[index - 1] : null,
+    next: index >= 0 && index < events.length - 1 ? events[index + 1] : null,
+  };
+}
+
 export async function getRelatedOrganizationsForOrganization(
   organization: Organization,
   limit = 3
