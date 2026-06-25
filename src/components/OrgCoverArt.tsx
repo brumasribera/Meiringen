@@ -97,7 +97,7 @@ export function OrgCoverArt({
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
           unoptimized={coverImageUrl.startsWith("http")}
-          className="absolute inset-0 object-cover opacity-80"
+          className="absolute inset-0 object-cover opacity-100"
           referrerPolicy="no-referrer"
         />
       )}
