@@ -5,6 +5,8 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { OrgCoverArt } from "@/components/OrgCoverArt";
+import { createClient } from "@/lib/supabase/client";
+import { isAdminEmail } from "@/lib/admin";
 import type { OrganizationCategory } from "@/lib/constants";
 
 type Props = {
@@ -27,6 +29,7 @@ export function OrgCoverImageViewer({
   const [open, setOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [canEdit, setCanEdit] = useState(() => editable);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
@@ -47,6 +50,26 @@ export function OrgCoverImageViewer({
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [open]);
+
+  useEffect(() => {
+    if (editable) {
+      return;
+    }
+
+    const supabase = createClient();
+    if (!supabase) return;
+
+    let cancelled = false;
+
+    supabase.auth.getUser().then(({ data }) => {
+      if (cancelled) return;
+      setCanEdit(isAdminEmail(data.user?.email));
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [editable]);
 
   async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -101,7 +124,7 @@ export function OrgCoverImageViewer({
           />
         </button>
 
-        {editable && (
+        {canEdit && (
           <>
             <input
               ref={inputRef}
@@ -141,7 +164,7 @@ export function OrgCoverImageViewer({
         )}
       </div>
 
-      {editable && uploadError && (
+      {canEdit && uploadError && (
         <p className="mt-2 text-xs text-red-600">{uploadError}</p>
       )}
 

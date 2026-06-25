@@ -4,6 +4,8 @@ import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { OrgLogo } from "@/components/OrgLogo";
+import { createClient } from "@/lib/supabase/client";
+import { isAdminEmail } from "@/lib/admin";
 import { resolveOrgImageUrl } from "@/lib/org-image";
 
 type Props = {
@@ -30,6 +32,7 @@ export function OrgLogoImageViewer({
   const [open, setOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [canEdit, setCanEdit] = useState(() => editable);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
   const src = resolveOrgImageUrl(imageUrl ?? null, websiteUrl ?? null, locality);
@@ -51,6 +54,26 @@ export function OrgLogoImageViewer({
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [open]);
+
+  useEffect(() => {
+    if (editable) {
+      return;
+    }
+
+    const supabase = createClient();
+    if (!supabase) return;
+
+    let cancelled = false;
+
+    supabase.auth.getUser().then(({ data }) => {
+      if (cancelled) return;
+      setCanEdit(isAdminEmail(data.user?.email));
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [editable]);
 
   async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -111,7 +134,7 @@ export function OrgLogoImageViewer({
           />
         </button>
 
-        {editable && (
+        {canEdit && (
           <>
             <input
               ref={inputRef}
@@ -151,7 +174,7 @@ export function OrgLogoImageViewer({
         )}
       </div>
 
-      {editable && uploadError && (
+      {canEdit && uploadError && (
         <p className="mt-2 text-xs text-red-600">{uploadError}</p>
       )}
 
