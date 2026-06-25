@@ -18,7 +18,7 @@ export function OrganizationCard({ organization }: Props) {
   return (
     <Link
       href={`/organizations/${organization.slug}`}
-      className="card-hover group block overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-sm"
+      className="card-hover group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-sm"
     >
       <div className="relative">
         <OrgCoverArt
@@ -42,7 +42,7 @@ export function OrganizationCard({ organization }: Props) {
           />
         </div>
       </div>
-      <div className="px-5 pb-5 pt-10">
+      <div className="flex flex-1 flex-col px-5 pb-5 pt-10">
         <h3 className="text-lg font-semibold text-foreground transition group-hover:text-primary">
           {organization.name}
         </h3>
@@ -51,15 +51,7 @@ export function OrganizationCard({ organization }: Props) {
             {description}
           </p>
         )}
-        {organization.address && (
-          <p className="mt-3 text-sm text-muted">{organization.address}</p>
-        )}
-        {organization.locality && organization.locality !== "meiringen" && (
-          <p className="mt-1 text-xs text-muted">
-            {t(`localities.${organization.locality}`)}
-          </p>
-        )}
-        <span className="mt-4 inline-block text-sm font-medium text-primary">
+        <span className="mt-auto pt-4 text-sm font-medium text-primary">
           {t("organizations.viewDetails")} →
         </span>
       </div>
