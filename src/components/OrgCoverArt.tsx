@@ -1,4 +1,3 @@
-import Image from "next/image";
 import type { OrganizationCategory } from "@/lib/constants";
 
 type Props = {
@@ -91,14 +90,15 @@ export function OrgCoverArt({
       aria-hidden
     >
       {coverImageUrl && (
-        <Image
+        // Use a plain image here to avoid Next Image fill warnings on variable-height cards.
+        // The cover art is decorative, so we keep it aria-hidden and size it via CSS.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
           src={coverImageUrl}
           alt=""
-          fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          unoptimized={coverImageUrl.startsWith("http")}
-          className="absolute inset-0 object-cover opacity-100"
+          loading="lazy"
           referrerPolicy="no-referrer"
+          className="absolute inset-0 h-full w-full object-cover opacity-100"
         />
       )}
       <div

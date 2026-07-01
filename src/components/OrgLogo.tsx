@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import { isGradientOnlyOrgLogoAsset, resolveOrgImageUrl } from "@/lib/org-image";
 import { getRelaxingGradient } from "@/lib/relaxing-gradient";
@@ -59,13 +58,13 @@ export function OrgLogo({
       <div
         className={`${s.box} relative shrink-0 overflow-hidden ${radiusClass} bg-white flex items-center justify-center`}
       >
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={src ?? ""}
           alt={`${name} logo`}
-          width={s.px}
-          height={s.px}
-          unoptimized={(src ?? "").startsWith("http")}
-          className="h-full w-full rounded-[inherit] object-contain"
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          className="h-full w-full rounded-[inherit] object-contain p-1"
           onError={() => setImageFailed(true)}
         />
       </div>
