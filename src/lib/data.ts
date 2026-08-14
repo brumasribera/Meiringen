@@ -1,5 +1,6 @@
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { agendaHorizonDate } from "@/lib/agenda/constants";
+import { shouldPublishEvent } from "@/lib/curation/quality";
 import type {
   ContentLanguage,
   EventCategory,
@@ -26,6 +27,29 @@ export type EventFilters = {
   limit?: number;
 };
 
+function shouldApplyPublicEventCuration(filters: EventFilters = {}) {
+  return !filters.status || filters.status === "published";
+}
+
+function isPublicEvent(event: Event) {
+  return shouldPublishEvent({
+    title: event.title,
+    description: event.description,
+    category: event.category,
+    start_date: event.start_date,
+    end_date: event.end_date,
+    location_name: event.location_name,
+    address: event.address,
+    source_url: event.source_url,
+    organizationName: event.organization?.name,
+  }).accepted;
+}
+
+function filterPublicEvents(events: Event[], limit?: number) {
+  const filtered = events.filter(isPublicEvent);
+  return limit ? filtered.slice(0, limit) : filtered;
+}
+
 export type OrganizationFilters = {
   search?: string;
   category?: OrganizationCategory;
@@ -37,7 +61,7 @@ export type OrganizationFilters = {
 };
 
 export async function getOrganizations(
-  filters: OrganizationFilters = {}
+  filters: OrganizationFilters = {},
 ): Promise<Organization[]> {
   const supabase = await createClient();
   if (!supabase) return [];
@@ -78,7 +102,7 @@ export async function getOrganizations(
 }
 
 export async function getOrganizationBySlug(
-  slug: string
+  slug: string,
 ): Promise<Organization | null> {
   const supabase = await createClient();
   if (!supabase) return null;
@@ -94,9 +118,7 @@ export async function getOrganizationBySlug(
   return data as Organization;
 }
 
-export async function getEvents(
-  filters: EventFilters = {}
-): Promise<Event[]> {
+export async function getEvents(filters: EventFilters = {}): Promise<Event[]> {
   const supabase = await createClient();
   if (!supabase) return [];
 
@@ -143,7 +165,11 @@ export async function getEvents(
   }
 
   if (filters.limit) {
-    query = query.limit(filters.limit);
+    query = query.limit(
+      shouldApplyPublicEventCuration(filters)
+        ? filters.limit * 4
+        : filters.limit,
+    );
   }
 
   const { data, error } = await query;
@@ -152,7 +178,12 @@ export async function getEvents(
     return [];
   }
 
-  return (data ?? []) as Event[];
+  const events = (data ?? []) as Event[];
+  if (shouldApplyPublicEventCuration(filters)) {
+    return filterPublicEvents(events, filters.limit);
+  }
+
+  return events;
 }
 
 export async function getEventBySlug(slug: string): Promise<Event | null> {
@@ -166,7 +197,9 @@ export async function getEventBySlug(slug: string): Promise<Event | null> {
     .single();
 
   if (error) return null;
-  return data as Event;
+  const event = data as Event;
+  if (event.status === "published" && !isPublicEvent(event)) return null;
+  return event;
 }
 
 export async function getProfile(userId: string): Promise<Profile | null> {
@@ -182,7 +215,7 @@ export async function getProfile(userId: string): Promise<Profile | null> {
 }
 
 export async function getNewsletterPreferences(
-  userId: string
+  userId: string,
 ): Promise<NewsletterPreferences | null> {
   const supabase = await createClient();
   if (!supabase) return null;
@@ -208,7 +241,9 @@ export async function getAdminStats() {
       .from("events")
       .select("id", { count: "exact", head: true })
       .eq("status", "draft"),
-    supabase.from("scraping_sources").select("id", { count: "exact", head: true }),
+    supabase
+      .from("scraping_sources")
+      .select("id", { count: "exact", head: true }),
   ]);
 
   return {
@@ -250,7 +285,7 @@ function firstRelated<T>(value: T | T[] | null | undefined): T | null {
 
 export async function getEventInterestSummary(
   eventId: string,
-  userId?: string | null
+  userId?: string | null,
 ) {
   let interestCount = 0;
   let isInterested = false;
@@ -292,7 +327,7 @@ export async function getEventInterestSummary(
 
 export async function getOrganizationFollowSummary(
   organizationId: string,
-  userId?: string | null
+  userId?: string | null,
 ) {
   let followerCount = 0;
   let isFollowing = false;
@@ -334,7 +369,7 @@ export async function getOrganizationFollowSummary(
 
 export async function getRelatedEventsForEvent(
   event: Event,
-  limit = 3
+  limit = 3,
 ): Promise<Event[]> {
   const supabase = await createClient();
   if (!supabase) return [];
@@ -356,26 +391,34 @@ export async function getRelatedEventsForEvent(
     console.error("getRelatedEventsForEvent category:", categoryError.message);
   }
 
-  let related = ((categoryMatches ?? []) as Event[]).filter(isUpcomingEvent);
+  let related = filterPublicEvents(
+    ((categoryMatches ?? []) as Event[]).filter(isUpcomingEvent),
+  );
 
   if (related.length < limit && event.organization_id) {
-    const { data: organizationMatches, error: organizationError } = await supabase
-      .from("events")
-      .select("*, organization:organizations(*)")
-      .eq("status", "published")
-      .eq("is_recurring_template", false)
-      .eq("organization_id", event.organization_id)
-      .neq("id", event.id)
-      .gte("start_date", nowIso)
-      .order("start_date")
-      .limit(limit * 2);
+    const { data: organizationMatches, error: organizationError } =
+      await supabase
+        .from("events")
+        .select("*, organization:organizations(*)")
+        .eq("status", "published")
+        .eq("is_recurring_template", false)
+        .eq("organization_id", event.organization_id)
+        .neq("id", event.id)
+        .gte("start_date", nowIso)
+        .order("start_date")
+        .limit(limit * 2);
 
     if (organizationError) {
-      console.error("getRelatedEventsForEvent organization:", organizationError.message);
+      console.error(
+        "getRelatedEventsForEvent organization:",
+        organizationError.message,
+      );
     } else {
       related = dedupeById([
         ...related,
-        ...((organizationMatches ?? []) as Event[]).filter(isUpcomingEvent),
+        ...filterPublicEvents(
+          ((organizationMatches ?? []) as Event[]).filter(isUpcomingEvent),
+        ),
       ]);
     }
   }
@@ -407,9 +450,10 @@ export async function getAdjacentEventsForEvent(event: Event): Promise<{
     return { previous: null, next: null, previousEvents: [], nextEvents: [] };
   }
 
-  const events = (data ?? []) as Event[];
+  const events = filterPublicEvents((data ?? []) as Event[]);
   const index = events.findIndex((item) => item.id === event.id);
-  const previousEvents = index > 0 ? events.slice(Math.max(0, index - 4), index) : [];
+  const previousEvents =
+    index > 0 ? events.slice(Math.max(0, index - 4), index) : [];
   const nextEvents = index >= 0 ? events.slice(index + 1, index + 5) : [];
 
   return {
@@ -422,7 +466,7 @@ export async function getAdjacentEventsForEvent(event: Event): Promise<{
 
 export async function getRelatedOrganizationsForOrganization(
   organization: Organization,
-  limit = 3
+  limit = 3,
 ): Promise<Organization[]> {
   const supabase = await createClient();
   if (!supabase) return [];
@@ -437,7 +481,10 @@ export async function getRelatedOrganizationsForOrganization(
     .limit(limit * 2);
 
   if (categoryError) {
-    console.error("getRelatedOrganizationsForOrganization category:", categoryError.message);
+    console.error(
+      "getRelatedOrganizationsForOrganization category:",
+      categoryError.message,
+    );
   }
 
   let related = (categoryMatches ?? []) as Organization[];
@@ -453,7 +500,10 @@ export async function getRelatedOrganizationsForOrganization(
       .limit(limit * 2);
 
     if (localityError) {
-      console.error("getRelatedOrganizationsForOrganization locality:", localityError.message);
+      console.error(
+        "getRelatedOrganizationsForOrganization locality:",
+        localityError.message,
+      );
     } else {
       related = dedupeById([
         ...related,
@@ -467,7 +517,7 @@ export async function getRelatedOrganizationsForOrganization(
 
 export async function getInterestedEvents(
   userId: string,
-  limit = 6
+  limit = 6,
 ): Promise<Event[]> {
   const supabase = await createClient();
   if (!supabase) return [];
@@ -483,24 +533,26 @@ export async function getInterestedEvents(
     return [];
   }
 
-  return (
-    (data ?? []) as Array<{ event: Event | Event[] | null }>
-  )
+  return ((data ?? []) as Array<{ event: Event | Event[] | null }>)
     .map((row) => firstRelated(row.event))
     .filter(
       (event): event is Event =>
         event !== null &&
         event.status === "published" &&
         !event.is_recurring_template &&
-        isUpcomingEvent(event)
+        isUpcomingEvent(event) &&
+        isPublicEvent(event),
     )
-    .sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime())
+    .sort(
+      (a, b) =>
+        new Date(a.start_date).getTime() - new Date(b.start_date).getTime(),
+    )
     .slice(0, limit);
 }
 
 export async function getFollowedOrganizations(
   userId: string,
-  limit = 6
+  limit = 6,
 ): Promise<Organization[]> {
   const supabase = await createClient();
   if (!supabase) return [];
@@ -524,7 +576,7 @@ export async function getFollowedOrganizations(
     .map((row) => firstRelated(row.organization))
     .filter(
       (organization): organization is Organization =>
-        organization !== null && organization.status === "published"
+        organization !== null && organization.status === "published",
     )
     .slice(0, limit);
 }

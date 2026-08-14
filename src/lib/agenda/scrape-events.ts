@@ -25,6 +25,7 @@ type ScrapeResult = {
   skipped: number;
   rejected: number;
   deleted: number;
+  drafted: number;
   sources: number;
   pages: number;
   horizon: string;
@@ -337,7 +338,7 @@ type CleanupEventRow = {
   source_url: string | null;
 };
 
-async function cleanupSenselessScrapedEvents(supabase: SupabaseClient) {
+async function cleanupSenselessEvents(supabase: SupabaseClient) {
   const now = new Date();
   const horizon = agendaHorizonDate(now);
   const { data, error } = await supabase
@@ -345,21 +346,25 @@ async function cleanupSenselessScrapedEvents(supabase: SupabaseClient) {
     .select(
       "id, title, description, category, start_date, end_date, location_name, address, source_url",
     )
-    .not("source_url", "is", null)
+    .eq("status", "published")
     .eq("is_recurring_template", false)
     .gte("start_date", now.toISOString())
     .lte("start_date", horizon.toISOString())
     .limit(1000);
 
   if (error) {
-    console.error("cleanupSenselessScrapedEvents lookup:", error.message);
-    return { reviewed: 0, deleted: 0 };
+    console.error("cleanupSenselessEvents lookup:", error.message);
+    return { reviewed: 0, deleted: 0, drafted: 0 };
   }
 
   const deleteIds: string[] = [];
+  const draftIds: string[] = [];
   for (const row of (data ?? []) as CleanupEventRow[]) {
     const decision = shouldDeleteScrapedEvent(row);
-    if (!decision.accepted) deleteIds.push(row.id);
+    if (!decision.accepted) {
+      if (row.source_url) deleteIds.push(row.id);
+      else draftIds.push(row.id);
+    }
   }
 
   for (let index = 0; index < deleteIds.length; index += 100) {
@@ -369,15 +374,32 @@ async function cleanupSenselessScrapedEvents(supabase: SupabaseClient) {
       .delete()
       .in("id", ids);
     if (deleteError) {
-      console.error(
-        "cleanupSenselessScrapedEvents delete:",
-        deleteError.message,
-      );
-      return { reviewed: data?.length ?? 0, deleted: index };
+      console.error("cleanupSenselessEvents delete:", deleteError.message);
+      return { reviewed: data?.length ?? 0, deleted: index, drafted: 0 };
     }
   }
 
-  return { reviewed: data?.length ?? 0, deleted: deleteIds.length };
+  for (let index = 0; index < draftIds.length; index += 100) {
+    const ids = draftIds.slice(index, index + 100);
+    const { error: draftError } = await supabase
+      .from("events")
+      .update({ status: "draft" })
+      .in("id", ids);
+    if (draftError) {
+      console.error("cleanupSenselessEvents draft:", draftError.message);
+      return {
+        reviewed: data?.length ?? 0,
+        deleted: deleteIds.length,
+        drafted: index,
+      };
+    }
+  }
+
+  return {
+    reviewed: data?.length ?? 0,
+    deleted: deleteIds.length,
+    drafted: draftIds.length,
+  };
 }
 
 export async function scrapeActivitySources(
@@ -470,7 +492,7 @@ export async function scrapeActivitySources(
   }
 
   await Promise.all(Array.from({ length: workerCount }, () => worker()));
-  const cleanup = await cleanupSenselessScrapedEvents(supabase);
+  const cleanup = await cleanupSenselessEvents(supabase);
 
   return {
     imported,
@@ -478,6 +500,7 @@ export async function scrapeActivitySources(
     skipped,
     rejected,
     deleted: cleanup.deleted,
+    drafted: cleanup.drafted,
     sources: allSources.length,
     pages: pagesChecked,
     horizon: horizon.toISOString(),

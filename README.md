@@ -46,14 +46,7 @@ Open [http://localhost:3000/organizations](http://localhost:3000/organizations)
 
 ### 3. Run database migrations
 
-In the Supabase SQL Editor, run these files in order:
-
-1. `supabase/migrations/0001_schema.sql`
-2. `supabase/migrations/0002_rls.sql`
-3. `supabase/migrations/0003_seed.sql` (optional placeholder data)
-4. `supabase/migrations/0004_meiringen_organizations.sql` (**real Vereine** — run this for production)
-5. `supabase/migrations/0005_organization_localities.sql` (location filter + Haslital villages)
-6. `supabase/migrations/0006_org_descriptions_logos.sql` (English descriptions + logo fixes)
+In the Supabase SQL Editor, run the files in `supabase/migrations/` in filename order. `0003_seed.sql` is optional placeholder data; production should rely on the real organization and source-backed event migrations that follow it.
 
 ### 4. Configure Google Sign-In
 
@@ -228,8 +221,10 @@ supabase/migrations/  # SQL schema, RLS, seed data
 The daily cron (`/api/cron/scrape`, 06:00 UTC) syncs the public agenda:
 
 1. **Scrape** — fetches active sources plus organization websites, parses JSON-LD/dated event links, and publishes activities within the next **365 days**.
-2. **Curate** — rejects generic navigation labels, invalid dates, thin broad-source rows, and broad tourist listings without Meiringen/Haslital regional signals.
-3. **Clean up** — deletes only clearly bad future rows that were imported from a `source_url`; admin-created rows are left alone.
+2. **Curate** — rejects generic navigation labels, date-only titles, municipal notice rows, invalid dates, thin broad-source rows, and broad tourist listings without Meiringen/Haslital regional signals.
+3. **Clean up** — source-backed junk rows are deleted; legacy no-source future rows are drafted so they disappear from the public agenda without destroying manual history.
+
+Public agenda reads also require events to be source-backed and event-like. This keeps old or accidental database rows from leaking onto the site before the next cleanup job runs.
 
 The daily organization cron (`/api/cron/org-research`, 06:30 UTC) refreshes Meiringen and Haslital-Brienz organization directories. New directory discoveries stay as drafts; missing source-backed organizations are only archived after the configured grace period.
 

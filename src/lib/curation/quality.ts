@@ -43,6 +43,12 @@ const GENERIC_EVENT_TITLE_PATTERN =
 const JUNK_EVENT_TITLE_PATTERN =
   /^(pdf|download|seite|page)\b|cookie|datenschutz|geschlossen|impressum|newsletter|login|warenkorb|navigation/i;
 
+const DATE_ONLY_EVENT_TITLE_PATTERN =
+  /^(?:(?:montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag|monday|tuesday|wednesday|thursday|friday|saturday|sunday),?\s+)?(?:\d{1,2}\.\s*(?:[-–]\s*\d{1,2}\.\s*)?)?(?:januar|februar|märz|maerz|april|mai|juni|juli|august|september|oktober|november|dezember|january|february|march|may|june|july|october|december)\s+20\d{2}$|^\d{1,2}[./-]\d{1,2}[./-]20\d{2}$|^\d{1,2}\.\s*[-–]\s*\d{1,2}\.\s*(?:januar|februar|märz|maerz|april|mai|juni|juli|august|september|oktober|november|dezember)\s+20\d{2}$/i;
+
+const NOTICE_OR_ADMIN_TITLE_PATTERN =
+  /\b(a8|bauarbeiten|baugrund|baustelle|einschr[aä]nkungen?|fahrplan[aä]nderung|gemeindereglement|obligatorisches\s+programm|reglement|schiesspflicht|sperrung|strassensperrung|tourismusf[oö]rderungsabgabe|verkehr|verordnung)\b/i;
+
 const BUSINESS_OR_TRAVEL_ONLY_PATTERN =
   /\b(agb|apartment|ferienwohnung|hotel|jobs?|karriere|package|pauschale|privacy|restaurant|reservation|shop|ticketshop|unterkunft|webcam)\b/i;
 
@@ -109,6 +115,15 @@ function normalizedLength(value: string | null | undefined) {
   return value?.replace(/\s+/g, " ").trim().length ?? 0;
 }
 
+function hasEventDetails(input: EventQualityInput) {
+  return (
+    normalizedLength(input.description) > 0 ||
+    normalizedLength(input.location_name) > 0 ||
+    normalizedLength(input.address) > 0 ||
+    normalizedLength(input.organizationName) > 0
+  );
+}
+
 function hasLetters(value: string) {
   return /[A-Za-zÀ-ÿ]/.test(value);
 }
@@ -136,6 +151,14 @@ export function evaluateEventCandidate(
     JUNK_EVENT_TITLE_PATTERN.test(title)
   ) {
     return { accepted: false, reason: "generic navigation title" };
+  }
+
+  if (DATE_ONLY_EVENT_TITLE_PATTERN.test(title)) {
+    return { accepted: false, reason: "date-only title" };
+  }
+
+  if (NOTICE_OR_ADMIN_TITLE_PATTERN.test(title)) {
+    return { accepted: false, reason: "administrative notice, not an event" };
   }
 
   if (
@@ -183,10 +206,28 @@ export function evaluateEventCandidate(
   return { accepted: true, reason: "accepted" };
 }
 
+export function shouldPublishEvent(input: EventQualityInput): QualityDecision {
+  const decision = evaluateEventCandidate(input);
+  if (!decision.accepted) return decision;
+
+  if (!input.source_url || !isValidHttpUrl(input.source_url)) {
+    return { accepted: false, reason: "missing source url" };
+  }
+
+  if (
+    normalizeEventCategory(input.category) === "other" &&
+    !hasEventDetails(input)
+  ) {
+    return { accepted: false, reason: "thin uncategorized event" };
+  }
+
+  return decision;
+}
+
 export function shouldDeleteScrapedEvent(
   input: EventQualityInput,
 ): QualityDecision {
-  const decision = evaluateEventCandidate(input);
+  const decision = shouldPublishEvent(input);
   if (!decision.accepted) return decision;
 
   if (
