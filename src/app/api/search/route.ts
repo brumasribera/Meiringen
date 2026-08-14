@@ -54,13 +54,36 @@ function matchesSearchQuery(
 }
 
 function dedupeResults(results: SearchResult[]) {
-  const seen = new Set<string>();
-  return results.filter((result) => {
-    const key = `${result.type}|${result.href}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+  const seen = new Map<string, number>();
+  const deduped: SearchResult[] = [];
+
+  for (const result of results) {
+    const normalizedTitle = result.title
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/&amp;/g, "and")
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+    const key =
+      result.type === "event"
+        ? `${result.type}|${normalizedTitle}`
+        : `${result.type}|${result.href}`;
+    const existingIndex = seen.get(key);
+
+    if (existingIndex === undefined) {
+      seen.set(key, deduped.length);
+      deduped.push(result);
+      continue;
+    }
+
+    const existing = deduped[existingIndex];
+    if (!existing.image_url && result.image_url) {
+      deduped[existingIndex] = result;
+    }
+  }
+
+  return deduped;
 }
 
 export async function GET(request: Request) {

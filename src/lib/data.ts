@@ -58,22 +58,62 @@ function compareEventsByDate(left: Event, right: Event) {
   return dateDelta || left.title.localeCompare(right.title);
 }
 
-function eventIdentityKey(event: Event) {
-  if (event.source_url) {
-    return `${event.source_url}|${event.title}|${event.start_date}`;
-  }
+function normalizeEventIdentityText(value: string | null | undefined) {
+  return (value ?? "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/&amp;/g, "and")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
 
-  return `${event.title}|${event.start_date}|${event.location_name ?? ""}`;
+function canonicalSourceUrl(value: string | null | undefined) {
+  if (!value) return null;
+  try {
+    const url = new URL(value);
+    url.hash = "";
+    url.search = "";
+    return url.toString().replace(/\/$/, "");
+  } catch {
+    return value.trim().replace(/\/$/, "");
+  }
+}
+
+function eventStartIdentity(event: Event) {
+  const timestamp = new Date(event.start_date).getTime();
+  return Number.isFinite(timestamp)
+    ? new Date(timestamp).toISOString()
+    : event.start_date;
+}
+
+function eventIdentityKeys(event: Event) {
+  const start = eventStartIdentity(event);
+  const title = normalizeEventIdentityText(event.title);
+  const location = normalizeEventIdentityText(
+    event.location_name ?? event.address,
+  );
+  const source = canonicalSourceUrl(event.source_url);
+
+  return [
+    source ? `source|${source}|${start}` : null,
+    location ? `title-location|${title}|${start}|${location}` : null,
+    `title|${title}|${start}`,
+  ].filter((key): key is string => Boolean(key));
 }
 
 function mergeEvents(primaryEvents: Event[], fallbackEvents: Event[]) {
-  const seen = new Set<string>();
+  const seen = new Map<string, number>();
   const merged: Event[] = [];
 
   for (const event of [...primaryEvents, ...fallbackEvents]) {
-    const key = eventIdentityKey(event);
-    if (seen.has(key)) continue;
-    seen.add(key);
+    const keys = eventIdentityKeys(event);
+    if (keys.some((key) => seen.has(key))) continue;
+
+    const index = merged.length;
+    for (const key of keys) {
+      seen.set(key, index);
+    }
     merged.push(event);
   }
 
@@ -289,7 +329,7 @@ export async function getEvents(filters: EventFilters = {}): Promise<Event[]> {
   const events = (data ?? []) as Event[];
   if (shouldApplyPublicEventCuration(filters)) {
     const publicEvents = filterPublicEvents(events);
-    const merged = mergeEvents(publicEvents, staticEvents);
+    const merged = mergeEvents(staticEvents, publicEvents);
     return filters.limit ? merged.slice(0, filters.limit) : merged;
   }
 
@@ -513,10 +553,10 @@ export async function getRelatedEventsForEvent(
     ((categoryMatches ?? []) as Event[]).filter(isUpcomingEvent),
   );
   related = mergeEvents(
-    related,
     getFilteredStaticEvents({
       category: event.category,
     }).filter((item) => item.id !== event.id),
+    related,
   );
 
   if (related.length < limit && event.organization_id) {
@@ -589,8 +629,8 @@ export async function getAdjacentEventsForEvent(event: Event): Promise<{
   }
 
   const events = mergeEvents(
-    filterPublicEvents((data ?? []) as Event[]),
     getFilteredStaticEvents(),
+    filterPublicEvents((data ?? []) as Event[]),
   );
   const index = events.findIndex((item) => item.id === event.id);
   const previousEvents =
