@@ -54,25 +54,6 @@ export function EventHeroImageViewer({
       >
         <span className="sr-only">Open image</span>
       </button>
-      <span
-        className="pointer-events-none absolute right-5 top-5 z-30 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/35 text-white shadow-sm backdrop-blur-md"
-        aria-hidden="true"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          className="h-4 w-4"
-          aria-hidden="true"
-        >
-          <path
-            d="M8 3H4a1 1 0 0 0-1 1v4M16 3h4a1 1 0 0 1 1 1v4M8 21H4a1 1 0 0 1-1-1v-4M16 21h4a1 1 0 0 0 1-1v-4"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </span>
 
       {open &&
         portalNode &&
