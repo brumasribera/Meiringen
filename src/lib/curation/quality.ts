@@ -41,7 +41,9 @@ const GENERIC_EVENT_TITLE_PATTERN =
   /^(agenda|aktuell(?:es)?|anl[aä]sse?|calendar|details?|events?|home|kalender|kontakt|mehr|news|programm|start(?:seite)?|termine|veranstaltungen?|weiter(?:lesen)?|zum ereignis)$/i;
 
 const JUNK_EVENT_TITLE_PATTERN =
-  /^(pdf|download|seite|page)\b|cookie|datenschutz|geschlossen|impressum|newsletter|login|warenkorb|navigation/i;
+  /^(pdf|download|seite|page)\b|cookie|datenschutz|geschlossen|impressum|newsletter|login|warenkorb|navigation|(?:\bpdf\s*\/|\bwebdesign\b|&middot;|·)/i;
+
+const MAX_EVENT_TITLE_LENGTH = 160;
 
 const DATE_ONLY_EVENT_TITLE_PATTERN =
   /^(?:(?:montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag|monday|tuesday|wednesday|thursday|friday|saturday|sunday),?\s+)?(?:\d{1,2}\.\s*(?:[-–]\s*\d{1,2}\.\s*)?)?(?:januar|februar|märz|maerz|april|mai|juni|juli|august|september|oktober|november|dezember|january|february|march|may|june|july|october|december)\s+20\d{2}$|^\d{1,2}[./-]\d{1,2}[./-]20\d{2}$|^\d{1,2}\.\s*[-–]\s*\d{1,2}\.\s*(?:januar|februar|märz|maerz|april|mai|juni|juli|august|september|oktober|november|dezember)\s+20\d{2}$/i;
@@ -144,6 +146,10 @@ export function evaluateEventCandidate(
   const title = input.title?.replace(/\s+/g, " ").trim() ?? "";
   if (title.length < 4 || !hasLetters(title)) {
     return { accepted: false, reason: "missing useful title" };
+  }
+
+  if (title.length > MAX_EVENT_TITLE_LENGTH) {
+    return { accepted: false, reason: "overlong aggregated title" };
   }
 
   if (

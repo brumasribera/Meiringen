@@ -221,7 +221,7 @@ supabase/migrations/  # SQL schema, RLS, seed data
 The daily cron (`/api/cron/scrape`, 06:00 UTC) syncs the public agenda:
 
 1. **Scrape** — fetches active sources plus organization websites, parses JSON-LD/dated event links, and publishes activities within the next **365 days**.
-2. **Curate** — rejects generic navigation labels, date-only titles, municipal notice rows, invalid dates, thin broad-source rows, and broad tourist listings without Meiringen/Haslital regional signals.
+2. **Curate** — rejects generic navigation labels, date-only titles, overlong PDF/link-list titles, municipal notice rows, invalid dates, thin broad-source rows, and broad tourist listings without Meiringen/Haslital regional signals.
 3. **Clean up** — source-backed junk rows are deleted; legacy no-source future rows are drafted so they disappear from the public agenda without destroying manual history.
 
 Public agenda reads also require events to be source-backed and event-like. This keeps old or accidental database rows from leaking onto the site before the next cleanup job runs.

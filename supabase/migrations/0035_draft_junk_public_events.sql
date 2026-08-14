@@ -8,9 +8,11 @@ where status = 'published'
   and start_date >= now()
   and (
     source_url is null
+    or length(title) > 160
     or title ~* '^(montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag|monday|tuesday|wednesday|thursday|friday|saturday|sunday),?[[:space:]]+[0-9]{1,2}\.[[:space:]]+[[:alpha:]]+[[:space:]]+20[0-9]{2}$'
     or title ~* '^[0-9]{1,2}\.[[:space:]]*[-–][[:space:]]*[0-9]{1,2}\.[[:space:]]*[[:alpha:]]+[[:space:]]+20[0-9]{2}$'
     or title ~* '^[0-9]{1,2}[./-][0-9]{1,2}[./-]20[0-9]{2}$'
+    or title ~* '(pdf[[:space:]]*/|webdesign|&middot;|·)'
     or title ~* '(a8|bauarbeiten|baugrund|baustelle|einschr.nkungen?|fahrplan.nderung|gemeindereglement|obligatorisches[[:space:]]+programm|reglement|schiesspflicht|schießpflicht|sperrung|strassensperrung|tourismusf.rderungsabgabe|verkehr|verordnung)'
     or (
       category = 'other'
