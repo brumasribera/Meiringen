@@ -17,8 +17,8 @@ export function matchEventsForUser(
     }
     if (
       prefs.organization_ids.length > 0 &&
-      event.organization_id &&
-      !prefs.organization_ids.includes(event.organization_id)
+      (!event.organization_id ||
+        !prefs.organization_ids.includes(event.organization_id))
     ) {
       return false;
     }

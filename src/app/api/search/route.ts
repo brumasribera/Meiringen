@@ -3,6 +3,11 @@ import { agendaHorizonDate } from "@/lib/agenda/constants";
 import { createServiceClient } from "@/lib/supabase/server";
 import { shouldPublishEvent } from "@/lib/curation/quality";
 import { getStaticCuratedEvents } from "@/lib/curation/static-events";
+import {
+  eventCompletenessScore,
+  eventIdentityKeys,
+  normalizeEventIdentityText,
+} from "@/lib/event-dedupe";
 import { resolveOrgCoverImageUrl, resolveOrgImageUrl } from "@/lib/org-content";
 import type { SearchResult } from "@/lib/types";
 
@@ -20,6 +25,7 @@ type SearchEventRow = {
   location_name: string | null;
   address: string | null;
   source_url: string | null;
+  image_url?: string | null;
   organization:
     | {
         id: string;
@@ -58,28 +64,59 @@ function dedupeResults(results: SearchResult[]) {
   const deduped: SearchResult[] = [];
 
   for (const result of results) {
-    const normalizedTitle = result.title
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/&amp;/g, "and")
-      .replace(/[^a-z0-9]+/g, " ")
-      .trim();
-    const key =
-      result.type === "event"
-        ? `${result.type}|${normalizedTitle}`
-        : `${result.type}|${result.href}`;
-    const existingIndex = seen.get(key);
+    const keys =
+      result.type === "event" && result.start_date
+        ? eventIdentityKeys({
+            title: result.title,
+            start_date: result.start_date,
+            location_name: result.location_name,
+            source_url: result.source_url,
+            image_url: result.image_url,
+          }).map((key) => `${result.type}|${key}`)
+        : [
+            result.type === "event"
+              ? `${result.type}|${normalizeEventIdentityText(result.title)}`
+              : `${result.type}|${result.href}`,
+          ];
+
+    let existingIndex: number | undefined;
+    for (const key of keys) {
+      const index = seen.get(key);
+      if (index !== undefined) {
+        existingIndex = index;
+        break;
+      }
+    }
 
     if (existingIndex === undefined) {
-      seen.set(key, deduped.length);
+      for (const key of keys) {
+        seen.set(key, deduped.length);
+      }
       deduped.push(result);
       continue;
     }
 
     const existing = deduped[existingIndex];
-    if (!existing.image_url && result.image_url) {
+    if (
+      eventCompletenessScore({
+        title: result.title,
+        start_date: result.start_date ?? "",
+        location_name: result.location_name,
+        source_url: result.source_url,
+        image_url: result.image_url,
+      }) >
+      eventCompletenessScore({
+        title: existing.title,
+        start_date: existing.start_date ?? "",
+        location_name: existing.location_name,
+        source_url: existing.source_url,
+        image_url: existing.image_url,
+      })
+    ) {
       deduped[existingIndex] = result;
+      for (const key of keys) {
+        seen.set(key, existingIndex);
+      }
     }
   }
 
@@ -118,7 +155,7 @@ export async function GET(request: Request) {
         ? supabase
             .from("events")
             .select(
-              "id, slug, title, description, category, start_date, end_date, location_name, address, source_url, organization:organizations(id, slug, name, category, website_url, image_url, cover_image_url, locality)",
+              "*, organization:organizations(id, slug, name, category, website_url, image_url, cover_image_url, locality)",
             )
             .eq("status", "published")
             .eq("is_recurring_template", false)
@@ -130,7 +167,7 @@ export async function GET(request: Request) {
         : supabase
             .from("events")
             .select(
-              "id, slug, title, description, category, start_date, end_date, location_name, address, source_url, organization:organizations(id, slug, name, category, website_url, image_url, cover_image_url, locality)",
+              "*, organization:organizations(id, slug, name, category, website_url, image_url, cover_image_url, locality)",
             )
             .eq("status", "published")
             .eq("is_recurring_template", false)
@@ -183,18 +220,23 @@ export async function GET(request: Request) {
         title: event.title,
         subtitle: organization?.name ?? null,
         href: `/events/${event.slug}`,
-        image_url: organization
-          ? (resolveOrgCoverImageUrl(
-              organization.cover_image_url,
-              organization.image_url,
-            ) ??
-            resolveOrgImageUrl(
-              organization.image_url,
-              organization.website_url,
-              organization.locality,
-            ))
-          : null,
+        image_url:
+          event.image_url ??
+          (organization
+            ? (resolveOrgCoverImageUrl(
+                organization.cover_image_url,
+                organization.image_url,
+              ) ??
+              resolveOrgImageUrl(
+                organization.image_url,
+                organization.website_url,
+                organization.locality,
+              ))
+            : null),
         category: event.category,
+        start_date: event.start_date,
+        location_name: event.location_name,
+        source_url: event.source_url,
       });
     }
   } catch (error) {
@@ -244,6 +286,9 @@ export async function GET(request: Request) {
       href: `/events/${event.slug}`,
       image_url: event.image_url,
       category: event.category,
+      start_date: event.start_date,
+      location_name: event.location_name,
+      source_url: event.source_url,
     });
   }
 

@@ -1,5 +1,7 @@
 import type { AlertFrequency } from "@/lib/constants";
 import type { Event } from "@/lib/types";
+import { cleanEventTitle } from "@/lib/event-title";
+import { normalizeImageUrl } from "@/lib/event-images";
 import { formatDateRange } from "@/lib/utils";
 import { buildManageUrl, getSiteUrl } from "@/lib/alerts/newsletter-utils";
 
@@ -232,6 +234,71 @@ function categoryColor(category: string): string {
   return colors[category] ?? colors.other;
 }
 
+function safeEmailImageUrl(
+  imageUrl: string | null | undefined,
+  siteUrl: string,
+) {
+  return normalizeImageUrl(imageUrl, siteUrl)?.replace(/'/g, "%27") ?? null;
+}
+
+function buildEventCardHtml(event: Event, locale: string, siteUrl: string) {
+  const when = formatDateRange(event.start_date, event.end_date, locale);
+  const title = cleanEventTitle(event.title, event.organization?.name);
+  const location = event.location_name
+    ? ` · ${escapeHtml(event.location_name)}`
+    : "";
+  const price =
+    event.price && event.price.trim()
+      ? `<div style="margin-top:10px;font-size:13px;line-height:1.4;font-weight:700;color:#ffffff;">${escapeHtml(event.price)}</div>`
+      : "";
+  const badgeColor = categoryColor(event.category);
+  const imageUrl = safeEmailImageUrl(event.image_url, siteUrl);
+  const eventUrl = `${siteUrl}/events/${escapeHtml(event.slug)}`;
+
+  if (imageUrl) {
+    const escapedImageUrl = escapeHtml(imageUrl);
+
+    return `
+      <a href="${eventUrl}" style="display:block;text-decoration:none;margin-bottom:12px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid rgba(17,17,17,0.12);border-radius:18px;background:#111111;overflow:hidden;box-shadow:0 12px 28px rgba(17,17,17,0.12);">
+          <tr>
+            <td background="${escapedImageUrl}" height="198" valign="bottom" style="height:198px;padding:0;background-color:#111111;background-image:linear-gradient(180deg,rgba(15,23,42,0.18) 0%,rgba(15,23,42,0.58) 48%,rgba(15,23,42,0.88) 100%),url('${escapedImageUrl}');background-position:center;background-size:cover;background-repeat:no-repeat;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td valign="bottom" style="height:198px;padding:20px;">
+                    <span style="display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.34);background:rgba(255,255,255,0.18);color:#ffffff;font-size:11px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;">${escapeHtml(event.category)}</span>
+                    <div style="margin-top:12px;font-size:20px;line-height:1.25;font-weight:800;color:#ffffff;">${escapeHtml(title)}</div>
+                    <div style="margin-top:8px;font-size:14px;line-height:1.5;color:rgba(255,255,255,0.86);">${escapeHtml(when)}${location}</div>
+                    ${price}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </a>`;
+  }
+
+  const plainPrice =
+    event.price && event.price.trim()
+      ? `<div style="margin-top:10px;font-size:13px;line-height:1.4;font-weight:700;color:#B8860B;">${escapeHtml(event.price)}</div>`
+      : "";
+
+  return `
+    <a href="${eventUrl}" style="display:block;text-decoration:none;margin-bottom:12px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #ece7df;border-radius:18px;background:#ffffff;overflow:hidden;">
+        <tr>
+          <td style="padding:18px 20px;">
+            <span style="display:inline-block;padding:6px 10px;border-radius:999px;background:${badgeColor};color:#ffffff;font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">${escapeHtml(event.category)}</span>
+            <div style="margin-top:12px;font-size:18px;line-height:1.35;font-weight:700;color:#111111;">${escapeHtml(title)}</div>
+            <div style="margin-top:8px;font-size:14px;line-height:1.5;color:#57534e;">${escapeHtml(when)}${location}</div>
+            ${plainPrice}
+          </td>
+        </tr>
+      </table>
+    </a>`;
+}
+
 type BuildEmailOptions = {
   events: Event[];
   locale: string;
@@ -317,30 +384,7 @@ export function buildAlertDigestEmailHtml(options: BuildEmailOptions): string {
       ? `<p style="margin:0;padding:20px;background:#faf8f5;border-radius:16px;color:#57534e;font-size:15px;line-height:1.6;">${copy.empty}</p>`
       : options.events
           .slice(0, 12)
-          .map((event) => {
-            const when = formatDateRange(
-              event.start_date,
-              event.end_date,
-              options.locale,
-            );
-            const location = event.location_name
-              ? ` · ${escapeHtml(event.location_name)}`
-              : "";
-            const badgeColor = categoryColor(event.category);
-
-            return `
-              <a href="${siteUrl}/events/${escapeHtml(event.slug)}" style="display:block;text-decoration:none;margin-bottom:12px;">
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #ece7df;border-radius:18px;background:#ffffff;overflow:hidden;">
-                  <tr>
-                    <td style="padding:18px 20px;">
-                      <span style="display:inline-block;padding:6px 10px;border-radius:999px;background:${badgeColor};color:#ffffff;font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">${escapeHtml(event.category)}</span>
-                      <div style="margin-top:12px;font-size:18px;line-height:1.35;font-weight:700;color:#111111;">${escapeHtml(event.title)}</div>
-                      <div style="margin-top:8px;font-size:14px;line-height:1.5;color:#57534e;">${escapeHtml(when)}${location}</div>
-                    </td>
-                  </tr>
-                </table>
-              </a>`;
-          })
+          .map((event) => buildEventCardHtml(event, options.locale, siteUrl))
           .join("");
 
   return wrapEmail({

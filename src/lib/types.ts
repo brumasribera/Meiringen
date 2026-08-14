@@ -47,6 +47,9 @@ export type SearchResult = {
   href: string;
   image_url: string | null;
   category: Category;
+  start_date?: string | null;
+  location_name?: string | null;
+  source_url?: string | null;
 };
 
 export type Event = {

@@ -10,6 +10,13 @@ import {
   normalizeOrganizationCategory,
 } from "./quality";
 import { withEventImageIfSupported } from "../event-images";
+import { getStaticCuratedEvents } from "./static-events";
+import {
+  cleanupDuplicatePublishedEvents,
+  findExistingEventForUpsert,
+  mergeEventUpsertPayload,
+  staticDuplicateIsRicher,
+} from "../event-upsert";
 
 type CuratedOrganization = {
   name?: string | null;
@@ -61,6 +68,7 @@ export type CuratedImportResult = {
     updated: number;
     skipped: number;
     rejected: number;
+    deduped: number;
   };
   syncedAt: string;
 };
@@ -322,38 +330,36 @@ async function upsertCuratedEvent(
   const payload = await withEventImageIfSupported(
     supabase,
     {
-    organization_id: organizationId,
-    title,
-    description: cleanString(candidate.description),
-    category,
-    start_date: startDate,
-    end_date: endDate,
-    location_name: cleanString(candidate.location_name),
-    address: cleanString(candidate.address),
-    price: cleanString(candidate.price),
-    language: normalizeEventLanguage(candidate.language),
-    source_url: sourceUrl,
-    is_recurring: false,
-    is_recurring_template: false,
-    status:
-      normalizeConfidence(candidate.confidence) >= 0.65 ? "published" : "draft",
+      organization_id: organizationId,
+      title,
+      description: cleanString(candidate.description),
+      category,
+      start_date: startDate,
+      end_date: endDate,
+      location_name: cleanString(candidate.location_name),
+      address: cleanString(candidate.address),
+      price: cleanString(candidate.price),
+      language: normalizeEventLanguage(candidate.language),
+      source_url: sourceUrl,
+      is_recurring: false,
+      is_recurring_template: false,
+      status:
+        normalizeConfidence(candidate.confidence) >= 0.65
+          ? "published"
+          : "draft",
     },
     imageUrl,
   );
 
-  const { data: existing } = await supabase
-    .from("events")
-    .select("id")
-    .eq("source_url", sourceUrl)
-    .eq("title", title)
-    .eq("start_date", payload.start_date)
-    .limit(1)
-    .maybeSingle();
+  if (staticDuplicateIsRicher(payload, getStaticCuratedEvents())) {
+    return "skipped";
+  }
 
-  if (existing?.id) {
+  const existing = await findExistingEventForUpsert(supabase, payload);
+  if (existing) {
     const { error } = await supabase
       .from("events")
-      .update(payload)
+      .update(mergeEventUpsertPayload(existing, payload))
       .eq("id", existing.id);
     if (error) {
       console.error("upsertCuratedEvent update:", error.message);
@@ -361,15 +367,6 @@ async function upsertCuratedEvent(
     }
     return "updated";
   }
-
-  const { data: duplicate } = await supabase
-    .from("events")
-    .select("id")
-    .eq("title", title)
-    .eq("start_date", payload.start_date)
-    .limit(1)
-    .maybeSingle();
-  if (duplicate?.id) return "skipped";
 
   const slug = buildOccurrenceSlug(title, payload.start_date);
   const { error } = await supabase.from("events").insert({ ...payload, slug });
@@ -395,7 +392,7 @@ export async function importCuratedScrapeResult(
 ): Promise<CuratedImportResult> {
   const summary: CuratedImportResult = {
     organizations: { inserted: 0, updated: 0, skipped: 0, rejected: 0 },
-    events: { imported: 0, updated: 0, skipped: 0, rejected: 0 },
+    events: { imported: 0, updated: 0, skipped: 0, rejected: 0, deduped: 0 },
     syncedAt: new Date().toISOString(),
   };
 
@@ -408,6 +405,12 @@ export async function importCuratedScrapeResult(
     const action = await upsertCuratedEvent(supabase, event);
     summary.events[action]++;
   }
+
+  const duplicateCleanup = await cleanupDuplicatePublishedEvents(
+    supabase,
+    getStaticCuratedEvents(),
+  );
+  summary.events.deduped = duplicateCleanup.drafted;
 
   return summary;
 }

@@ -6,7 +6,12 @@ import {
   matchEventsForUser,
   shouldSendAlertToday,
 } from "@/lib/alerts/newsletter-utils";
-import { buildAlertDigestEmailHtml, getAlertEmailSubject } from "@/lib/email/alert-template";
+import { getStaticCuratedEvents } from "@/lib/curation/static-events";
+import {
+  buildAlertDigestEmailHtml,
+  getAlertEmailSubject,
+} from "@/lib/email/alert-template";
+import { mergeEventsByIdentity } from "@/lib/event-dedupe";
 import { getFromEmail } from "@/lib/email/config";
 import { markAlertSent } from "@/lib/alerts/service";
 import type { Event, NewsletterPreferences } from "@/lib/types";
@@ -52,20 +57,73 @@ export async function GET(request: Request) {
 
     try {
       const windowDays = eventWindowDays(subscription.frequency);
+      const rangeStart = new Date();
       const rangeEnd = new Date();
       rangeEnd.setDate(rangeEnd.getDate() + windowDays);
+      const rangeStartTime = rangeStart.getTime();
+      const rangeEndTime = rangeEnd.getTime();
 
       const { data: allEvents } = await supabase
         .from("events")
         .select("*")
         .eq("status", "published")
         .eq("is_recurring_template", false)
-        .gte("start_date", new Date().toISOString())
+        .gte("start_date", rangeStart.toISOString())
         .lte("start_date", rangeEnd.toISOString())
         .order("start_date");
 
-      const matched = matchEventsForUser(
+      const organizationIds = subscription.organization_ids ?? [];
+      const organizationSlugById = new Map<string, string>();
+      const organizationIdBySlug = new Map<string, string>();
+      if (organizationIds.length > 0) {
+        const { data: organizations } = await supabase
+          .from("organizations")
+          .select("id, slug")
+          .in("id", organizationIds);
+
+        for (const organization of organizations ?? []) {
+          organizationSlugById.set(organization.id, organization.slug);
+          organizationIdBySlug.set(organization.slug, organization.id);
+        }
+      }
+
+      const staticEvents = getStaticCuratedEvents().filter((event) => {
+        const startTime = new Date(event.start_date).getTime();
+        const matchesOrganization =
+          organizationIds.length === 0 ||
+          Boolean(
+            (event.organization_id &&
+              organizationIds.includes(event.organization_id)) ||
+              (event.organization_slug &&
+                organizationSlugById.size > 0 &&
+                [...organizationSlugById.values()].includes(
+                  event.organization_slug,
+                )),
+          );
+
+        return (
+          event.status === "published" &&
+          startTime >= rangeStartTime &&
+          startTime <= rangeEndTime &&
+          matchesOrganization
+        );
+      }).map((event) =>
+        !event.organization_id &&
+        event.organization_slug &&
+        organizationIdBySlug.has(event.organization_slug)
+          ? {
+              ...event,
+              organization_id: organizationIdBySlug.get(event.organization_slug)!,
+            }
+          : event,
+      );
+      const newsletterEvents = mergeEventsByIdentity(
+        staticEvents,
         (allEvents ?? []) as Event[],
+      ) as Event[];
+
+      const matched = matchEventsForUser(
+        newsletterEvents,
         subscription
       );
 

@@ -13,6 +13,13 @@ import {
   fetchEventImageUrl,
   withEventImageIfSupported,
 } from "../event-images";
+import { getStaticCuratedEvents } from "../curation/static-events";
+import {
+  cleanupDuplicatePublishedEvents,
+  findExistingEventForUpsert,
+  mergeEventUpsertPayload,
+  staticDuplicateIsRicher,
+} from "../event-upsert";
 
 type ScrapeSource = {
   id: string;
@@ -255,39 +262,31 @@ async function saveScrapedEvent(
   const payload = await withEventImageIfSupported(
     supabase,
     {
-    organization_id: organizationId,
-    title: event.title,
-    description: event.description,
-    category,
-    start_date: event.start_date,
-    end_date: event.end_date,
-    location_name: event.location_name,
-    address: event.address,
-    source_url: sourceUrl,
-    is_recurring: false,
-    is_recurring_template: false,
-    status: "published",
+      organization_id: organizationId,
+      title: event.title,
+      description: event.description,
+      category,
+      start_date: event.start_date,
+      end_date: event.end_date,
+      location_name: event.location_name,
+      address: event.address,
+      source_url: sourceUrl,
+      is_recurring: false,
+      is_recurring_template: false,
+      status: "published",
     },
     imageUrl,
   );
 
-  const { data: existing, error: lookupError } = await supabase
-    .from("events")
-    .select("id")
-    .eq("source_url", sourceUrl)
-    .eq("title", event.title)
-    .eq("start_date", event.start_date)
-    .limit(1)
-    .maybeSingle();
-
-  if (lookupError) {
-    console.error("saveScrapedEvent lookup:", lookupError.message);
+  if (staticDuplicateIsRicher(payload, getStaticCuratedEvents())) {
+    return "skipped";
   }
 
-  if (existing?.id) {
+  const existing = await findExistingEventForUpsert(supabase, payload);
+  if (existing) {
     const { error } = await supabase
       .from("events")
-      .update(payload)
+      .update(mergeEventUpsertPayload(existing, payload))
       .eq("id", existing.id);
     if (error) {
       console.error("saveScrapedEvent update:", error.message);
@@ -295,23 +294,6 @@ async function saveScrapedEvent(
     }
     return "updated";
   }
-
-  const { data: duplicate, error: duplicateLookupError } = await supabase
-    .from("events")
-    .select("id")
-    .eq("title", event.title)
-    .eq("start_date", event.start_date)
-    .limit(1)
-    .maybeSingle();
-
-  if (duplicateLookupError) {
-    console.error(
-      "saveScrapedEvent duplicate lookup:",
-      duplicateLookupError.message,
-    );
-  }
-
-  if (duplicate?.id) return "skipped";
 
   const { error: insertError } = await supabase.from("events").insert({
     ...payload,
@@ -512,6 +494,10 @@ export async function scrapeActivitySources(
 
   await Promise.all(Array.from({ length: workerCount }, () => worker()));
   const cleanup = await cleanupSenselessEvents(supabase);
+  const duplicateCleanup = await cleanupDuplicatePublishedEvents(
+    supabase,
+    getStaticCuratedEvents(),
+  );
 
   return {
     imported,
@@ -519,7 +505,7 @@ export async function scrapeActivitySources(
     skipped,
     rejected,
     deleted: cleanup.deleted,
-    drafted: cleanup.drafted,
+    drafted: cleanup.drafted + duplicateCleanup.drafted,
     sources: allSources.length,
     pages: pagesChecked,
     horizon: horizon.toISOString(),

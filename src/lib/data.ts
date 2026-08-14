@@ -2,6 +2,10 @@ import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { agendaHorizonDate } from "@/lib/agenda/constants";
 import { shouldPublishEvent } from "@/lib/curation/quality";
 import { getStaticCuratedEvents } from "@/lib/curation/static-events";
+import {
+  compareEventsByDate,
+  mergeEventsByIdentity,
+} from "@/lib/event-dedupe";
 import type {
   ContentLanguage,
   EventCategory,
@@ -52,72 +56,8 @@ function filterPublicEvents(events: Event[], limit?: number) {
   return limit ? filtered.slice(0, limit) : filtered;
 }
 
-function compareEventsByDate(left: Event, right: Event) {
-  const dateDelta =
-    new Date(left.start_date).getTime() - new Date(right.start_date).getTime();
-  return dateDelta || left.title.localeCompare(right.title);
-}
-
-function normalizeEventIdentityText(value: string | null | undefined) {
-  return (value ?? "")
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/&amp;/g, "and")
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
-}
-
-function canonicalSourceUrl(value: string | null | undefined) {
-  if (!value) return null;
-  try {
-    const url = new URL(value);
-    url.hash = "";
-    url.search = "";
-    return url.toString().replace(/\/$/, "");
-  } catch {
-    return value.trim().replace(/\/$/, "");
-  }
-}
-
-function eventStartIdentity(event: Event) {
-  const timestamp = new Date(event.start_date).getTime();
-  return Number.isFinite(timestamp)
-    ? new Date(timestamp).toISOString()
-    : event.start_date;
-}
-
-function eventIdentityKeys(event: Event) {
-  const start = eventStartIdentity(event);
-  const title = normalizeEventIdentityText(event.title);
-  const location = normalizeEventIdentityText(
-    event.location_name ?? event.address,
-  );
-  const source = canonicalSourceUrl(event.source_url);
-
-  return [
-    source ? `source|${source}|${start}` : null,
-    location ? `title-location|${title}|${start}|${location}` : null,
-    `title|${title}|${start}`,
-  ].filter((key): key is string => Boolean(key));
-}
-
 function mergeEvents(primaryEvents: Event[], fallbackEvents: Event[]) {
-  const seen = new Map<string, number>();
-  const merged: Event[] = [];
-
-  for (const event of [...primaryEvents, ...fallbackEvents]) {
-    const keys = eventIdentityKeys(event);
-    if (keys.some((key) => seen.has(key))) continue;
-
-    const index = merged.length;
-    for (const key of keys) {
-      seen.set(key, index);
-    }
-    merged.push(event);
-  }
-
-  return merged.sort(compareEventsByDate);
+  return mergeEventsByIdentity(primaryEvents, fallbackEvents) as Event[];
 }
 
 function eventMatchesFilters(event: Event, filters: EventFilters) {
