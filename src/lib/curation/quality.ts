@@ -161,7 +161,7 @@ export function evaluateEventCandidate(
   if (
     GENERIC_EVENT_TITLE_PATTERN.test(title) ||
     JUNK_EVENT_TITLE_PATTERN.test(title) ||
-    ROLE_ONLY_EVENT_TITLE_PATTERN.test(title)
+    (ROLE_ONLY_EVENT_TITLE_PATTERN.test(title) && !hasEventDetails(input))
   ) {
     return { accepted: false, reason: "generic navigation title" };
   }
@@ -230,7 +230,11 @@ export function shouldPublishEvent(input: EventQualityInput): QualityDecision {
 
   if (category === "cinema") {
     const title = input.title?.replace(/\s+/g, " ").trim() ?? "";
-    if (CINEMA_RELEASE_PLACEHOLDER_PATTERN.test(title)) {
+    const sourceHost = hostnameFromUrl(input.source_url);
+    if (
+      CINEMA_RELEASE_PLACEHOLDER_PATTERN.test(title) &&
+      sourceHost !== "kino-meiringen.ch"
+    ) {
       return { accepted: false, reason: "cinema release placeholder" };
     }
   }

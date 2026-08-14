@@ -52,6 +52,7 @@ export type SearchResult = {
 export type Event = {
   id: string;
   organization_id: string | null;
+  organization_slug?: string | null;
   title: string;
   slug: string;
   description: string | null;

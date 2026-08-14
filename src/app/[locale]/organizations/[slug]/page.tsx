@@ -34,7 +34,11 @@ export default async function OrganizationDetailPage({ params }: Props) {
   const supabase = await createClient();
   const user = supabase ? (await supabase.auth.getUser()).data.user : null;
   const [events, followSummary, relatedOrganizations] = await Promise.all([
-    getEvents({ organizationId: organization.id, limit: 10 }),
+    getEvents({
+      organizationId: organization.id,
+      organizationSlug: organization.slug,
+      limit: 10,
+    }),
     getOrganizationFollowSummary(organization.id, user?.id),
     getRelatedOrganizationsForOrganization(organization, 3),
   ]);

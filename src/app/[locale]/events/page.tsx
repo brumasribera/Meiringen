@@ -27,18 +27,20 @@ export default async function EventsPage({ params, searchParams }: Props) {
     )
   ) as EventCategory[];
 
-  const [events, organizations] = await Promise.all([
-    getEvents({
-      search: filters.search,
-      category: categories[0],
-      categories,
-      language: filters.language as ContentLanguage | undefined,
-      organizationId: filters.organization,
-      dateFrom: filters.dateFrom,
-      dateTo: filters.dateTo ? `${filters.dateTo}T23:59:59` : undefined,
-    }),
-    getOrganizations(),
-  ]);
+  const organizations = await getOrganizations();
+  const selectedOrganization = filters.organization
+    ? organizations.find((organization) => organization.id === filters.organization)
+    : null;
+  const events = await getEvents({
+    search: filters.search,
+    category: categories[0],
+    categories,
+    language: filters.language as ContentLanguage | undefined,
+    organizationId: filters.organization,
+    organizationSlug: selectedOrganization?.slug,
+    dateFrom: filters.dateFrom,
+    dateTo: filters.dateTo ? `${filters.dateTo}T23:59:59` : undefined,
+  });
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">

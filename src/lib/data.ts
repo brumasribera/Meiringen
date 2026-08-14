@@ -22,6 +22,7 @@ export type EventFilters = {
   categories?: EventCategory[];
   language?: ContentLanguage;
   organizationId?: string;
+  organizationSlug?: string;
   dateFrom?: string;
   dateTo?: string;
   status?: "draft" | "published";
@@ -90,7 +91,19 @@ function eventMatchesFilters(event: Event, filters: EventFilters) {
   }
 
   if (filters.language && event.language !== filters.language) return false;
-  if (filters.organizationId && event.organization_id !== filters.organizationId) {
+  if (
+    filters.organizationId &&
+    event.organization_id !== filters.organizationId &&
+    event.organization_slug !== filters.organizationSlug
+  ) {
+    return false;
+  }
+
+  if (
+    filters.organizationSlug &&
+    event.organization_slug &&
+    event.organization_slug !== filters.organizationSlug
+  ) {
     return false;
   }
 
