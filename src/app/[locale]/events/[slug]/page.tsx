@@ -27,6 +27,18 @@ import { EventNavigationArrows } from "@/components/EventNavigationArrows";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
+function safeBackgroundImageUrl(imageUrl: string | null | undefined) {
+  if (!imageUrl) return null;
+
+  try {
+    const url = new URL(imageUrl);
+    if (!["http:", "https:"].includes(url.protocol)) return null;
+    return url.toString().replace(/"/g, "%22");
+  } catch {
+    return null;
+  }
+}
+
 export default async function EventDetailPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
@@ -48,7 +60,9 @@ export default async function EventDetailPage({ params }: Props) {
     latitude: event.latitude,
     longitude: event.longitude,
   });
+  const eventImageUrl = safeBackgroundImageUrl(event.image_url);
   const coverImageUrl = event.organization?.cover_image_url ?? null;
+  const hasCoverImage = Boolean(eventImageUrl || coverImageUrl);
   const heroTheme = getEventHeroGradient({
     seed: `${event.slug}|${event.id}`,
     title: event.title,
@@ -57,7 +71,9 @@ export default async function EventDetailPage({ params }: Props) {
     organizationSlug: event.organization?.slug,
   });
   const [interestSummary, relatedEvents] = await Promise.all([
-    getEventInterestSummary(event.id, user?.id),
+    event.is_static_curated
+      ? Promise.resolve({ interestCount: 0, isInterested: false })
+      : getEventInterestSummary(event.id, user?.id),
     getRelatedEventsForEvent(event, 3),
   ]);
   const { previous, next, previousEvents, nextEvents } = await getAdjacentEventsForEvent(event);
@@ -94,17 +110,30 @@ export default async function EventDetailPage({ params }: Props) {
                 : null
             }
           />
-          {!coverImageUrl && (
+          {eventImageUrl ? (
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url("${eventImageUrl}")` }}
+              aria-hidden
+            />
+          ) : null}
+          {!eventImageUrl && !coverImageUrl && (
             <div className={`absolute inset-0 ${heroTheme.className}`} aria-hidden />
           )}
-          {event.organization && (
+          {!eventImageUrl && event.organization && (
             <OrgCoverArt
               category={event.organization.category}
               coverImageUrl={coverImageUrl}
               className="absolute inset-0 h-full w-full"
             />
           )}
-          {!coverImageUrl && (
+          {hasCoverImage && (
+            <div
+              className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.10)_0%,rgba(15,23,42,0.35)_42%,rgba(15,23,42,0.76)_100%)]"
+              aria-hidden
+            />
+          )}
+          {!hasCoverImage && (
             <div
               className={`absolute inset-0 ${
                 heroTheme.tone === "dark"
@@ -126,7 +155,7 @@ export default async function EventDetailPage({ params }: Props) {
               <div className="flex flex-wrap gap-2">
                 <span
                   className={`pill ${
-                    coverImageUrl
+                    hasCoverImage
                       ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
                       : heroTheme.tone === "dark"
                         ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
@@ -138,7 +167,7 @@ export default async function EventDetailPage({ params }: Props) {
                 {event.language && (
                   <span
                     className={`pill ${
-                      coverImageUrl
+                      hasCoverImage
                         ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
                         : heroTheme.tone === "dark"
                           ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
@@ -151,7 +180,7 @@ export default async function EventDetailPage({ params }: Props) {
                 {event.is_recurring && (
                   <span
                     className={`pill ${
-                      coverImageUrl
+                      hasCoverImage
                         ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
                         : heroTheme.tone === "dark"
                           ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
@@ -164,7 +193,7 @@ export default async function EventDetailPage({ params }: Props) {
               </div>
               <h1
                 className={`mt-4 text-3xl font-bold md:text-4xl ${
-                  coverImageUrl || heroTheme.tone === "dark"
+                  hasCoverImage || heroTheme.tone === "dark"
                     ? "text-white"
                     : "text-primary"
                 }`}
@@ -173,7 +202,7 @@ export default async function EventDetailPage({ params }: Props) {
               </h1>
               <p
                 className={`mt-4 text-lg ${
-                  coverImageUrl || heroTheme.tone === "dark"
+                  hasCoverImage || heroTheme.tone === "dark"
                     ? "text-white/85"
                     : "text-foreground/75"
                 }`}
@@ -238,13 +267,15 @@ export default async function EventDetailPage({ params }: Props) {
         <h2 className="text-lg font-semibold">{t("events.connectTitle")}</h2>
         <p className="mt-1 text-sm text-muted">{t("events.connectSubtitle")}</p>
         <div className="mt-4 flex flex-wrap gap-3">
-          <EventInterestButton
-            eventId={event.id}
-            initialInterested={interestSummary.isInterested}
-            initialCount={interestSummary.interestCount}
-            locale={locale}
-            userId={user?.id}
-          />
+          {!event.is_static_curated && (
+            <EventInterestButton
+              eventId={event.id}
+              initialInterested={interestSummary.isInterested}
+              initialCount={interestSummary.interestCount}
+              locale={locale}
+              userId={user?.id}
+            />
+          )}
           <Link href={alertHref} className={`${actionButtonClass} px-5 py-2.5 text-sm`}>
             {t("events.getAlertsForThis")}
           </Link>

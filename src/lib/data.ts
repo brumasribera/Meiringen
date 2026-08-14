@@ -1,6 +1,7 @@
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { agendaHorizonDate } from "@/lib/agenda/constants";
 import { shouldPublishEvent } from "@/lib/curation/quality";
+import { getStaticCuratedEvents } from "@/lib/curation/static-events";
 import type {
   ContentLanguage,
   EventCategory,
@@ -48,6 +49,95 @@ function isPublicEvent(event: Event) {
 function filterPublicEvents(events: Event[], limit?: number) {
   const filtered = events.filter(isPublicEvent);
   return limit ? filtered.slice(0, limit) : filtered;
+}
+
+function compareEventsByDate(left: Event, right: Event) {
+  const dateDelta =
+    new Date(left.start_date).getTime() - new Date(right.start_date).getTime();
+  return dateDelta || left.title.localeCompare(right.title);
+}
+
+function eventIdentityKey(event: Event) {
+  if (event.source_url) {
+    return `${event.source_url}|${event.title}|${event.start_date}`;
+  }
+
+  return `${event.title}|${event.start_date}|${event.location_name ?? ""}`;
+}
+
+function mergeEvents(primaryEvents: Event[], fallbackEvents: Event[]) {
+  const seen = new Set<string>();
+  const merged: Event[] = [];
+
+  for (const event of [...primaryEvents, ...fallbackEvents]) {
+    const key = eventIdentityKey(event);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    merged.push(event);
+  }
+
+  return merged.sort(compareEventsByDate);
+}
+
+function eventMatchesFilters(event: Event, filters: EventFilters) {
+  if (filters.status && event.status !== filters.status) return false;
+  if (!filters.status && event.status !== "published") return false;
+
+  if (filters.categories && filters.categories.length > 0) {
+    if (!filters.categories.includes(event.category)) return false;
+  } else if (filters.category && event.category !== filters.category) {
+    return false;
+  }
+
+  if (filters.language && event.language !== filters.language) return false;
+  if (filters.organizationId && event.organization_id !== filters.organizationId) {
+    return false;
+  }
+
+  if (filters.search) {
+    const query = filters.search.toLowerCase();
+    const haystack = [
+      event.title,
+      event.description,
+      event.location_name,
+      event.address,
+      event.organization?.name,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+    if (!haystack.includes(query)) return false;
+  }
+
+  const startTime = new Date(event.start_date).getTime();
+  if (!Number.isFinite(startTime)) return false;
+
+  if (filters.dateFrom) {
+    if (startTime < new Date(filters.dateFrom).getTime()) return false;
+  } else if (shouldApplyPublicEventCuration(filters) && startTime < Date.now()) {
+    return false;
+  }
+
+  if (filters.dateTo) {
+    if (startTime > new Date(filters.dateTo).getTime()) return false;
+  } else if (
+    shouldApplyPublicEventCuration(filters) &&
+    startTime > agendaHorizonDate().getTime()
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
+function getFilteredStaticEvents(filters: EventFilters = {}) {
+  if (filters.status && filters.status !== "published") return [];
+
+  return filterPublicEvents(
+    getStaticCuratedEvents().filter((event) =>
+      eventMatchesFilters(event, filters),
+    ),
+  );
 }
 
 export type OrganizationFilters = {
@@ -119,8 +209,13 @@ export async function getOrganizationBySlug(
 }
 
 export async function getEvents(filters: EventFilters = {}): Promise<Event[]> {
+  const staticEvents = shouldApplyPublicEventCuration(filters)
+    ? getFilteredStaticEvents(filters)
+    : [];
   const supabase = await createClient();
-  if (!supabase) return [];
+  if (!supabase) {
+    return filters.limit ? staticEvents.slice(0, filters.limit) : staticEvents;
+  }
 
   let query = supabase
     .from("events")
@@ -180,15 +275,21 @@ export async function getEvents(filters: EventFilters = {}): Promise<Event[]> {
 
   const events = (data ?? []) as Event[];
   if (shouldApplyPublicEventCuration(filters)) {
-    return filterPublicEvents(events, filters.limit);
+    const publicEvents = filterPublicEvents(events);
+    const merged = mergeEvents(publicEvents, staticEvents);
+    return filters.limit ? merged.slice(0, filters.limit) : merged;
   }
 
   return events;
 }
 
 export async function getEventBySlug(slug: string): Promise<Event | null> {
+  const staticEvent =
+    getStaticCuratedEvents().find((event) => event.slug === slug) ?? null;
   const supabase = await createClient();
-  if (!supabase) return null;
+  if (!supabase) {
+    return staticEvent && isPublicEvent(staticEvent) ? staticEvent : null;
+  }
 
   const { data, error } = await supabase
     .from("events")
@@ -196,9 +297,13 @@ export async function getEventBySlug(slug: string): Promise<Event | null> {
     .eq("slug", slug)
     .single();
 
-  if (error) return null;
+  if (error) {
+    return staticEvent && isPublicEvent(staticEvent) ? staticEvent : null;
+  }
   const event = data as Event;
-  if (event.status === "published" && !isPublicEvent(event)) return null;
+  if (event.status === "published" && !isPublicEvent(event)) {
+    return staticEvent && isPublicEvent(staticEvent) ? staticEvent : null;
+  }
   return event;
 }
 
@@ -394,6 +499,12 @@ export async function getRelatedEventsForEvent(
   let related = filterPublicEvents(
     ((categoryMatches ?? []) as Event[]).filter(isUpcomingEvent),
   );
+  related = mergeEvents(
+    related,
+    getFilteredStaticEvents({
+      category: event.category,
+    }).filter((item) => item.id !== event.id),
+  );
 
   if (related.length < limit && event.organization_id) {
     const { data: organizationMatches, error: organizationError } =
@@ -419,11 +530,11 @@ export async function getRelatedEventsForEvent(
         ...filterPublicEvents(
           ((organizationMatches ?? []) as Event[]).filter(isUpcomingEvent),
         ),
-      ]);
+      ]).sort(compareEventsByDate);
     }
   }
 
-  return dedupeById(related).slice(0, limit);
+  return dedupeById(related).sort(compareEventsByDate).slice(0, limit);
 }
 
 export async function getAdjacentEventsForEvent(event: Event): Promise<{
@@ -434,7 +545,21 @@ export async function getAdjacentEventsForEvent(event: Event): Promise<{
 }> {
   const supabase = await createClient();
   if (!supabase) {
-    return { previous: null, next: null, previousEvents: [], nextEvents: [] };
+    const staticEvents = getFilteredStaticEvents();
+    const index = staticEvents.findIndex((item) => item.id === event.id);
+    const previousEvents =
+      index > 0 ? staticEvents.slice(Math.max(0, index - 4), index) : [];
+    const nextEvents = index >= 0 ? staticEvents.slice(index + 1, index + 5) : [];
+
+    return {
+      previous: index > 0 ? staticEvents[index - 1] : null,
+      next:
+        index >= 0 && index < staticEvents.length - 1
+          ? staticEvents[index + 1]
+          : null,
+      previousEvents,
+      nextEvents,
+    };
   }
 
   const { data, error } = await supabase
@@ -450,7 +575,10 @@ export async function getAdjacentEventsForEvent(event: Event): Promise<{
     return { previous: null, next: null, previousEvents: [], nextEvents: [] };
   }
 
-  const events = filterPublicEvents((data ?? []) as Event[]);
+  const events = mergeEvents(
+    filterPublicEvents((data ?? []) as Event[]),
+    getFilteredStaticEvents(),
+  );
   const index = events.findIndex((item) => item.id === event.id);
   const previousEvents =
     index > 0 ? events.slice(Math.max(0, index - 4), index) : [];

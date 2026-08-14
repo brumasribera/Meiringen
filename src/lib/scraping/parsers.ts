@@ -1,5 +1,6 @@
 import { parseGenericEvents } from "./generic-parser";
 import { inferCategory, type ScrapedEvent } from "./generic-parser";
+import { extractEventImageUrlFromHtml } from "../event-images";
 
 /**
  * Site-specific parser for the i-web event table embedded by meiringen.ch.
@@ -60,6 +61,9 @@ export async function parseMeiringenCh(
         stripTags(getEmbeddedField(chunk, "ort", ["ort-sort", "lokalitaet"])) ||
         null,
       source_url: sourceUrl,
+      image_url:
+        extractEventImageUrlFromHtml(nameHtml, pageUrl) ??
+        extractEventImageUrlFromHtml(chunk, pageUrl),
       status: "draft",
     });
   }

@@ -6,9 +6,13 @@ import { createHash } from "node:crypto";
 import { agendaHorizonDate, isWithinAgendaHorizon } from "./constants";
 import { buildOccurrenceSlug } from "./expand-recurrence";
 import {
-  evaluateEventCandidate,
+  shouldPublishEvent,
   shouldDeleteScrapedEvent,
 } from "../curation/quality";
+import {
+  fetchEventImageUrl,
+  withEventImageIfSupported,
+} from "../event-images";
 
 type ScrapeSource = {
   id: string;
@@ -215,18 +219,11 @@ async function saveScrapedEvent(
   event: ScrapedEvent,
   source: ScrapeSource,
   hosts: Map<string, string>,
+  imageCache: Map<string, string | null>,
 ): Promise<"imported" | "updated" | "skipped" | "rejected"> {
   const sourceUrl = absoluteUrl(event.source_url, source.url);
   if (!sourceUrl || !isWithinAgendaHorizon(event.start_date)) return "skipped";
   if (!isRegionallyRelevant(event, sourceUrl, source.url)) return "skipped";
-
-  const quality = evaluateEventCandidate({
-    ...event,
-    source_url: sourceUrl,
-    sourceName: source.name,
-    siteUrl: source.url,
-  });
-  if (!quality.accepted) return "rejected";
 
   const kinoMeiringenEvent =
     isKinoMeiringenSource(sourceUrl) ||
@@ -235,6 +232,15 @@ async function saveScrapedEvent(
         .filter(Boolean)
         .join(" "),
     );
+  const category = kinoMeiringenEvent ? "cinema" : event.category;
+  const quality = shouldPublishEvent({
+    ...event,
+    category,
+    source_url: sourceUrl,
+    sourceName: source.name,
+    siteUrl: source.url,
+  });
+  if (!quality.accepted) return "rejected";
 
   const organizationId =
     source.organizationId ??
@@ -244,11 +250,15 @@ async function saveScrapedEvent(
       hosts,
     );
   const slug = buildOccurrenceSlug(event.title, event.start_date);
-  const payload = {
+  const imageUrl =
+    event.image_url ?? (await fetchEventImageUrl(sourceUrl, imageCache));
+  const payload = await withEventImageIfSupported(
+    supabase,
+    {
     organization_id: organizationId,
     title: event.title,
     description: event.description,
-    category: kinoMeiringenEvent ? "cinema" : event.category,
+    category,
     start_date: event.start_date,
     end_date: event.end_date,
     location_name: event.location_name,
@@ -257,7 +267,9 @@ async function saveScrapedEvent(
     is_recurring: false,
     is_recurring_template: false,
     status: "published",
-  };
+    },
+    imageUrl,
+  );
 
   const { data: existing, error: lookupError } = await supabase
     .from("events")
@@ -464,6 +476,7 @@ export async function scrapeActivitySources(
 
   const workerCount = 4;
   let cursor = 0;
+  const imageCache = new Map<string, string | null>();
 
   async function worker() {
     while (cursor < allSources.length) {
@@ -474,7 +487,13 @@ export async function scrapeActivitySources(
       for (const page of pages) {
         const events = await runParser(source.type, page.url, page.html);
         for (const event of events) {
-          const result = await saveScrapedEvent(supabase, event, source, hosts);
+          const result = await saveScrapedEvent(
+            supabase,
+            event,
+            source,
+            hosts,
+            imageCache,
+          );
           if (result === "imported") imported++;
           else if (result === "updated") updated++;
           else if (result === "rejected") rejected++;

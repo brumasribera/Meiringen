@@ -4,11 +4,12 @@ import { buildOccurrenceSlug } from "../agenda/expand-recurrence";
 import type { ContentLanguage, Locality } from "../constants";
 import { slugify } from "../utils";
 import {
-  evaluateEventCandidate,
+  shouldPublishEvent,
   evaluateOrganizationCandidate,
   normalizeEventCategory,
   normalizeOrganizationCategory,
 } from "./quality";
+import { withEventImageIfSupported } from "../event-images";
 
 type CuratedOrganization = {
   name?: string | null;
@@ -35,6 +36,7 @@ type CuratedEvent = {
   address?: string | null;
   price?: string | null;
   language?: string | null;
+  image_url?: string | null;
   source_url?: string | null;
   organization_name?: string | null;
   organization_website_url?: string | null;
@@ -298,10 +300,11 @@ async function upsertCuratedEvent(
 ): Promise<"imported" | "updated" | "skipped" | "rejected"> {
   const title = cleanString(candidate.title);
   const sourceUrl = normalizeUrl(candidate.source_url);
+  const imageUrl = normalizeUrl(candidate.image_url);
   const startDate = normalizeIsoDate(candidate.start_date);
   const endDate = normalizeIsoDate(candidate.end_date);
   const category = normalizeEventCategory(candidate.category);
-  const quality = evaluateEventCandidate({
+  const quality = shouldPublishEvent({
     title,
     description: candidate.description,
     category,
@@ -316,7 +319,9 @@ async function upsertCuratedEvent(
     return "rejected";
 
   const organizationId = await resolveEventOrganizationId(supabase, candidate);
-  const payload = {
+  const payload = await withEventImageIfSupported(
+    supabase,
+    {
     organization_id: organizationId,
     title,
     description: cleanString(candidate.description),
@@ -332,7 +337,9 @@ async function upsertCuratedEvent(
     is_recurring_template: false,
     status:
       normalizeConfidence(candidate.confidence) >= 0.65 ? "published" : "draft",
-  };
+    },
+    imageUrl,
+  );
 
   const { data: existing } = await supabase
     .from("events")

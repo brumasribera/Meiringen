@@ -64,6 +64,7 @@ export type Event = {
   longitude: number | null;
   price: string | null;
   language: ContentLanguage | null;
+  image_url: string | null;
   is_recurring: boolean;
   is_recurring_template: boolean;
   recurrence_parent_id: string | null;
@@ -74,6 +75,7 @@ export type Event = {
   created_at: string;
   updated_at: string;
   organization?: Organization | null;
+  is_static_curated?: boolean;
 };
 
 export type Profile = {

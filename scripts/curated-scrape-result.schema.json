@@ -85,6 +85,7 @@
             "type": ["string", "null"],
             "enum": ["de", "gsw", "en", "fr", "it", "rm", "pt", null]
           },
+          "image_url": { "type": ["string", "null"] },
           "source_url": { "type": "string" },
           "organization_name": { "type": ["string", "null"] },
           "organization_website_url": { "type": ["string", "null"] },

@@ -1,6 +1,10 @@
 import type { EventCategory } from "../constants";
 import { isWithinAgendaHorizon } from "../agenda/constants";
 import { cleanEventTitle } from "../event-title";
+import {
+  extractEventImageUrlFromHtml,
+  extractImageFromJsonLdValue,
+} from "../event-images";
 
 export type ScrapedEvent = {
   title: string;
@@ -11,6 +15,7 @@ export type ScrapedEvent = {
   location_name: string | null;
   address: string | null;
   source_url: string;
+  image_url?: string | null;
   status: "draft";
 };
 
@@ -65,6 +70,7 @@ function parseTableDatedEvents(pageUrl: string, html: string): ScrapedEvent[] {
       source_url: rowLink
         ? (toAbsoluteUrl(rowLink, pageUrl) ?? pageUrl)
         : pageUrl,
+      image_url: extractEventImageUrlFromHtml(row[1], pageUrl),
       status: "draft",
     });
   }
@@ -124,6 +130,7 @@ function parseLinkedDatedEvents(pageUrl: string, html: string): ScrapedEvent[] {
       location_name: null,
       address: null,
       source_url: sourceUrl,
+      image_url: extractEventImageUrlFromHtml(match[2], pageUrl),
       status: "draft",
     });
   }
@@ -179,6 +186,7 @@ function mapJsonLdEvent(
     location_name: location?.name ? String(location.name) : null,
     address: addressStr,
     source_url: toAbsoluteUrl(String(item.url ?? pageUrl), pageUrl) ?? pageUrl,
+    image_url: extractImageFromJsonLdValue(item.image, pageUrl),
     status: "draft",
   };
 }

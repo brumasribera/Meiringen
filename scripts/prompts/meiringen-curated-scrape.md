@@ -12,6 +12,7 @@ Strict rules:
 - Events must be public community/cultural/social/sport/education/music/nature/festival/market/cinema/tradition activities, not generic tourist packages, accommodation offers, ordinary restaurant opening hours, job posts, shop pages, news without a date, or navigation labels.
 - Remove nonsense by omission: if a candidate is vague, source-less, out of region, too commercial, past, or only a listing/category page, do not include it.
 - Use ISO 8601 dates. If the source only gives a date with no time, use noon Europe/Zurich converted to ISO 8601.
+- If the event source exposes a related image via Open Graph, Twitter metadata, JSON-LD, or the event page itself, include it as `image_url`. Use `null` when no source-provided event image is visible.
 - Use German names/titles as written by the source. Keep descriptions short and factual.
 - Set `confidence` between 0 and 1. Use 0.85 or higher only when the source has a concrete date and place.
 - Keep the response compact: up to 25 events and up to 15 organizations.

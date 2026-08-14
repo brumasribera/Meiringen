@@ -45,6 +45,12 @@ const JUNK_EVENT_TITLE_PATTERN =
 
 const MAX_EVENT_TITLE_LENGTH = 160;
 
+const ROLE_ONLY_EVENT_TITLE_PATTERN =
+  /^[A-ZÀ-Ý][A-Za-zÀ-ÿ.'-]+(?:\s+[A-ZÀ-Ý][A-Za-zÀ-ÿ.'-]+){1,3}\s+(autor|autorin|artist|künstler|kuenstler)$/i;
+
+const CINEMA_RELEASE_PLACEHOLDER_PATTERN =
+  /^(kino\+?\s*programm|toy story\s*\d+|vaiana\s*\(live action\)|diamanti|amarga navidad)$/i;
+
 const DATE_ONLY_EVENT_TITLE_PATTERN =
   /^(?:(?:montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag|monday|tuesday|wednesday|thursday|friday|saturday|sunday),?\s+)?(?:\d{1,2}\.\s*(?:[-–]\s*\d{1,2}\.\s*)?)?(?:januar|februar|märz|maerz|april|mai|juni|juli|august|september|oktober|november|dezember|january|february|march|may|june|july|october|december)\s+20\d{2}$|^\d{1,2}[./-]\d{1,2}[./-]20\d{2}$|^\d{1,2}\.\s*[-–]\s*\d{1,2}\.\s*(?:januar|februar|märz|maerz|april|mai|juni|juli|august|september|oktober|november|dezember)\s+20\d{2}$/i;
 
@@ -154,7 +160,8 @@ export function evaluateEventCandidate(
 
   if (
     GENERIC_EVENT_TITLE_PATTERN.test(title) ||
-    JUNK_EVENT_TITLE_PATTERN.test(title)
+    JUNK_EVENT_TITLE_PATTERN.test(title) ||
+    ROLE_ONLY_EVENT_TITLE_PATTERN.test(title)
   ) {
     return { accepted: false, reason: "generic navigation title" };
   }
@@ -215,13 +222,21 @@ export function evaluateEventCandidate(
 export function shouldPublishEvent(input: EventQualityInput): QualityDecision {
   const decision = evaluateEventCandidate(input);
   if (!decision.accepted) return decision;
+  const category = normalizeEventCategory(input.category);
 
   if (!input.source_url || !isValidHttpUrl(input.source_url)) {
     return { accepted: false, reason: "missing source url" };
   }
 
+  if (category === "cinema") {
+    const title = input.title?.replace(/\s+/g, " ").trim() ?? "";
+    if (CINEMA_RELEASE_PLACEHOLDER_PATTERN.test(title)) {
+      return { accepted: false, reason: "cinema release placeholder" };
+    }
+  }
+
   if (
-    normalizeEventCategory(input.category) === "other" &&
+    category === "other" &&
     !hasEventDetails(input)
   ) {
     return { accepted: false, reason: "thin uncategorized event" };
