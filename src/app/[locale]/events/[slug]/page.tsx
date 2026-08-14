@@ -24,11 +24,13 @@ import { cleanEventTitle } from "@/lib/event-title";
 import { formatEventDescription } from "@/lib/event-description";
 import { getEventHeroGradient } from "@/lib/event-hero";
 import { EventNavigationArrows } from "@/components/EventNavigationArrows";
+import { EventHeroImageViewer } from "@/components/EventHeroImageViewer";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
 function safeBackgroundImageUrl(imageUrl: string | null | undefined) {
   if (!imageUrl) return null;
+  if (imageUrl.startsWith("/")) return imageUrl.replace(/"/g, "%22");
 
   try {
     const url = new URL(imageUrl);
@@ -62,7 +64,10 @@ export default async function EventDetailPage({ params }: Props) {
   });
   const eventImageUrl = safeBackgroundImageUrl(event.image_url);
   const coverImageUrl = event.organization?.cover_image_url ?? null;
-  const hasCoverImage = Boolean(eventImageUrl || coverImageUrl);
+  const coverBackgroundImageUrl = safeBackgroundImageUrl(coverImageUrl);
+  const heroImageUrl = eventImageUrl ?? coverBackgroundImageUrl;
+  const hasCoverImage = Boolean(heroImageUrl);
+  const eventTitle = cleanEventTitle(event.title, event.organization?.name);
   const heroTheme = getEventHeroGradient({
     seed: `${event.slug}|${event.id}`,
     title: event.title,
@@ -110,17 +115,17 @@ export default async function EventDetailPage({ params }: Props) {
                 : null
             }
           />
-          {eventImageUrl ? (
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url("${eventImageUrl}")` }}
-              aria-hidden
+          {heroImageUrl ? (
+            <EventHeroImageViewer
+              imageUrl={heroImageUrl}
+              title={eventTitle}
+              className="absolute inset-0"
             />
           ) : null}
           {!eventImageUrl && !coverImageUrl && (
             <div className={`absolute inset-0 ${heroTheme.className}`} aria-hidden />
           )}
-          {!eventImageUrl && event.organization && (
+          {!heroImageUrl && event.organization && (
             <OrgCoverArt
               category={event.organization.category}
               coverImageUrl={coverImageUrl}
@@ -129,13 +134,13 @@ export default async function EventDetailPage({ params }: Props) {
           )}
           {hasCoverImage && (
             <div
-              className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.10)_0%,rgba(15,23,42,0.35)_42%,rgba(15,23,42,0.76)_100%)]"
+              className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.10)_0%,rgba(15,23,42,0.35)_42%,rgba(15,23,42,0.76)_100%)]"
               aria-hidden
             />
           )}
           {!hasCoverImage && (
             <div
-              className={`absolute inset-0 ${
+              className={`pointer-events-none absolute inset-0 ${
                 heroTheme.tone === "dark"
                   ? "bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.02)_42%,rgba(15,23,42,0.24)_100%)]"
                   : "bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.00)_42%,rgba(15,23,42,0.06)_100%)]"
@@ -143,8 +148,8 @@ export default async function EventDetailPage({ params }: Props) {
             />
           )}
           <div
-            className={`absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 ${
-              coverImageUrl
+            className={`pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 ${
+              hasCoverImage
                 ? "text-white"
                 : heroTheme.tone === "dark"
                   ? "text-white"
@@ -198,7 +203,7 @@ export default async function EventDetailPage({ params }: Props) {
                     : "text-primary"
                 }`}
               >
-                {cleanEventTitle(event.title, event.organization?.name)}
+                {eventTitle}
               </h1>
               <p
                 className={`mt-4 text-lg ${
@@ -298,7 +303,7 @@ export default async function EventDetailPage({ params }: Props) {
             </a>
           )}
           <ShareButton
-            title={cleanEventTitle(event.title, event.organization?.name)}
+            title={eventTitle}
             className="rounded-full border border-border px-5 py-2.5 text-sm font-medium transition hover:border-primary hover:text-primary"
           />
         </div>
