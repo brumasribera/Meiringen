@@ -161,7 +161,7 @@ export function evaluateEventCandidate(
   if (
     GENERIC_EVENT_TITLE_PATTERN.test(title) ||
     JUNK_EVENT_TITLE_PATTERN.test(title) ||
-    (ROLE_ONLY_EVENT_TITLE_PATTERN.test(title) && !hasEventDetails(input))
+    ROLE_ONLY_EVENT_TITLE_PATTERN.test(title)
   ) {
     return { accepted: false, reason: "generic navigation title" };
   }
