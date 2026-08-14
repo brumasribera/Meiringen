@@ -5,6 +5,10 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createHash } from "node:crypto";
 import { agendaHorizonDate, isWithinAgendaHorizon } from "./constants";
 import { buildOccurrenceSlug } from "./expand-recurrence";
+import {
+  evaluateEventCandidate,
+  shouldDeleteScrapedEvent,
+} from "../curation/quality";
 
 type ScrapeSource = {
   id: string;
@@ -19,6 +23,8 @@ type ScrapeResult = {
   imported: number;
   updated: number;
   skipped: number;
+  rejected: number;
+  deleted: number;
   sources: number;
   pages: number;
   horizon: string;
@@ -33,7 +39,7 @@ function hostnameFromUrl(url: string): string | null {
 }
 
 async function loadOrganizationHosts(
-  supabase: SupabaseClient
+  supabase: SupabaseClient,
 ): Promise<Map<string, string>> {
   const { data: organizations } = await supabase
     .from("organizations")
@@ -61,7 +67,7 @@ async function loadOrganizationHosts(
 function resolveOrganizationId(
   event: ScrapedEvent,
   sourceUrl: string,
-  hosts: Map<string, string>
+  hosts: Map<string, string>,
 ): string | null {
   for (const candidate of [event.source_url, sourceUrl]) {
     const host = hostnameFromUrl(candidate);
@@ -104,7 +110,10 @@ function absoluteUrl(value: string, baseUrl: string): string | null {
 }
 
 function stripTags(value: string): string {
-  return value.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  return value
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function decodeHtml(value: string): string {
@@ -121,8 +130,7 @@ function discoverEventPageUrls(baseUrl: string, html: string): string[] {
   const candidatePattern =
     /(agenda|anlaesse|anlässe|event|events|veranstaltung|veranstaltungen|termine|kalender|programm|jahresprogramm|spielplan)/i;
   const links: string[] = [];
-  const anchorRegex =
-    /<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+  const anchorRegex = /<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
 
   let match;
   while ((match = anchorRegex.exec(html)) !== null) {
@@ -137,7 +145,9 @@ function discoverEventPageUrls(baseUrl: string, html: string): string[] {
   return Array.from(new Set(links)).slice(0, 8);
 }
 
-async function collectSourcePages(source: ScrapeSource): Promise<Array<{ url: string; html: string }>> {
+async function collectSourcePages(
+  source: ScrapeSource,
+): Promise<Array<{ url: string; html: string }>> {
   const homeHtml = await fetchHtml(source.url);
   if (!homeHtml) return [];
 
@@ -182,7 +192,7 @@ function isKinoMeiringenSource(url: string): boolean {
 function isRegionallyRelevant(
   event: ScrapedEvent,
   sourceUrl: string,
-  sourceSiteUrl: string
+  sourceSiteUrl: string,
 ): boolean {
   if (!isBroadHost(sourceUrl) && !isBroadHost(sourceSiteUrl)) return true;
 
@@ -195,7 +205,7 @@ function isRegionallyRelevant(
       sourceUrl,
     ]
       .filter(Boolean)
-      .join(" ")
+      .join(" "),
   );
 }
 
@@ -203,20 +213,35 @@ async function saveScrapedEvent(
   supabase: SupabaseClient,
   event: ScrapedEvent,
   source: ScrapeSource,
-  hosts: Map<string, string>
-): Promise<"imported" | "updated" | "skipped"> {
+  hosts: Map<string, string>,
+): Promise<"imported" | "updated" | "skipped" | "rejected"> {
   const sourceUrl = absoluteUrl(event.source_url, source.url);
   if (!sourceUrl || !isWithinAgendaHorizon(event.start_date)) return "skipped";
   if (!isRegionallyRelevant(event, sourceUrl, source.url)) return "skipped";
 
+  const quality = evaluateEventCandidate({
+    ...event,
+    source_url: sourceUrl,
+    sourceName: source.name,
+    siteUrl: source.url,
+  });
+  if (!quality.accepted) return "rejected";
+
   const kinoMeiringenEvent =
     isKinoMeiringenSource(sourceUrl) ||
     /kino\s*\+?|kino-meiringen|cinema/i.test(
-      [event.title, event.description, source.name, source.url].filter(Boolean).join(" ")
+      [event.title, event.description, source.name, source.url]
+        .filter(Boolean)
+        .join(" "),
     );
 
   const organizationId =
-    source.organizationId ?? resolveOrganizationId({ ...event, source_url: sourceUrl }, source.url, hosts);
+    source.organizationId ??
+    resolveOrganizationId(
+      { ...event, source_url: sourceUrl },
+      source.url,
+      hosts,
+    );
   const slug = buildOccurrenceSlug(event.title, event.start_date);
   const payload = {
     organization_id: organizationId,
@@ -267,7 +292,10 @@ async function saveScrapedEvent(
     .maybeSingle();
 
   if (duplicateLookupError) {
-    console.error("saveScrapedEvent duplicate lookup:", duplicateLookupError.message);
+    console.error(
+      "saveScrapedEvent duplicate lookup:",
+      duplicateLookupError.message,
+    );
   }
 
   if (duplicate?.id) return "skipped";
@@ -297,14 +325,70 @@ async function saveScrapedEvent(
   return "imported";
 }
 
+type CleanupEventRow = {
+  id: string;
+  title: string | null;
+  description: string | null;
+  category: string | null;
+  start_date: string | null;
+  end_date: string | null;
+  location_name: string | null;
+  address: string | null;
+  source_url: string | null;
+};
+
+async function cleanupSenselessScrapedEvents(supabase: SupabaseClient) {
+  const now = new Date();
+  const horizon = agendaHorizonDate(now);
+  const { data, error } = await supabase
+    .from("events")
+    .select(
+      "id, title, description, category, start_date, end_date, location_name, address, source_url",
+    )
+    .not("source_url", "is", null)
+    .eq("is_recurring_template", false)
+    .gte("start_date", now.toISOString())
+    .lte("start_date", horizon.toISOString())
+    .limit(1000);
+
+  if (error) {
+    console.error("cleanupSenselessScrapedEvents lookup:", error.message);
+    return { reviewed: 0, deleted: 0 };
+  }
+
+  const deleteIds: string[] = [];
+  for (const row of (data ?? []) as CleanupEventRow[]) {
+    const decision = shouldDeleteScrapedEvent(row);
+    if (!decision.accepted) deleteIds.push(row.id);
+  }
+
+  for (let index = 0; index < deleteIds.length; index += 100) {
+    const ids = deleteIds.slice(index, index + 100);
+    const { error: deleteError } = await supabase
+      .from("events")
+      .delete()
+      .in("id", ids);
+    if (deleteError) {
+      console.error(
+        "cleanupSenselessScrapedEvents delete:",
+        deleteError.message,
+      );
+      return { reviewed: data?.length ?? 0, deleted: index };
+    }
+  }
+
+  return { reviewed: data?.length ?? 0, deleted: deleteIds.length };
+}
+
 export async function scrapeActivitySources(
-  supabase: SupabaseClient
+  supabase: SupabaseClient,
 ): Promise<ScrapeResult> {
   const now = new Date();
   const horizon = agendaHorizonDate(now);
   let imported = 0;
   let updated = 0;
   let skipped = 0;
+  let rejected = 0;
   let pagesChecked = 0;
 
   const [{ data: sources }, hosts] = await Promise.all([
@@ -333,7 +417,8 @@ export async function scrapeActivitySources(
         url: org.website_url as string,
         type: "generic",
         organizationId:
-          websiteCounts.get(key) === 1 && !isBroadHost(org.website_url as string)
+          websiteCounts.get(key) === 1 &&
+          !isBroadHost(org.website_url as string)
             ? org.id
             : null,
         isOrganizationSource: true,
@@ -346,12 +431,14 @@ export async function scrapeActivitySources(
     organizationId: null,
     isOrganizationSource: false,
   }));
-  const allSources = [...configuredSources, ...dynamicSources].filter((source) => {
-    const key = source.url.replace(/\/$/, "");
-    if (seenUrls.has(key)) return false;
-    seenUrls.add(key);
-    return true;
-  });
+  const allSources = [...configuredSources, ...dynamicSources].filter(
+    (source) => {
+      const key = source.url.replace(/\/$/, "");
+      if (seenUrls.has(key)) return false;
+      seenUrls.add(key);
+      return true;
+    },
+  );
 
   const workerCount = 4;
   let cursor = 0;
@@ -368,6 +455,7 @@ export async function scrapeActivitySources(
           const result = await saveScrapedEvent(supabase, event, source, hosts);
           if (result === "imported") imported++;
           else if (result === "updated") updated++;
+          else if (result === "rejected") rejected++;
           else skipped++;
         }
       }
@@ -382,11 +470,14 @@ export async function scrapeActivitySources(
   }
 
   await Promise.all(Array.from({ length: workerCount }, () => worker()));
+  const cleanup = await cleanupSenselessScrapedEvents(supabase);
 
   return {
     imported,
     updated,
     skipped,
+    rejected,
+    deleted: cleanup.deleted,
     sources: allSources.length,
     pages: pagesChecked,
     horizon: horizon.toISOString(),

@@ -10,7 +10,7 @@
     },
     {
       "path": "/api/cron/org-research",
-      "schedule": "0 7 * * 1"
+      "schedule": "30 6 * * *"
     }
   ]
 }

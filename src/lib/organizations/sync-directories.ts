@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createServiceClient } from "../supabase/server";
 import { slugify } from "../utils";
 import type { Locality, OrganizationCategory } from "../constants";
+import { evaluateOrganizationCandidate } from "../curation/quality";
 
 type DirectorySource = "meiringen_ch" | "haslital_brienz";
 
@@ -37,6 +38,7 @@ type SourceResult = {
   found: number;
   inserted: number;
   updated: number;
+  rejected: number;
   markedMissing: number;
   archived: number;
 };
@@ -44,6 +46,7 @@ type SourceResult = {
 export type OrganizationDirectorySyncResult = {
   inserted: number;
   updated: number;
+  rejected: number;
   markedMissing: number;
   archived: number;
   sources: SourceResult[];
@@ -90,10 +93,16 @@ function decodeHtml(value: string): string {
 }
 
 function stripTags(value: string): string {
-  return decodeHtml(value).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  return decodeHtml(value)
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
-function absoluteUrl(value: string | null | undefined, baseUrl: string): string | null {
+function absoluteUrl(
+  value: string | null | undefined,
+  baseUrl: string,
+): string | null {
   if (!value) return null;
   try {
     const url = new URL(decodeHtml(value.trim()), baseUrl);
@@ -130,15 +139,24 @@ function inferLocality(text: string): Locality | null {
   return localities.find((locality) => value.includes(locality)) ?? null;
 }
 
-function inferCategory(name: string, fallback?: string | null): OrganizationCategory {
+function inferCategory(
+  name: string,
+  fallback?: string | null,
+): OrganizationCategory {
   if (fallback && CATEGORY_MAP[fallback]) return CATEGORY_MAP[fallback];
   const text = name.toLowerCase();
   if (/(chor|jodler|musik|harmonika|kapelle)/.test(text)) return "music";
-  if (/(turn|ski|club|sport|fussball|schwing|tennis|curling|karate|kanu|reit)/.test(text)) return "sport";
+  if (
+    /(turn|ski|club|sport|fussball|schwing|tennis|curling|karate|kanu|reit)/.test(
+      text,
+    )
+  )
+    return "sport";
   if (/(natur|fischer|sac|wander)/.test(text)) return "nature";
   if (/(schule|kindergarten|bildung)/.test(text)) return "education";
   if (/(theater|museum|kultur|tracht)/.test(text)) return "culture";
-  if (/(samariter|frauenverein|beratung|procap|gemeinnutz)/.test(text)) return "social";
+  if (/(samariter|frauenverein|beratung|procap|gemeinnutz)/.test(text))
+    return "social";
   return "other";
 }
 
@@ -169,7 +187,9 @@ function extractWebsite(html: string): string | null {
   return externalLinks[0] ?? null;
 }
 
-async function parseMeiringenDirectory(): Promise<DirectoryOrganization[] | null> {
+async function parseMeiringenDirectory(): Promise<
+  DirectoryOrganization[] | null
+> {
   const html = await fetchHtml(MEIRINGEN_DIRECTORY_URL);
   if (!html) return null;
 
@@ -200,30 +220,44 @@ async function parseMeiringenDirectory(): Promise<DirectoryOrganization[] | null
 
   await mapWithConcurrency(entries, 4, async (entry) => {
     const detailHtml = await fetchHtml(entry.sourceUrl);
-    entry.websiteUrl = detailHtml ? absoluteUrl(extractWebsite(detailHtml), entry.sourceUrl) : null;
+    entry.websiteUrl = detailHtml
+      ? absoluteUrl(extractWebsite(detailHtml), entry.sourceUrl)
+      : null;
   });
 
   return dedupeDirectoryOrganizations(entries);
 }
 
 function parseHaslitalDirectoryRows(html: string): DirectoryOrganization[] {
-  const rows = [...html.matchAll(/<tr\b[^>]*role="row"[^>]*>([\s\S]*?)<\/tr>/gi)];
+  const rows = [
+    ...html.matchAll(/<tr\b[^>]*role="row"[^>]*>([\s\S]*?)<\/tr>/gi),
+  ];
   const entries: DirectoryOrganization[] = [];
 
   for (const row of rows) {
-    const cells = [...row[1].matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/gi)].map((cell) => cell[1]);
+    const cells = [...row[1].matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/gi)].map(
+      (cell) => cell[1],
+    );
     if (cells.length < 2) continue;
 
-    const firstLink = cells[0].match(/<a\b[^>]*href=["']([^"']+)["'][^>]*>[\s\S]*?<\/a>/i);
-    const secondLink = cells[1].match(/<a\b[^>]*href=["']([^"']+)["'][^>]*>[\s\S]*?<\/a>/i);
+    const firstLink = cells[0].match(
+      /<a\b[^>]*href=["']([^"']+)["'][^>]*>[\s\S]*?<\/a>/i,
+    );
+    const secondLink = cells[1].match(
+      /<a\b[^>]*href=["']([^"']+)["'][^>]*>[\s\S]*?<\/a>/i,
+    );
     const name = stripTags(cells[0]);
     if (!name || name.length < 3 || /^name$/i.test(name)) continue;
 
     const websiteUrl =
       absoluteUrl(firstLink?.[1], HASLITAL_DIRECTORY_URL) ??
       absoluteUrl(secondLink?.[1], HASLITAL_DIRECTORY_URL);
-    const email = row[1].match(/href=["']mailto:\s*([^"']+)["']/i)?.[1]?.trim() ?? null;
-    const phone = stripTags(cells[3] ?? "").match(/\+?\d[\d\s/().-]{5,}/)?.[0]?.trim() ?? null;
+    const email =
+      row[1].match(/href=["']mailto:\s*([^"']+)["']/i)?.[1]?.trim() ?? null;
+    const phone =
+      stripTags(cells[3] ?? "")
+        .match(/\+?\d[\d\s/().-]{5,}/)?.[0]
+        ?.trim() ?? null;
 
     entries.push({
       name,
@@ -240,7 +274,9 @@ function parseHaslitalDirectoryRows(html: string): DirectoryOrganization[] {
   return dedupeDirectoryOrganizations(entries);
 }
 
-async function parseHaslitalDirectory(): Promise<DirectoryOrganization[] | null> {
+async function parseHaslitalDirectory(): Promise<
+  DirectoryOrganization[] | null
+> {
   const html = await fetchHtml(HASLITAL_DIRECTORY_URL);
   return html ? parseHaslitalDirectoryRows(html) : null;
 }
@@ -258,7 +294,7 @@ function dedupeDirectoryOrganizations(entries: DirectoryOrganization[]) {
 async function mapWithConcurrency<T>(
   items: T[],
   concurrency: number,
-  callback: (item: T) => Promise<void>
+  callback: (item: T) => Promise<void>,
 ) {
   let index = 0;
   async function worker() {
@@ -274,7 +310,7 @@ async function loadExistingOrganizations(supabase: SupabaseClient) {
   const { data, error } = await supabase
     .from("organizations")
     .select(
-      "id, name, slug, source_url, website_url, email, phone, category, status, directory_source_url, directory_missing_since"
+      "id, name, slug, source_url, website_url, email, phone, category, status, directory_source_url, directory_missing_since",
     );
   if (error) throw new Error(error.message);
   return (data ?? []) as ExistingOrganization[];
@@ -282,7 +318,7 @@ async function loadExistingOrganizations(supabase: SupabaseClient) {
 
 function findExisting(
   entry: DirectoryOrganization,
-  existing: ExistingOrganization[]
+  existing: ExistingOrganization[],
 ): ExistingOrganization | null {
   const entrySlug = slugify(entry.name);
   const entryKey = normalizeKey(entry.name);
@@ -294,7 +330,10 @@ function findExisting(
   );
 }
 
-function mergeExistingPayload(entry: DirectoryOrganization, existing: ExistingOrganization) {
+function mergeExistingPayload(
+  entry: DirectoryOrganization,
+  existing: ExistingOrganization,
+) {
   return {
     source_url: existing.source_url ?? entry.sourceUrl,
     directory_source_url: entry.directorySourceUrl,
@@ -333,7 +372,7 @@ async function reconcileSource(
   source: DirectorySource,
   url: string,
   entries: DirectoryOrganization[] | null,
-  existing: ExistingOrganization[]
+  existing: ExistingOrganization[],
 ): Promise<SourceResult> {
   const result: SourceResult = {
     source,
@@ -342,6 +381,7 @@ async function reconcileSource(
     found: entries?.length ?? 0,
     inserted: 0,
     updated: 0,
+    rejected: 0,
     markedMissing: 0,
     archived: 0,
   };
@@ -350,6 +390,18 @@ async function reconcileSource(
 
   const seenIds = new Set<string>();
   for (const entry of entries) {
+    const quality = evaluateOrganizationCandidate({
+      name: entry.name,
+      category: entry.category,
+      website_url: entry.websiteUrl,
+      source_url: entry.sourceUrl,
+      locality: entry.locality,
+    });
+    if (!quality.accepted) {
+      result.rejected++;
+      continue;
+    }
+
     const match = findExisting(entry, existing);
     if (match) {
       seenIds.add(match.id);
@@ -362,7 +414,9 @@ async function reconcileSource(
       continue;
     }
 
-    const { error } = await supabase.from("organizations").insert(newOrganizationPayload(entry));
+    const { error } = await supabase
+      .from("organizations")
+      .insert(newOrganizationPayload(entry));
     if (error?.code === "23505") {
       continue;
     }
@@ -377,7 +431,7 @@ async function reconcileSource(
     (org) =>
       org.directory_source_url === url ||
       org.source_url?.startsWith(`${url}/`) ||
-      org.source_url?.startsWith(`${url}#`)
+      org.source_url?.startsWith(`${url}#`),
   );
 
   for (const org of sourceBacked) {
@@ -418,24 +472,25 @@ export async function syncOrganizationDirectories(): Promise<OrganizationDirecto
     "meiringen_ch",
     MEIRINGEN_DIRECTORY_URL,
     meiringenEntries,
-    await loadExistingOrganizations(supabase)
+    await loadExistingOrganizations(supabase),
   );
   const haslitalResult = await reconcileSource(
     supabase,
     "haslital_brienz",
     HASLITAL_DIRECTORY_URL,
     haslitalEntries,
-    await loadExistingOrganizations(supabase)
+    await loadExistingOrganizations(supabase),
   );
-  const sources = [
-    meiringenResult,
-    haslitalResult,
-  ];
+  const sources = [meiringenResult, haslitalResult];
 
   return {
     inserted: sources.reduce((sum, source) => sum + source.inserted, 0),
     updated: sources.reduce((sum, source) => sum + source.updated, 0),
-    markedMissing: sources.reduce((sum, source) => sum + source.markedMissing, 0),
+    rejected: sources.reduce((sum, source) => sum + source.rejected, 0),
+    markedMissing: sources.reduce(
+      (sum, source) => sum + source.markedMissing,
+      0,
+    ),
     archived: sources.reduce((sum, source) => sum + source.archived, 0),
     sources,
     syncedAt: new Date().toISOString(),

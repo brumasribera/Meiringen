@@ -195,6 +195,7 @@ Open [http://localhost:3000/de](http://localhost:3000/de)
 6. Cron jobs are configured in `vercel.json`:
    - Newsletter: 1st of each month at 08:00 UTC
    - Scrape: daily at 06:00 UTC
+   - Organization directory sync: daily at 06:30 UTC
 
 Vercel automatically sends `Authorization: Bearer <CRON_SECRET>` to cron endpoints.
 
@@ -226,12 +227,37 @@ supabase/migrations/  # SQL schema, RLS, seed data
 
 The daily cron (`/api/cron/scrape`, 06:00 UTC) syncs the public agenda:
 
-1. **Scrape** — fetches active sources plus organization websites, parses JSON-LD events, and publishes activities within the next **365 days**.
-2. **Expand** — turns recurring templates into dated occurrences (weekly/bi-weekly) for the same one-year horizon.
+1. **Scrape** — fetches active sources plus organization websites, parses JSON-LD/dated event links, and publishes activities within the next **365 days**.
+2. **Curate** — rejects generic navigation labels, invalid dates, thin broad-source rows, and broad tourist listings without Meiringen/Haslital regional signals.
+3. **Clean up** — deletes only clearly bad future rows that were imported from a `source_url`; admin-created rows are left alone.
+
+The daily organization cron (`/api/cron/org-research`, 06:30 UTC) refreshes Meiringen and Haslital-Brienz organization directories. New directory discoveries stay as drafts; missing source-backed organizations are only archived after the configured grace period.
 
 Recurring rows marked as templates are hidden from the public agenda; only their dated occurrences appear. Duplicates are prevented by unique slugs and `(source_url, title, start_date)` for scraped events.
 
 To run a manual sync locally: `npx tsx scripts/sync-agenda.mjs`
+
+### Optional Ubuntu Codex research runner
+
+For source discovery with the ChatGPT/Codex CLI installed on Ubuntu, pull production or development Supabase env vars into `.env.local`, then run:
+
+```bash
+npm run scrape:curated
+```
+
+This runs the deterministic organization and event sync first, then calls `codex exec --search` with `scripts/prompts/meiringen-curated-scrape.md`. The model must return JSON matching `scripts/curated-scrape-result.schema.json`; the importer still validates URLs, dates, categories, and regional relevance before writing to Supabase.
+
+Dry run:
+
+```bash
+npm run scrape:curated:dry-run
+```
+
+Install the Ubuntu crontab entry after `.env.local` is present:
+
+```bash
+npm run scrape:curated:install-cron
+```
 
 ## License
 

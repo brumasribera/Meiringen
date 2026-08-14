@@ -1,0 +1,97 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["organizations", "events"],
+  "properties": {
+    "organizations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "category", "source_url", "confidence"],
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": ["string", "null"] },
+          "description_en": { "type": ["string", "null"] },
+          "category": {
+            "type": "string",
+            "enum": [
+              "culture",
+              "sport",
+              "social",
+              "integration",
+              "education",
+              "music",
+              "nature",
+              "festival",
+              "market",
+              "other"
+            ]
+          },
+          "website_url": { "type": ["string", "null"] },
+          "email": { "type": ["string", "null"] },
+          "phone": { "type": ["string", "null"] },
+          "address": { "type": ["string", "null"] },
+          "locality": { "type": ["string", "null"] },
+          "source_url": { "type": "string" },
+          "languages": {
+            "type": ["array", "null"],
+            "items": {
+              "type": "string",
+              "enum": ["de", "gsw", "en", "fr", "it", "rm", "pt", "es", "ca"]
+            }
+          },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "category",
+          "start_date",
+          "source_url",
+          "confidence"
+        ],
+        "properties": {
+          "title": { "type": "string" },
+          "description": { "type": ["string", "null"] },
+          "category": {
+            "type": "string",
+            "enum": [
+              "culture",
+              "sport",
+              "social",
+              "education",
+              "music",
+              "nature",
+              "festival",
+              "market",
+              "cinema",
+              "other",
+              "tradition"
+            ]
+          },
+          "start_date": { "type": "string" },
+          "end_date": { "type": ["string", "null"] },
+          "location_name": { "type": ["string", "null"] },
+          "address": { "type": ["string", "null"] },
+          "price": { "type": ["string", "null"] },
+          "language": {
+            "type": ["string", "null"],
+            "enum": ["de", "gsw", "en", "fr", "it", "rm", "pt", null]
+          },
+          "source_url": { "type": "string" },
+          "organization_name": { "type": ["string", "null"] },
+          "organization_website_url": { "type": ["string", "null"] },
+          "organization_source_url": { "type": ["string", "null"] },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    }
+  }
+}

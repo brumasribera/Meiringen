@@ -20,16 +20,56 @@ export type ScrapedEvent = {
  */
 export async function parseGenericEvents(
   pageUrl: string,
-  html: string
+  html: string,
 ): Promise<ScrapedEvent[]> {
   const events = [
     ...parseJsonLdEvents(pageUrl, html),
     ...parseLinkedDatedEvents(pageUrl, html),
+    ...parseTableDatedEvents(pageUrl, html),
   ];
 
   return dedupeEvents(events).filter((event) =>
-    isWithinAgendaHorizon(event.start_date)
+    isWithinAgendaHorizon(event.start_date),
   );
+}
+
+function parseTableDatedEvents(pageUrl: string, html: string): ScrapedEvent[] {
+  const events: ScrapedEvent[] = [];
+  const rows = [...html.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)];
+
+  for (const row of rows) {
+    const cells = [...row[1].matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/gi)].map(
+      (cell) => cell[1],
+    );
+    if (cells.length < 3) continue;
+
+    const dateText = stripTags(decodeHtml(cells[0])).trim();
+    const timeText = stripTags(decodeHtml(cells[1] ?? "")).trim();
+    const title = cleanEventTitle(stripTags(decodeHtml(cells[2])).trim());
+    if (!title || title.length < 4) continue;
+
+    const start = parseCompactDate(dateText, timeText);
+    if (!start) continue;
+
+    const rowLink = row[1].match(/<a\b[^>]*href=["']([^"']+)["']/i)?.[1];
+    events.push({
+      title,
+      description: null,
+      category: inferCategory(title, ""),
+      start_date: start,
+      end_date: parseEndDate(start, timeText),
+      location_name: cells[3]
+        ? stripTags(decodeHtml(cells[3])).trim() || null
+        : null,
+      address: null,
+      source_url: rowLink
+        ? (toAbsoluteUrl(rowLink, pageUrl) ?? pageUrl)
+        : pageUrl,
+      status: "draft",
+    });
+  }
+
+  return events;
 }
 
 function parseJsonLdEvents(pageUrl: string, html: string): ScrapedEvent[] {
@@ -62,8 +102,7 @@ function parseJsonLdEvents(pageUrl: string, html: string): ScrapedEvent[] {
 
 function parseLinkedDatedEvents(pageUrl: string, html: string): ScrapedEvent[] {
   const events: ScrapedEvent[] = [];
-  const anchorRegex =
-    /<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+  const anchorRegex = /<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
 
   let match;
   while ((match = anchorRegex.exec(html)) !== null) {
@@ -100,7 +139,7 @@ function isEventType(item: Record<string, unknown>): boolean {
 
 function mapJsonLdEvent(
   item: Record<string, unknown>,
-  pageUrl: string
+  pageUrl: string,
 ): ScrapedEvent | null {
   const title = cleanEventTitle(String(item.name ?? item.title ?? "").trim());
   const start = String(item.startDate ?? "");
@@ -113,7 +152,8 @@ function mapJsonLdEvent(
   if (end && Number.isNaN(end.getTime())) return null;
 
   const location = item.location as Record<string, unknown> | undefined;
-  const address = location?.address as Record<string, unknown> | string | undefined;
+  const address = location?.address as
+    Record<string, unknown> | string | undefined;
 
   let addressStr: string | null = null;
   if (typeof address === "string") addressStr = address;
@@ -130,7 +170,10 @@ function mapJsonLdEvent(
   return {
     title,
     description: item.description ? String(item.description) : null,
-    category: inferCategory(title, item.description ? String(item.description) : ""),
+    category: inferCategory(
+      title,
+      item.description ? String(item.description) : "",
+    ),
     start_date: startDate.toISOString(),
     end_date: end ? end.toISOString() : null,
     location_name: location?.name ? String(location.name) : null,
@@ -192,17 +235,17 @@ const MONTHS: Record<string, number> = {
 function parseExplicitDate(text: string): string | null {
   const normalized = text.toLowerCase().normalize("NFKD");
   const namedRange = normalized.match(
-    /\b(\d{1,2})\.?\s+([a-zà-ÿ]+)\s*[-–]\s*\d{1,2}\.?\s+[a-zà-ÿ]+\s+((?:20)\d{2})\b/
+    /\b(\d{1,2})\.?\s+([a-zà-ÿ]+)\s*[-–]\s*\d{1,2}\.?\s+[a-zà-ÿ]+\s+((?:20)\d{2})\b/,
   );
   const sameMonthRange = normalized.match(
-    /\b(\d{1,2})\.\s*[-–]\s*\d{1,2}\.?\s+([a-zà-ÿ]+)\s+((?:20)\d{2})\b/
+    /\b(\d{1,2})\.\s*[-–]\s*\d{1,2}\.?\s+([a-zà-ÿ]+)\s+((?:20)\d{2})\b/,
   );
   const numeric = normalized.match(
-    /\b(\d{1,2})[./-](\d{1,2})[./-]((?:20)\d{2})\b/
+    /\b(\d{1,2})[./-](\d{1,2})[./-]((?:20)\d{2})\b/,
   );
   const iso = normalized.match(/\b((?:20)\d{2})-(\d{1,2})-(\d{1,2})\b/);
   const named = normalized.match(
-    /\b(\d{1,2})\.?\s+([a-zà-ÿ]+)\s+((?:20)\d{2})\b/
+    /\b(\d{1,2})\.?\s+([a-zà-ÿ]+)\s+((?:20)\d{2})\b/,
   );
   const time =
     normalized.match(/\b(?:um\s*)?(\d{1,2}):(\d{2})(?:\s*uhr)?\b/) ??
@@ -213,7 +256,13 @@ function parseExplicitDate(text: string): string | null {
   if (namedRange) {
     const month = MONTHS[namedRange[2]];
     if (month) {
-      return buildUtcIso(Number(namedRange[3]), month, Number(namedRange[1]), hour, minute);
+      return buildUtcIso(
+        Number(namedRange[3]),
+        month,
+        Number(namedRange[1]),
+        hour,
+        minute,
+      );
     }
   }
 
@@ -225,27 +274,89 @@ function parseExplicitDate(text: string): string | null {
         month,
         Number(sameMonthRange[1]),
         hour,
-        minute
+        minute,
       );
     }
   }
 
   if (numeric) {
-    return buildUtcIso(Number(numeric[3]), Number(numeric[2]), Number(numeric[1]), hour, minute);
+    return buildUtcIso(
+      Number(numeric[3]),
+      Number(numeric[2]),
+      Number(numeric[1]),
+      hour,
+      minute,
+    );
   }
 
   if (iso) {
-    return buildUtcIso(Number(iso[1]), Number(iso[2]), Number(iso[3]), hour, minute);
+    return buildUtcIso(
+      Number(iso[1]),
+      Number(iso[2]),
+      Number(iso[3]),
+      hour,
+      minute,
+    );
   }
 
   if (named) {
     const month = MONTHS[named[2]];
     if (month) {
-      return buildUtcIso(Number(named[3]), month, Number(named[1]), hour, minute);
+      return buildUtcIso(
+        Number(named[3]),
+        month,
+        Number(named[1]),
+        hour,
+        minute,
+      );
     }
   }
 
   return null;
+}
+
+function parseCompactDate(dateText: string, timeText: string): string | null {
+  const numeric = dateText
+    .trim()
+    .match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{2}|\d{4})$/);
+  if (!numeric) return null;
+
+  const yearValue = Number(numeric[3]);
+  const year = yearValue < 100 ? 2000 + yearValue : yearValue;
+  const time = parseFirstTime(timeText);
+  return buildUtcIso(
+    year,
+    Number(numeric[2]),
+    Number(numeric[1]),
+    time?.hour ?? 12,
+    time?.minute ?? 0,
+  );
+}
+
+function parseFirstTime(text: string): { hour: number; minute: number } | null {
+  const match =
+    text.match(/\b(\d{1,2}):(\d{2})\b/) ??
+    text.match(/\b(\d{1,2})\.(\d{2})\s*uhr\b/i);
+  if (!match) return null;
+  return {
+    hour: Number(match[1]),
+    minute: Number(match[2]),
+  };
+}
+
+function parseEndDate(startIso: string, timeText: string): string | null {
+  const range = timeText.match(
+    /\b\d{1,2}[:.]\d{2}\s*[-–]\s*(\d{1,2})[:.](\d{2})\b/,
+  );
+  if (!range) return null;
+
+  const start = new Date(startIso);
+  if (Number.isNaN(start.getTime())) return null;
+
+  const end = new Date(start);
+  end.setUTCHours(Number(range[1]), Number(range[2]), 0, 0);
+  if (end <= start) return null;
+  return end.toISOString();
 }
 
 function buildUtcIso(
@@ -253,9 +364,16 @@ function buildUtcIso(
   month: number,
   day: number,
   hour: number,
-  minute: number
+  minute: number,
 ): string | null {
-  if (month < 1 || month > 12 || day < 1 || day > 31 || hour > 23 || minute > 59) {
+  if (
+    month < 1 ||
+    month > 12 ||
+    day < 1 ||
+    day > 31 ||
+    hour > 23 ||
+    minute > 59
+  ) {
     return null;
   }
 
@@ -306,16 +424,25 @@ function dedupeEvents(events: ScrapedEvent[]): ScrapedEvent[] {
   });
 }
 
-function inferCategory(title: string, description: string): EventCategory {
+export function inferCategory(
+  title: string,
+  description: string,
+): EventCategory {
   const text = `${title} ${description}`.toLowerCase();
   if (/(kino\s*\+?|kino-meiringen|kinomeiringen|cinema)/.test(text)) {
     return "cinema";
   }
-  if (/(ubersitz|altjahrswoche|trychel|trychler|brauch|brauchtum|warenmarkt)/.test(text)) {
+  if (
+    /(ubersitz|altjahrswoche|trychel|trychler|brauch|brauchtum|warenmarkt)/.test(
+      text,
+    )
+  ) {
     return "tradition";
   }
   if (/(markt|market|wochenmarkt)/.test(text)) return "market";
-  if (/(turnier|sport|fussball|tennis|schwing|lauf|volleyball|curling)/.test(text)) {
+  if (
+    /(turnier|sport|fussball|tennis|schwing|lauf|volleyball|curling)/.test(text)
+  ) {
     return "sport";
   }
   if (/(konzert|musik|jodel|probe|chor)/.test(text)) return "music";
