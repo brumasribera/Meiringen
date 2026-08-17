@@ -60,7 +60,7 @@ export function EventInterestButton({
   }
 
   return (
-    <div className="flex flex-col items-start">
+    <div className="relative inline-flex">
       <button
         type="button"
         onClick={handleToggle}
@@ -73,15 +73,19 @@ export function EventInterestButton({
       >
         {loading ? "…" : interested ? t("interestActive") : t("interestCta")}
       </button>
-      {(interestCount > 0 || error) && (
-        <div className="mt-2 min-h-5">
-          {interestCount > 0 && (
-            <p className="text-xs text-muted">
-              {t("interestCount", { count: interestCount })}
-            </p>
-          )}
-          {error && <p className="text-xs text-red-600">{error}</p>}
-        </div>
+      {interestCount > 0 && (
+        <span
+          aria-label={t("interestCount", { count: interestCount })}
+          title={t("interestCount", { count: interestCount })}
+          className="absolute -right-1 -top-2 inline-flex min-h-5 min-w-5 items-center justify-center rounded-full border-2 border-card bg-[#111111] px-1 text-[0.65rem] font-bold leading-none text-white"
+        >
+          {interestCount}
+        </span>
+      )}
+      {error && (
+        <p className="absolute left-0 top-full z-10 mt-2 whitespace-nowrap rounded-lg bg-red-50 px-2 py-1 text-xs text-red-600 shadow-sm">
+          {error}
+        </p>
       )}
     </div>
   );
