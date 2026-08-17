@@ -4,12 +4,12 @@ import { getAuthProviders } from "@/lib/auth-providers";
 
 type Props = {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ error?: string; next?: string }>;
+  searchParams: Promise<{ error?: string; next?: string; mode?: string }>;
 };
 
 export default async function LoginPage({ params, searchParams }: Props) {
   const { locale } = await params;
-  const { error, next } = await searchParams;
+  const { error, next, mode } = await searchParams;
   setRequestLocale(locale);
   const providers = await getAuthProviders();
 
@@ -20,6 +20,7 @@ export default async function LoginPage({ params, searchParams }: Props) {
         useCustomGoogle={providers.useCustomGoogle}
         authError={error ? decodeURIComponent(error) : undefined}
         next={next ? decodeURIComponent(next) : undefined}
+        initialMode={mode === "signup" ? "signup" : "signin"}
       />
     </div>
   );

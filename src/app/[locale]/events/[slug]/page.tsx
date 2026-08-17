@@ -9,6 +9,7 @@ import {
 } from "@/lib/data";
 import {
   buildAlertHref,
+  buildGoogleCalendarUrl,
   buildGoogleMapsUrl,
   formatDateRange,
 } from "@/lib/utils";
@@ -25,6 +26,7 @@ import { formatEventDescription } from "@/lib/event-description";
 import { getEventHeroGradient } from "@/lib/event-hero";
 import { EventNavigationArrows } from "@/components/EventNavigationArrows";
 import { EventHeroImageViewer } from "@/components/EventHeroImageViewer";
+import { AddToCalendarButton } from "@/components/AddToCalendarButton";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -63,6 +65,13 @@ export default async function EventDetailPage({ params }: Props) {
     longitude: event.longitude,
   });
   const eventImageUrl = safeBackgroundImageUrl(event.image_url);
+  const calendarHref = buildGoogleCalendarUrl({
+    title: cleanEventTitle(event.title, event.organization?.name),
+    start: event.start_date,
+    end: event.end_date,
+    description: event.description,
+    location: [event.location_name, event.address].filter(Boolean).join(", "),
+  });
   const coverImageUrl = event.organization?.cover_image_url ?? null;
   const coverBackgroundImageUrl = safeBackgroundImageUrl(coverImageUrl);
   const heroImageUrl = eventImageUrl ?? coverBackgroundImageUrl;
@@ -281,6 +290,12 @@ export default async function EventDetailPage({ params }: Props) {
               userId={user?.id}
             />
           )}
+          <AddToCalendarButton
+            calendarUrl={calendarHref}
+            locale={locale}
+            isSignedIn={Boolean(user)}
+            className={`${actionButtonClass} inline-flex items-center gap-2 px-5 py-2.5 text-sm`}
+          />
           <Link href={alertHref} className={`${actionButtonClass} px-5 py-2.5 text-sm`}>
             {t("events.getAlertsForThis")}
           </Link>

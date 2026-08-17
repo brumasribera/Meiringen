@@ -139,3 +139,37 @@ export function buildGoogleMapsUrl({
 
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(value)}`;
 }
+
+type GoogleCalendarUrlOptions = {
+  title: string;
+  start: string;
+  end?: string | null;
+  description?: string | null;
+  location?: string | null;
+};
+
+function toGoogleCalendarDate(value: Date): string {
+  return value.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+}
+
+export function buildGoogleCalendarUrl({
+  title,
+  start,
+  end,
+  description,
+  location,
+}: GoogleCalendarUrlOptions): string {
+  const startDate = new Date(start);
+  const endDate = end ? new Date(end) : new Date(startDate.getTime() + 60 * 60 * 1000);
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: title,
+    dates: `${toGoogleCalendarDate(startDate)}/${toGoogleCalendarDate(endDate)}`,
+    ctz: "Europe/Zurich",
+  });
+
+  if (description?.trim()) params.set("details", description.trim());
+  if (location?.trim()) params.set("location", location.trim());
+
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}

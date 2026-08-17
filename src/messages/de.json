@@ -62,6 +62,7 @@
     "getAlertsForThis": "Alerts für ähnliche Events",
     "visitOrganizer": "Organisation ansehen",
     "openInMaps": "In Karten öffnen",
+    "addToCalendar": "Zu Google Kalender hinzufügen",
     "interestCta": "Ich bin interessiert",
     "interestActive": "Interessiert",
     "interestCount": "{count} interessiert",

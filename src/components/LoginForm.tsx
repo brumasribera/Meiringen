@@ -14,6 +14,7 @@ type LoginFormProps = {
   useCustomGoogle?: boolean;
   authError?: string;
   next?: string;
+  initialMode?: "signin" | "signup";
 };
 
 function safeNextPath(value: string | undefined, locale: string) {
@@ -76,11 +77,12 @@ export function LoginForm({
   useCustomGoogle = false,
   authError,
   next,
+  initialMode = "signin",
 }: LoginFormProps) {
   const t = useTranslations("auth");
   const locale = useLocale();
   const nextPath = safeNextPath(next, locale);
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup">(initialMode);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
