@@ -294,7 +294,7 @@ export default async function EventDetailPage({ params }: Props) {
             calendarUrl={calendarHref}
             locale={locale}
             isSignedIn={Boolean(user)}
-            className={`${actionButtonClass} inline-flex items-center gap-2 px-5 py-2.5 text-sm`}
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-light"
           />
           <Link href={alertHref} className={`${actionButtonClass} px-5 py-2.5 text-sm`}>
             {t("events.getAlertsForThis")}
