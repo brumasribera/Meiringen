@@ -262,17 +262,16 @@ function buildEventCardHtml(event: Event, locale: string, siteUrl: string) {
       <a href="${eventUrl}" style="display:block;text-decoration:none;margin-bottom:12px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid rgba(17,17,17,0.12);border-radius:18px;background:#111111;overflow:hidden;box-shadow:0 12px 28px rgba(17,17,17,0.12);">
           <tr>
-            <td background="${escapedImageUrl}" height="198" valign="bottom" style="height:198px;padding:0;background-color:#111111;background-image:linear-gradient(180deg,rgba(15,23,42,0.18) 0%,rgba(15,23,42,0.58) 48%,rgba(15,23,42,0.88) 100%),url('${escapedImageUrl}');background-position:center;background-size:cover;background-repeat:no-repeat;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td valign="bottom" style="height:198px;padding:20px;">
-                    <span style="display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.34);background:rgba(255,255,255,0.18);color:#ffffff;font-size:11px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;">${escapeHtml(event.category)}</span>
-                    <div style="margin-top:12px;font-size:20px;line-height:1.25;font-weight:800;color:#ffffff;">${escapeHtml(title)}</div>
-                    <div style="margin-top:8px;font-size:14px;line-height:1.5;color:rgba(255,255,255,0.86);">${escapeHtml(when)}${location}</div>
-                    ${price}
-                  </td>
-                </tr>
-              </table>
+            <td style="padding:0;background:#111111;">
+              <img src="${escapedImageUrl}" width="100%" height="198" alt="${escapeHtml(title)}" style="display:block;width:100%;height:198px;object-fit:cover;background:#111111;" />
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px;background:#111111;">
+              <span style="display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.34);background:rgba(255,255,255,0.18);color:#ffffff;font-size:11px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;">${escapeHtml(event.category)}</span>
+              <div style="margin-top:12px;font-size:20px;line-height:1.25;font-weight:800;color:#ffffff;">${escapeHtml(title)}</div>
+              <div style="margin-top:8px;font-size:14px;line-height:1.5;color:rgba(255,255,255,0.86);">${escapeHtml(when)}${location}</div>
+              ${price}
             </td>
           </tr>
         </table>
