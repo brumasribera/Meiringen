@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { createServiceClient } from "@/lib/supabase/server";
 import {
-  eventWindowDays,
   matchEventsForUser,
   shouldSendAlertToday,
 } from "@/lib/alerts/newsletter-utils";
@@ -56,11 +55,13 @@ export async function GET(request: Request) {
     }
 
     try {
-      const windowDays = eventWindowDays(subscription.frequency);
       const rangeStart = new Date();
-      const rangeEnd = new Date();
-      rangeEnd.setDate(rangeEnd.getDate() + windowDays);
+      const nextWeekEnd = new Date(rangeStart);
+      nextWeekEnd.setDate(nextWeekEnd.getDate() + 7);
+      const rangeEnd = new Date(rangeStart);
+      rangeEnd.setMonth(rangeEnd.getMonth() + 2);
       const rangeStartTime = rangeStart.getTime();
+      const nextWeekEndTime = nextWeekEnd.getTime();
       const rangeEndTime = rangeEnd.getTime();
 
       const { data: allEvents } = await supabase
@@ -125,6 +126,9 @@ export async function GET(request: Request) {
       const matched = matchEventsForUser(
         newsletterEvents,
         subscription
+      ).sort(
+        (a, b) =>
+          new Date(a.start_date).getTime() - new Date(b.start_date).getTime(),
       );
 
       if (matched.length === 0) {
@@ -132,9 +136,18 @@ export async function GET(request: Request) {
         continue;
       }
 
+      const nextWeekEvents = matched.filter(
+        (event) => new Date(event.start_date).getTime() < nextWeekEndTime,
+      );
+      const laterEvents = matched.filter(
+        (event) => new Date(event.start_date).getTime() >= nextWeekEndTime,
+      );
       const locale = subscription.locale || subscription.languages?.[0] || "de";
       const html = buildAlertDigestEmailHtml({
         events: matched,
+        eventsNextWeek: nextWeekEvents,
+        eventsLater: laterEvents.slice(0, 10),
+        hasMoreEvents: laterEvents.length > 10,
         locale,
         frequency: subscription.frequency,
         manageToken: subscription.manage_token,
