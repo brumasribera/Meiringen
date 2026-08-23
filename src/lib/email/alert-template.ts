@@ -241,6 +241,21 @@ function safeEmailImageUrl(
   return normalizeImageUrl(imageUrl, siteUrl)?.replace(/'/g, "%27") ?? null;
 }
 
+function getNewsletterSectionCopy(locale: string) {
+  const copy: Record<string, { nextWeek: string; later: string; seeMore: string }> = {
+    de: { nextWeek: "Nächste Woche", later: "Weitere Veranstaltungen", seeMore: "Mehr Veranstaltungen ansehen" },
+    en: { nextWeek: "Next week", later: "More upcoming events", seeMore: "See more events" },
+    fr: { nextWeek: "La semaine prochaine", later: "Autres événements à venir", seeMore: "Voir plus d'événements" },
+    it: { nextWeek: "La prossima settimana", later: "Altri eventi in arrivo", seeMore: "Vedi altri eventi" },
+    es: { nextWeek: "La próxima semana", later: "Más eventos próximos", seeMore: "Ver más eventos" },
+    ca: { nextWeek: "La setmana vinent", later: "Més esdeveniments propers", seeMore: "Veure més esdeveniments" },
+    gsw: { nextWeek: "Nächsti Wuche", later: "Wiiteri Events", seeMore: "Meh Events aluege" },
+    rm: { nextWeek: "L'autra emna", later: "Auters eveniments", seeMore: "Guardar dapli eveniments" },
+    pt: { nextWeek: "Na próxima semana", later: "Mais eventos próximos", seeMore: "Ver mais eventos" },
+  };
+  return copy[locale] ?? copy.en;
+}
+
 function buildEventCardHtml(event: Event, locale: string, siteUrl: string) {
   const when = formatDateRange(event.start_date, event.end_date, locale);
   const title = cleanEventTitle(event.title, event.organization?.name);
@@ -300,6 +315,9 @@ function buildEventCardHtml(event: Event, locale: string, siteUrl: string) {
 
 type BuildEmailOptions = {
   events: Event[];
+  eventsNextWeek?: Event[];
+  eventsLater?: Event[];
+  hasMoreEvents?: boolean;
   locale: string;
   frequency: AlertFrequency;
   manageToken: string;
@@ -378,13 +396,19 @@ export function buildAlertDigestEmailHtml(options: BuildEmailOptions): string {
                     ? "Mensal"
                     : "Monthly";
 
-  const eventCards =
-    options.events.length === 0
+  const nextWeekEvents = options.eventsNextWeek ?? options.events;
+  const laterEvents = options.eventsLater ?? [];
+  const eventCards = (events: Event[]) =>
+    events.map((event) => buildEventCardHtml(event, options.locale, siteUrl)).join("");
+  const nextWeekCards = eventCards(nextWeekEvents);
+  const laterCards = eventCards(laterEvents);
+  const sectionTitle = (title: string) =>
+    `<h3 style="margin:28px 0 12px;font-size:18px;line-height:1.3;color:#111111;">${title}</h3>`;
+  const content =
+    nextWeekEvents.length === 0 && laterEvents.length === 0
       ? `<p style="margin:0;padding:20px;background:#faf8f5;border-radius:16px;color:#57534e;font-size:15px;line-height:1.6;">${copy.empty}</p>`
-      : options.events
-          .slice(0, 12)
-          .map((event) => buildEventCardHtml(event, options.locale, siteUrl))
-          .join("");
+      : `${nextWeekCards ? `${sectionTitle(getNewsletterSectionCopy(options.locale).nextWeek)}${nextWeekCards}` : ""}`
+        + `${laterCards ? `${sectionTitle(getNewsletterSectionCopy(options.locale).later)}${laterCards}` : ""}`;
 
   return wrapEmail({
     locale: options.locale,
@@ -393,14 +417,15 @@ export function buildAlertDigestEmailHtml(options: BuildEmailOptions): string {
       <p style="margin:0 0 8px;font-size:13px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#B8860B;">${copy.frequencyLabel} · ${freq}</p>
       <h2 style="margin:0 0 12px;font-size:28px;line-height:1.15;color:#111111;letter-spacing:-0.03em;">${copy.title}</h2>
       <p style="margin:0 0 24px;font-size:16px;line-height:1.7;color:#57534e;">${copy.intro}</p>
-      ${eventCards}
-      <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:28px;">
-        <tr>
-          <td>
-            <a href="${siteUrl}/events" style="display:inline-block;background:#F4C430;color:#111111;text-decoration:none;font-weight:800;font-size:15px;padding:14px 22px;border-radius:999px;box-shadow:0 6px 18px rgba(244,196,48,0.25);">${copy.cta}</a>
-          </td>
-        </tr>
-      </table>
+      ${content}
+      ${options.hasMoreEvents ? `
+        <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:28px;">
+          <tr>
+            <td>
+              <a href="${siteUrl}/events" style="display:inline-block;background:#F4C430;color:#111111;text-decoration:none;font-weight:800;font-size:15px;padding:14px 22px;border-radius:999px;box-shadow:0 6px 18px rgba(244,196,48,0.25);">${getNewsletterSectionCopy(options.locale).seeMore}</a>
+            </td>
+          </tr>
+        </table>` : ""}
       <hr style="border:none;border-top:1px solid #ece7df;margin:32px 0;" />
       <p style="margin:0;font-size:14px;line-height:1.7;color:#78716c;">
         <a href="${manageUrl}" style="color:#111111;font-weight:700;text-decoration:none;">${copy.manage}</a>
