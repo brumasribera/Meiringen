@@ -275,7 +275,7 @@ function buildEventCardHtml(event: Event, locale: string, siteUrl: string) {
 
     return `
       <a href="${eventUrl}" style="display:block;text-decoration:none;margin-bottom:12px;">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid rgba(17,17,17,0.12);border-radius:18px;background:#111111;overflow:hidden;box-shadow:0 12px 28px rgba(17,17,17,0.12);">
+        <table role="presentation" class="email-event-card" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid rgba(17,17,17,0.12);border-radius:18px;background:#111111;overflow:hidden;box-shadow:0 12px 28px rgba(17,17,17,0.12);">
           <tr>
             <td style="padding:0;background:#111111;">
               <img src="${escapedImageUrl}" width="100%" height="198" alt="${escapeHtml(title)}" style="display:block;width:100%;height:198px;object-fit:cover;background:#111111;" />
@@ -300,7 +300,7 @@ function buildEventCardHtml(event: Event, locale: string, siteUrl: string) {
 
   return `
     <a href="${eventUrl}" style="display:block;text-decoration:none;margin-bottom:12px;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #ece7df;border-radius:18px;background:#ffffff;overflow:hidden;">
+      <table role="presentation" class="email-event-card" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #ece7df;border-radius:18px;background:#ffffff;overflow:hidden;">
         <tr>
           <td style="padding:18px 20px;">
             <span style="display:inline-block;padding:6px 10px;border-radius:999px;background:${badgeColor};color:#ffffff;font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">${escapeHtml(event.category)}</span>
@@ -449,16 +449,41 @@ function wrapEmail(options: {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light" />
+  <style>
+    @media only screen and (max-width: 640px) {
+      .email-shell {
+        padding: 12px 0 !important;
+      }
+      .email-frame {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      .email-content {
+        padding: 24px 12px !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+      }
+      .email-header,
+      .email-footer {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+      }
+      .email-event-card {
+        border-radius: 14px !important;
+      }
+    }
+  </style>
   <title>Meiringen.life</title>
 </head>
   <body style="margin:0;padding:0;background:#f3efe7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
   <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(options.preheader)}</div>
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(180deg,#f3efe7 0%,#faf8f5 100%);padding:32px 16px;">
+  <table role="presentation" class="email-shell" width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(180deg,#f3efe7 0%,#faf8f5 100%);padding:32px 16px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:620px;">
+        <table role="presentation" class="email-frame" width="100%" cellpadding="0" cellspacing="0" style="max-width:620px;">
           <tr>
-            <td style="padding-bottom:18px;">
+            <td class="email-header" style="padding-bottom:18px;">
               <table role="presentation" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="width:52px;height:52px;border-radius:12px;overflow:hidden;vertical-align:middle;">
@@ -472,12 +497,12 @@ function wrapEmail(options: {
             </td>
           </tr>
           <tr>
-            <td style="background:#ffffff;border:1px solid #ece7df;border-radius:28px;padding:32px 28px;box-shadow:0 18px 40px rgba(17,17,17,0.06);">
+            <td class="email-content" style="background:#ffffff;border:1px solid #ece7df;border-radius:28px;padding:32px 28px;box-shadow:0 18px 40px rgba(17,17,17,0.06);">
               ${options.body}
             </td>
           </tr>
           <tr>
-            <td style="padding:20px 8px 0;text-align:center;font-size:13px;line-height:1.6;color:#78716c;">
+            <td class="email-footer" style="padding:20px 8px 0;text-align:center;font-size:13px;line-height:1.6;color:#78716c;">
               <p style="margin:0 0 12px;font-size:12px;line-height:1.6;color:#a8a29e;">${getCopy(options.locale).disclaimer}</p>
               ${getCopy(options.locale).footer}<br />
               <a href="${siteUrl}" style="color:#111111;text-decoration:none;">${siteUrl.replace("https://", "")}</a>
